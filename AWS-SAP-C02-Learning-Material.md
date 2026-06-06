@@ -40,18 +40,128 @@ total_files: 187
 
 ## 🌐 Cross-Cutting Concepts
 
-These architectural patterns span multiple services — they underpin the Well-Architected Framework.
+These architectural patterns span multiple services — they underpin the Well-Architected Framework and appear across ALL exam domains.
 
-| Concept | Key AWS Services | Common Exam Angle |
-|---|---|---|
-| **High Availability** | Multi-AZ, ALB, Auto Scaling, Route 53 | Active-passive vs active-active, AZ failure resilience |
-| **Disaster Recovery (DR)** | RPO/RTO, Pilot Light, Warm Standby, Multi-Region | RPO/RTO trade-offs, cross-region replication strategies |
-| **Cost Optimization** | Savings Plans, Spot Instances, S3 Lifecycle, Compute Optimizer | Rightsizing, reservation models, storage tiering |
-| **Security** | IAM, KMS, SCP, Security Groups, NACLs, WAF, Shield | Least privilege, defense in depth, encryption at rest/transit |
-| **Decoupling** | SQS, SNS, EventBridge, Step Functions | Loose coupling vs tight integration, async patterns |
-| **Serverless** | Lambda, API Gateway, DynamoDB, Fargate, Step Functions | When NOT to use serverless, cold starts, timeout limits |
-| **Multi-Account Governance** | Organizations, SCP, Control Tower, RAM, CloudFormation StackSets | OU design, policy inheritance, delegated administration |
-| **Deployment Strategies** | Blue/Green, Canary, Rolling, All-at-Once | ELB target group weighting, Route 53 weighted routing |
+### High Availability (HA)
+
+- **Overview**: Designing systems to remain operational despite component failures. Key principle: eliminate single points of failure. Achieved through redundancy at every layer — compute, network, storage, database.
+- **🔄 Azure Bridge**: Same concept as Azure Availability Zones + Availability Sets. AWS uses multi-AZ for zonal redundancy and multi-Region for regional redundancy.
+- **Key Exam Facts** (from missed question):
+  - **Multi-AZ vs Multi-Region**: Multi-AZ protects against AZ failure (data center outage) within a Region. Multi-Region protects against Region-wide disaster. Multi-AZ = automatic failover for RDS; manual or automated for EC2. *(Q#29, Q#61)*
+  - **Active-Passive vs Active-Active**: Active-Passive = primary serves traffic, standby on standby (RDS Multi-AZ, Route 53 Failover). Active-Active = all nodes serve traffic simultaneously (ALB + multi-AZ EC2, DynamoDB Global Tables). *(Q#19, Q#25)*
+  - **ALB Health Checks**: ALB routes only to healthy targets. Health check interval + threshold determines detection time. Cross-zone load balancing distributes across AZs. *(Q#25, Q#209)*
+- **Common Pitfalls**:
+  - ❌ Assuming Multi-AZ RDS standby can serve read traffic — the standby is passive, not accessible
+  - ❌ Deploying EC2 in a single AZ behind an ALB — if that AZ fails, the entire service goes down
+  - ❌ Using a single NAT Gateway — AZ failure takes down outbound internet for all AZs
+- **📝 Q Refs**: #12, #19, #25, #29, #61, #108, #206, #209
+
+### Disaster Recovery (DR)
+
+- **Overview**: Strategies for recovering from large-scale disasters. Measured by two metrics: RPO (Recovery Point Objective — max acceptable data loss in time) and RTO (Recovery Time Objective — max acceptable time to restore service). The lower the RPO/RTO, the more expensive the solution.
+- **🔄 Azure Bridge**: Same RPO/RTO concepts apply in Azure (Azure Site Recovery, cross-region replication). DR strategies are universal.
+- **Key Exam Facts** (from missed question):
+  - **DR Strategies (cold → hot)**: **Backup & Restore** (highest RPO/RTO, cheapest) → **Pilot Light** (core services running, scale up during DR) → **Warm Standby** (scaled-down but functional, scale up) → **Multi-Site Active/Active** (fully running in both Regions, lowest RPO/RTO, most expensive). *(Q#116, Q#234)*
+  - **Aurora Global Database**: < 1 sec typical lag → RPO ~1 second. Failover to secondary in < 1 minute → RTO < 1 minute. Supports read traffic in secondary Region. *(Q#213, Q#227)*
+  - **DynamoDB Global Tables**: Multi-active — read/write to any Region. RPO ~1 second (eventual consistency). RTO near-zero (already active). *(Q#2, Q#105, Q#121)*
+  - **S3 Cross-Region Replication (CRR)**: Asynchronous replication for DR compliance. Requires versioning on both buckets. *(Q#28, Q#134)*
+- **Common Pitfalls**:
+  - ❌ Confusing RPO (data loss) with RTO (downtime)
+  - ❌ Assuming Pilot Light is fast — you still need to launch instances and scale up
+  - ❌ Not testing DR plans regularly — untested DR = no DR
+- **📝 Q Refs**: #2, #28, #105, #114, #116, #121, #134, #213, #227, #234, #236
+
+### Cost Optimization
+
+- **Overview**: Achieving business outcomes at the lowest price point. Not just "cheapest" — about right-sizing, right-pricing, and eliminating waste. Uses the AWS Cost Optimization pillar of the Well-Architected Framework.
+- **🔄 Azure Bridge**: Same concepts — Azure has Reserved Instances, Spot VMs, Azure Hybrid Benefit. AWS Savings Plans are unique (broader than Azure Reservations).
+- **Key Exam Facts** (from missed question):
+  - **Purchase Options**: On-Demand (no commitment, most expensive) → Spot (up to 90% off, can be interrupted) → Reserved Instances (up to 72% off, 1-3 year, AZ-specific) → Savings Plans (up to 72% off, flexible across instance families + Lambda + Fargate). *(Q#20, Q#119, Q#205, Q#247)*
+  - **Compute Savings Plans**: Most flexible — applies to ANY instance family, ANY Region, plus Lambda and Fargate. 66% max discount (slightly less than EC2 Savings Plans at 72%). *(Q#247)*
+  - **S3 Lifecycle**: Automatically transition objects to cheaper tiers based on age. Intelligent-Tiering for unpredictable access patterns. Glacier Deep Archive for long-term retention. *(Q#34, Q#65, Q#246)*
+  - **Compute Optimizer**: ML-based rightsizing recommendations with risk classification (low/medium/high). *(Q#102, Q#233)*
+- **Common Pitfalls**:
+  - ❌ Confusing Capacity Reservations (guarantee capacity, no discount) with Reserved Instances (billing discount)
+  - ❌ Using Spot for stateful or non-fault-tolerant workloads
+  - ❌ Standard RIs lock you into a specific instance family — use Convertible RIs or Savings Plans for flexibility
+- **📝 Q Refs**: #20, #32, #34, #65, #66, #102, #119, #129, #205, #222, #233, #246, #247
+
+### Security (Cross-Service)
+
+- **Overview**: Defense in depth across all layers. Identity (IAM, Organizations), infrastructure (VPC, Security Groups, NACLs), data (KMS, encryption), application (WAF), and edge (Shield). The principle of least privilege applies at every layer.
+- **🔄 Azure Bridge**: Same layered approach — Azure AD + RBAC, NSGs, Key Vault, Azure WAF, Azure DDoS. AWS Organizations SCPs are unique (permission guardrails, not just compliance checks).
+- **Key Exam Facts** (from missed question):
+  - **IAM Evaluation Logic**: Explicit DENY > Explicit ALLOW > Implicit DENY. SCPs and Permissions Boundaries act as filters — even if IAM allows, SCP can deny. *(Q#3, Q#24, Q#148)*
+  - **SCP vs IAM Policy**: SCP = maximum permission ceiling at OU/account level (can't be overridden). IAM policy = grants specific permissions within that ceiling. *(Q#23, Q#210)*
+  - **Defense in Depth Layers**: Shield (DDoS edge) → WAF (L7 filtering) → Security Groups (instance firewall, stateful) → NACLs (subnet firewall, stateless) → Encryption (KMS at rest, TLS in transit). *(Q#125, Q#146, Q#196)*
+  - **CloudTrail + Config + CloudWatch**: The governance triad — CloudTrail = API audit (who did what), Config = configuration compliance (what changed), CloudWatch = operational monitoring (how is performance). *(Q#35, Q#101, Q#172)*
+- **Common Pitfalls**:
+  - ❌ Using NACLs for instance-level rules — they're subnet-level and stateless; use Security Groups
+  - ❌ Assuming SCPs grant permissions — they only LIMIT permissions; you still need IAM policies to allow
+  - ❌ Enabling only CloudTrail management events — data events (S3 object-level, Lambda) are not logged by default
+- **📝 Q Refs**: #3, #23, #24, #35, #39, #59, #78, #79, #101, #103, #125, #127, #146, #148, #160, #172, #196, #210, #224, #253
+
+### Decoupling
+
+- **Overview**: Reducing dependencies between application components so they can operate, scale, and fail independently. Achieved through asynchronous messaging, event-driven architecture, and loose coupling.
+- **🔄 Azure Bridge**: Same patterns — Azure Service Bus, Event Grid, Queue Storage. AWS has a richer set (SQS + SNS + EventBridge + Kinesis) with more granular choices.
+- **Key Exam Facts** (from missed question):
+  - **SQS for Buffering**: Producer → SQS → Consumer. Consumer processes at its own pace. If consumer slows, queue grows but producer is unaffected. This is the fundamental decoupling pattern. *(Q#33, Q#110)*
+  - **SNS for Fan-out**: One message → multiple subscribers (SQS, Lambda, HTTP, email). Each subscriber processes independently. Adding a new consumer = new subscription — no producer changes. *(Q#131)*
+  - **EventBridge for Pattern-Based Routing**: Events matched to rules based on event attributes. Different from SNS (topic-based, all subscribers get everything). *(Q#131)*
+  - **Cascading Failure Prevention**: With synchronous coupling (direct API calls), a slow downstream service blocks upstream. With decoupling (SQS between tiers), each tier operates independently — backpressure is handled by the queue. *(Q#33)*
+- **Common Pitfalls**:
+  - ❌ Using synchronous calls between microservices — creates cascading failure risk
+  - ❌ Confusing SNS (push, fire-and-forget) with SQS (pull, buffered) — they serve different patterns
+  - ❌ Forgetting DLQs — without them, failed messages cycle forever
+- **📝 Q Refs**: #33, #82, #110, #131, #142, #143, #212
+
+### Serverless
+
+- **Overview**: Building applications without managing servers. Key services: Lambda (compute), API Gateway (API management), DynamoDB (database), S3 (storage), Fargate (containers), Step Functions (orchestration), EventBridge (event bus), SNS/SQS (messaging).
+- **🔄 Azure Bridge**: Similar serverless stack — Azure Functions, API Management, Cosmos DB, Logic Apps, Event Grid. Key difference: AWS Lambda has tighter S3/DynamoDB integration; Azure Functions has tighter Azure integration.
+- **Key Exam Facts** (from missed question):
+  - **When to Use Serverless**: Event-driven workloads, variable/unpredictable traffic, rapid development, no ops team. When NOT to use: long-running tasks (> 15 min Lambda limit), need for OS/kernel control, steady predictable load (EC2 may be cheaper), legacy apps with specific OS requirements. *(Q#100, Q#122)*
+  - **Lambda Limits**: 15-min max timeout, 10 GB max memory, 250 MB code package (unzipped), 10 GB container images. Provisioned Concurrency eliminates cold starts. *(Q#17, Q#122)*
+  - **Serverless ≠ No Ops**: You still manage monitoring (CloudWatch), logging, error handling (DLQs), deployment (SAM/CloudFormation), and security (IAM roles). You just don't manage servers.
+  - **Lambda in VPC**: Creates ENIs in your subnets → can access VPC resources. Requires NAT Gateway for internet access. Adds cold start latency. *(Q#36, Q#206)*
+- **Common Pitfalls**:
+  - ❌ Using Lambda for everything — it's not always the best choice (see "When NOT to use" above)
+  - ❌ Ignoring cold starts — Provisioned Concurrency costs money but eliminates them
+  - ❌ Forgetting Lambda@Edge limits — 5 sec timeout, 128 MB for viewer events
+- **📝 Q Refs**: #5, #14, #17, #36, #48, #100, #104, #120, #122, #131, #204, #206, #212
+
+### Multi-Account Governance
+
+- **Overview**: Managing multiple AWS accounts centrally — security guardrails, cost visibility, resource sharing, and standardized deployments. Key services: AWS Organizations, SCPs, Control Tower, RAM, CloudFormation StackSets, Service Catalog.
+- **🔄 Azure Bridge**: Azure Management Groups + Azure Policy + Azure Lighthouse. SCPs = Azure Policies (but SCPs are permission boundaries, not compliance evaluators). StackSets = Azure Deployment Stacks.
+- **Key Exam Facts** (from missed question):
+  - **OU Design**: Organize accounts by environment (dev/test/prod), by business unit, or by security boundary. SCPs attach to OUs and inherit down. *(Q#3, Q#24)*
+  - **SCP Strategies**: Deny List (default FullAWSAccess, add denies) = simpler, less maintenance. Allow List (remove FullAWSAccess, add explicit allows) = stricter, higher maintenance. Most organizations use deny list. *(Q#3)*
+  - **Cross-Account Access**: IAM role assumption (trusting account creates role, trusted account assumes it) OR resource-based policy (grant access directly on the resource). Use RAM for sharing TGW, Prefix Lists, VPC subnets. *(Q#103, Q#117, Q#118)*
+  - **StackSets**: Deploy CloudFormation to multiple accounts/Regions from a central admin. Service-managed (automatic, via Organizations) or self-managed (requires manual role creation). *(Q#30, Q#67, Q#210)*
+- **Common Pitfalls**:
+  - ❌ Attaching SCPs to individual accounts instead of OUs — doesn't scale
+  - ❌ Using Allow List SCPs without careful planning — you'll constantly update them as new services are adopted
+  - ❌ Not using Control Tower for new multi-account setups — it automates OU creation, guardrails, and account provisioning
+- **📝 Q Refs**: #3, #23, #24, #26, #30, #56, #67, #103, #117, #118, #210, #224, #232, #245
+
+### Deployment Strategies
+
+- **Overview**: Methods for releasing new application versions with controlled risk. Ranges from simple (All-at-Once, fast but risky) to sophisticated (Canary, Blue/Green, safest but more complex).
+- **🔄 Azure Bridge**: Azure DevOps release pipelines support the same strategies — deployment slots for Blue/Green, canary through traffic routing. The concepts are identical; the AWS tooling differs (CodeDeploy vs Azure Pipelines).
+- **Key Exam Facts** (from missed question):
+  - **All-at-Once**: Update all instances simultaneously. Fastest deployment, most downtime. Quickest to detect failure (all instances affected). *(Q#69)*
+  - **Rolling**: Update instances in batches. No additional cost (uses existing capacity). Rollback requires re-deploying old version. *(Q#69)*
+  - **Rolling with Additional Batch**: Like Rolling but adds new instances first → no capacity loss during deployment. Higher cost (extra instances during deploy). *(Q#69)*
+  - **Immutable**: Create new ASG with new version → swap. Old ASG stays running during validation. Fastest rollback (just point back to old ASG). Safest but doubles capacity during deploy. *(Q#69)*
+  - **Blue/Green (CodeDeploy)**: Replace entire fleet. Traffic shift via ALB target group or Route 53 weighted routing. Fast rollback. *(Q#48, Q#152, Q#208, Q#225)*
+  - **Canary**: Send small % of traffic to new version → monitor → increase incrementally → rollback on alarm. CodeDeploy supports linear traffic shifting. *(Q#48)*
+- **Common Pitfalls**:
+  - ❌ Choosing All-at-Once for production — the downtime and blast radius are too large
+  - ❌ Not implementing health check monitoring during canary deployments — without alarms, can't auto-rollback
+  - ❌ Blue/Green with stateful applications — sessions may be lost on the old environment
+- **📝 Q Refs**: #48, #69, #152, #208, #225
 
 ---
 
@@ -1209,6 +1319,7 @@ This table maps all tag variants found in your Wrong Answer Collection to canoni
 
 | Domain | Services Covered | Q Count | Confidence (Self-Rate) |
 |---|---|---|---|
+| 🌐 Cross-Cutting | HA, DR, Cost, Security, Decoupling, Serverless, Governance, Deployments | ~40 | /10 |
 | 💻 Compute | EC2, Lambda, EB, Batch | ~45 | /10 |
 | 📦 Containers | ECS, EKS, ECR, Fargate | ~12 | /10 |
 | 💾 Storage | S3, EBS, EFS, FSx, Storage Gateway, Transfer Family | ~35 | /10 |

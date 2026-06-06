@@ -40,18 +40,128 @@ total_files: 187
 
 ## 🌐 跨领域概念 (Cross-Cutting Concepts)
 
-这些架构模式跨越多个服务 —— 支撑着 Well-Architected Framework。
+这些架构模式跨越多个服务 —— 支撑着 Well-Architected Framework，并贯穿所有考试领域。
 
-| 概念 | 关键 AWS 服务 | 常见考试角度 |
-|---|---|---|
-| **高可用 (HA)** | Multi-AZ, ALB, Auto Scaling, Route 53 | 主备 (active-passive) vs 双活 (active-active)，AZ 故障恢复 |
-| **灾难恢复 (DR)** | RPO/RTO, Pilot Light, Warm Standby, Multi-Region | RPO/RTO 权衡，跨区域复制策略 |
-| **成本优化** | Savings Plans, Spot Instances, S3 Lifecycle, Compute Optimizer | 合理配置 (rightsizing)，预留模式，存储分层 |
-| **安全** | IAM, KMS, SCP, Security Groups, NACLs, WAF, Shield | 最小权限，纵深防御，静态/传输加密 |
-| **解耦** | SQS, SNS, EventBridge, Step Functions | 松耦合 vs 紧耦合，异步模式 |
-| **Serverless** | Lambda, API Gateway, DynamoDB, Fargate, Step Functions | 何时不应使用 Serverless，冷启动，超时限制 |
-| **多账户治理** | Organizations, SCP, Control Tower, RAM, CloudFormation StackSets | OU 设计，策略继承，委托管理 |
-| **部署策略** | Blue/Green, Canary, Rolling, All-at-Once | ELB 目标组权重，Route 53 加权路由 |
+### 高可用 (High Availability / HA)
+
+- **概述**：设计系统在组件故障时仍能正常运行。核心原则：消除单点故障。通过在每一层（计算、网络、存储、数据库）进行冗余来实现。
+- **🔄 Azure 对照**：与 Azure Availability Zones + Availability Sets 概念相同。AWS 使用 multi-AZ 实现区域冗余，使用 multi-Region 实现区域间冗余。
+- **考试关键知识点**（源自 missed question）：
+  - **Multi-AZ vs Multi-Region**：Multi-AZ 防范 AZ 故障（区域内数据中心中断）。Multi-Region 防范区域级灾难。RDS Multi-AZ = 自动故障转移；EC2 可手动或自动。*(Q#29, Q#61)*
+  - **Active-Passive vs Active-Active（主备 vs 双活）**：主备 = 主节点承载流量，备用节点待命（RDS Multi-AZ, Route 53 Failover）。双活 = 所有节点同时承载流量（ALB + 多 AZ EC2, DynamoDB Global Tables）。*(Q#19, Q#25)*
+  - **ALB 健康检查**：ALB 仅路由到健康目标。健康检查间隔 + 阈值决定检测时间。跨区域负载均衡将流量分发到各 AZ。*(Q#25, Q#209)*
+- **常见误区**：
+  - ❌ 以为 Multi-AZ RDS 备用副本可以服务读取流量 —— 备用副本是被动的，不可访问
+  - ❌ 在 ALB 后方仅部署单个 AZ 的 EC2 —— 如果该 AZ 故障，整个服务停摆
+  - ❌ 使用单个 NAT Gateway —— AZ 故障会导致所有 AZ 的出站互联网中断
+- **📝 Q Refs**：#12, #19, #25, #29, #61, #108, #206, #209
+
+### 灾难恢复 (Disaster Recovery / DR)
+
+- **概述**：从大规模灾难中恢复的策略。由两个指标衡量：RPO（恢复点目标 —— 可接受的最大数据丢失时间）和 RTO（恢复时间目标 —— 恢复服务的最大可接受时间）。RPO/RTO 越低，方案越昂贵。
+- **🔄 Azure 对照**：相同的 RPO/RTO 概念适用于 Azure（Azure Site Recovery, 跨区域复制）。DR 策略是通用的。
+- **考试关键知识点**（源自 missed question）：
+  - **DR 策略（冷→热）**：**Backup & Restore**（RPO/RTO 最高，最便宜）→ **Pilot Light**（核心服务运行，DR 时扩展）→ **Warm Standby**（缩小但可用，扩展）→ **Multi-Site Active/Active**（双区域全量运行，RPO/RTO 最低，最昂贵）。*(Q#116, Q#234)*
+  - **Aurora Global Database**：典型延迟 < 1 秒 → RPO 约 1 秒。故障转移到辅助区域 < 1 分钟 → RTO < 1 分钟。辅助区域支持读取流量。*(Q#213, Q#227)*
+  - **DynamoDB Global Tables**：多活 —— 任意区域读写。RPO 约 1 秒（最终一致性）。RTO 接近零（已经处于活跃状态）。*(Q#2, Q#105, Q#121)*
+  - **S3 Cross-Region Replication (CRR)**：用于 DR 合规的异步复制。要求两个存储桶都启用 versioning。*(Q#28, Q#134)*
+- **常见误区**：
+  - ❌ 混淆 RPO（数据丢失量）和 RTO（停机时间）
+  - ❌ 以为 Pilot Light 很快 —— 你仍然需要启动实例并扩展
+  - ❌ 不定期测试 DR 计划 —— 未测试的 DR = 没有 DR
+- **📝 Q Refs**：#2, #28, #105, #114, #116, #121, #134, #213, #227, #234, #236
+
+### 成本优化 (Cost Optimization)
+
+- **概述**：以最低价格点实现业务成果。不仅是"最便宜"—— 而是关于合理配置（right-sizing）、合理定价（right-pricing）和消除浪费。遵循 AWS Well-Architected Framework 的成本优化支柱。
+- **🔄 Azure 对照**：相同概念 —— Azure 有 Reserved Instances、Spot VMs、Azure Hybrid Benefit。AWS Savings Plans 是独有的（比 Azure Reservations 更广泛）。
+- **考试关键知识点**（源自 missed question）：
+  - **购买选项**：On-Demand（无承诺，最贵）→ Spot（最高省 90%，可被中断）→ Reserved Instances（最高省 72%，1-3 年，AZ 特定）→ Savings Plans（最高省 72%，跨实例族灵活 + Lambda + Fargate）。*(Q#20, Q#119, Q#205, Q#247)*
+  - **Compute Savings Plans**：最灵活 —— 适用于任意实例族、任意区域，外加 Lambda 和 Fargate。最高 66% 折扣（略低于 EC2 Savings Plans 的 72%）。*(Q#247)*
+  - **S3 Lifecycle**：根据对象年龄自动转换到更便宜的存储层。Intelligent-Tiering 用于不可预测的访问模式。Glacier Deep Archive 用于长期保留。*(Q#34, Q#65, Q#246)*
+  - **Compute Optimizer**：基于 ML 的合理配置建议，附风险分类（低/中/高）。*(Q#102, Q#233)*
+- **常见误区**：
+  - ❌ 混淆 Capacity Reservations（保证容量，无折扣）与 Reserved Instances（计费折扣）
+  - ❌ 对状态化或非容错负载使用 Spot
+  - ❌ 标准 RI 将你锁定在特定实例族 —— 使用 Convertible RI 或 Savings Plans 获得灵活性
+- **📝 Q Refs**：#20, #32, #34, #65, #66, #102, #119, #129, #205, #222, #233, #246, #247
+
+### 安全（跨服务）(Security)
+
+- **概述**：在各层实施纵深防御。身份（IAM, Organizations）、基础设施（VPC, Security Groups, NACLs）、数据（KMS, 加密）、应用（WAF）和边缘（Shield）。最小权限原则适用于每一层。
+- **🔄 Azure 对照**：相同的分层方法 —— Azure AD + RBAC、NSGs、Key Vault、Azure WAF、Azure DDoS。AWS Organizations SCPs 是独有的（权限护栏，而不仅仅是合规检查）。
+- **考试关键知识点**（源自 missed question）：
+  - **IAM 评估逻辑**：显式 DENY > 显式 ALLOW > 隐式 DENY。SCP 和 Permissions Boundary 作为过滤器 —— 即使 IAM 允许，SCP 仍可拒绝。*(Q#3, Q#24, Q#148)*
+  - **SCP vs IAM Policy**：SCP = OU/账户级别的最大权限上限（不可覆盖）。IAM policy = 在该上限内授予特定权限。*(Q#23, Q#210)*
+  - **纵深防御层次**：Shield（DDoS 边缘）→ WAF（L7 过滤）→ Security Groups（实例防火墙，有状态）→ NACLs（子网防火墙，无状态）→ 加密（KMS 静态加密，TLS 传输加密）。*(Q#125, Q#146, Q#196)*
+  - **CloudTrail + Config + CloudWatch**：治理三驾马车 —— CloudTrail = API 审计（谁做了什么），Config = 配置合规（什么被改变），CloudWatch = 运维监控（性能如何）。*(Q#35, Q#101, Q#172)*
+- **常见误区**：
+  - ❌ 使用 NACLs 做实例级规则 —— 它们是无状态的子网级；使用 Security Groups
+  - ❌ 以为 SCPs 授予权限 —— 它们只限制权限；你仍然需要 IAM policies 来允许
+  - ❌ 只启用 CloudTrail management events —— data events（S3 对象级、Lambda）默认不记录
+- **📝 Q Refs**：#3, #23, #24, #35, #39, #59, #78, #79, #101, #103, #125, #127, #146, #148, #160, #172, #196, #210, #224, #253
+
+### 解耦 (Decoupling)
+
+- **概述**：减少应用组件之间的依赖，使它们能够独立运行、扩展和故障。通过异步消息、事件驱动架构和松耦合实现。
+- **🔄 Azure 对照**：相同模式 —— Azure Service Bus、Event Grid、Queue Storage。AWS 有更丰富的选择（SQS + SNS + EventBridge + Kinesis），具有更细粒度的区分。
+- **考试关键知识点**（源自 missed question）：
+  - **SQS 缓冲模式**：生产者 → SQS → 消费者。消费者按自己的节奏处理。如果消费者变慢，队列增长但生产者不受影响。这是基础的解耦模式。*(Q#33, Q#110)*
+  - **SNS Fan-out 模式**：一条消息 → 多个订阅者（SQS, Lambda, HTTP, email）。每个订阅者独立处理。增加新消费者 = 新订阅 —— 无需修改生产者。*(Q#131)*
+  - **EventBridge 模式路由**：基于事件属性将事件匹配到规则。不同于 SNS（基于主题，所有订阅者接收所有消息）。*(Q#131)*
+  - **级联故障预防**：使用同步耦合（直接 API 调用）时，慢的下游服务会阻塞上游。使用解耦（层间 SQS），每层独立运行 —— 队列处理背压。*(Q#33)*
+- **常见误区**：
+  - ❌ 在微服务之间使用同步调用 —— 造成级联故障风险
+  - ❌ 混淆 SNS（push, 发后即忘）和 SQS（pull, 缓冲）—— 它们服务于不同模式
+  - ❌ 忘记配置 DLQ —— 没有它，失败的消息会无限循环
+- **📝 Q Refs**：#33, #82, #110, #131, #142, #143, #212
+
+### Serverless
+
+- **概述**：无需管理服务器即可构建应用。关键服务：Lambda（计算）、API Gateway（API 管理）、DynamoDB（数据库）、S3（存储）、Fargate（容器）、Step Functions（编排）、EventBridge（事件总线）、SNS/SQS（消息）。
+- **🔄 Azure 对照**：类似的 Serverless 技术栈 —— Azure Functions、API Management、Cosmos DB、Logic Apps、Event Grid。关键区别：AWS Lambda 与 S3/DynamoDB 集成更紧密；Azure Functions 与 Azure 集成更紧密。
+- **考试关键知识点**（源自 missed question）：
+  - **何时使用 Serverless**：事件驱动负载、波动/不可预测的流量、快速开发、无运维团队。何时不应使用：长时间运行的任务（> Lambda 15 分钟限制）、需要 OS/内核控制、稳定可预测负载（EC2 可能更便宜）、有特定 OS 要求的遗留应用。*(Q#100, Q#122)*
+  - **Lambda 限制**：最长 15 分钟超时，最大 10 GB 内存，250 MB 代码包（解压后），10 GB 容器镜像。Provisioned Concurrency 消除冷启动。*(Q#17, Q#122)*
+  - **Serverless ≠ 无运维**：你仍然管理监控（CloudWatch）、日志、错误处理（DLQ）、部署（SAM/CloudFormation）和安全（IAM roles）。你只是不管理服务器。
+  - **VPC 内 Lambda**：在你的子网中创建 ENI → 可访问 VPC 资源。需要 NAT Gateway 访问互联网。增加冷启动延迟。*(Q#36, Q#206)*
+- **常见误区**：
+  - ❌ 所有事都用 Lambda —— 它不总是最佳选择（参见上方"何时不应使用"）
+  - ❌ 忽视冷启动 —— Provisioned Concurrency 花钱但消除它们
+  - ❌ 忘记 Lambda@Edge 的限制 —— 5 秒超时，viewer 事件 128 MB
+- **📝 Q Refs**：#5, #14, #17, #36, #48, #100, #104, #120, #122, #131, #204, #206, #212
+
+### 多账户治理 (Multi-Account Governance)
+
+- **概述**：集中管理多个 AWS 账户 —— 安全护栏、成本可见性、资源共享和标准化部署。关键服务：AWS Organizations、SCPs、Control Tower、RAM、CloudFormation StackSets、Service Catalog。
+- **🔄 Azure 对照**：Azure Management Groups + Azure Policy + Azure Lighthouse。SCPs = Azure Policies（但 SCPs 是权限边界，不是合规评估器）。StackSets = Azure Deployment Stacks。
+- **考试关键知识点**（源自 missed question）：
+  - **OU 设计**：按环境（开发/测试/生产）、按业务单元或按安全边界组织账户。SCP 挂载到 OU 并向下继承。*(Q#3, Q#24)*
+  - **SCP 策略**：Deny List（默认 FullAWSAccess，添加 deny） = 更简单，更少维护。Allow List（移除 FullAWSAccess，添加显式 allow） = 更严格，维护更多。大多数组织使用 deny list。*(Q#3)*
+  - **跨账户访问**：IAM role assumption（信任账户创建角色，被信任账户承担）或 resource-based policy（直接在资源上授予访问权限）。使用 RAM 共享 TGW、Prefix Lists、VPC 子网。*(Q#103, Q#117, Q#118)*
+  - **StackSets**：从中央管理员部署 CloudFormation 到多个账户/区域。Service-managed（自动，通过 Organizations）或 self-managed（需要手动创建角色）。*(Q#30, Q#67, Q#210)*
+- **常见误区**：
+  - ❌ 将 SCP 挂载到单个账户而非 OU —— 无法扩展
+  - ❌ 没有仔细规划就使用 Allow List SCPs —— 采用新服务时需要不断更新它们
+  - ❌ 新的多账户设置不使用 Control Tower —— 它自动化 OU 创建、护栏和账户预置
+- **📝 Q Refs**：#3, #23, #24, #26, #30, #56, #67, #103, #117, #118, #210, #224, #232, #245
+
+### 部署策略 (Deployment Strategies)
+
+- **概述**：以可控风险发布新应用版本的方法。从简单（All-at-Once，快但冒险）到复杂（Canary, Blue/Green，最安全但更复杂）。
+- **🔄 Azure 对照**：Azure DevOps release pipelines 支持相同的策略 —— deployment slots 用于 Blue/Green，通过流量路由实现 canary。概念相同；AWS 工具不同（CodeDeploy vs Azure Pipelines）。
+- **考试关键知识点**（源自 missed question）：
+  - **All-at-Once**：同时更新所有实例。最快部署，最多停机。最快检测故障（所有实例受影响）。*(Q#69)*
+  - **Rolling**：分批更新实例。无需额外成本（使用现有容量）。回滚需要重新部署旧版本。*(Q#69)*
+  - **Rolling with Additional Batch**：类似 Rolling 但先添加新实例 → 部署期间无容量损失。部署期间成本更高（额外实例）。*(Q#69)*
+  - **Immutable**：创建新 ASG 部署新版本 → 交换。旧 ASG 在验证期间保持运行。最快回滚（直接指向旧 ASG）。最安全但部署期间容量翻倍。*(Q#69)*
+  - **Blue/Green (CodeDeploy)**：替换整个机群。通过 ALB 目标组或 Route 53 加权路由切换流量。快速回滚。*(Q#48, Q#152, Q#208, Q#225)*
+  - **Canary**：小比例流量到新版本 → 监控 → 逐步增加 → 告警时回滚。CodeDeploy 支持线性流量切换。*(Q#48)*
+- **常见误区**：
+  - ❌ 生产环境选择 All-at-Once —— 停机时间和影响范围太大
+  - ❌ Canary 部署期间未实现健康检查监控 —— 没有告警无法自动回滚
+  - ❌ 对有状态应用使用 Blue/Green —— 会话可能在旧环境中丢失
+- **📝 Q Refs**：#48, #69, #152, #208, #225
 
 ---
 
@@ -1209,6 +1319,7 @@ total_files: 187
 
 | 领域 | 涵盖服务 | 题目数 | 自信度（自评） |
 |---|---|---|---|
+| 🌐 Cross-Cutting | HA, DR, Cost, Security, Decoupling, Serverless, Governance, Deployments | ~40 | /10 |
 | 💻 Compute | EC2, Lambda, EB, Batch | ~45 | /10 |
 | 📦 Containers | ECS, EKS, ECR, Fargate | ~12 | /10 |
 | 💾 Storage | S3, EBS, EFS, FSx, Storage Gateway, Transfer Family | ~35 | /10 |
