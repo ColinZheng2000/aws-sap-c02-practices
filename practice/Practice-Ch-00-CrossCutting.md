@@ -1,10 +1,10 @@
 ---
 chapter: "0. Cross-Cutting Concepts"
-totalQuestions: 10
+totalQuestions: 16
 tiers:
-  knowledge: 3
-  scenario: 5
-  comparison: 2
+  knowledge: 5
+  scenario: 7
+  comparison: 4
 basedOn: "AWS-SAP-C02-Learning-Material.md — Cross-Cutting Concepts"
 concepts:
   - High Availability
@@ -26,7 +26,7 @@ concepts:
 
 # Part A — Questions
 
-## 🟢 Knowledge Check (3 questions)
+## 🟢 Knowledge Check (5 questions)
 
 ### Q0.1
 What is the difference between Recovery Point Objective (RPO) and Recovery Time Objective (RTO)?
@@ -37,7 +37,7 @@ What is the difference between Recovery Point Objective (RPO) and Recovery Time 
 - D. RPO and RTO are the same metric with different names
 
 ### Q0.2
-Which deployment strategy replaces the entire fleet at once and provides the fastest rollback by keeping the old environment running?
+Which deployment strategy creates a completely new environment alongside the existing one and provides the fastest rollback by keeping the old environment running?
 
 - A. Rolling deployment
 - B. Canary deployment
@@ -48,15 +48,31 @@ Which deployment strategy replaces the entire fleet at once and provides the fas
 What is the core principle of decoupling in cloud architecture?
 
 - A. Running all components on the same server for maximum performance
-- B. Reducing dependencies between components so they can operate and scale independently
+- B. Reducing dependencies between components so they can operate, scale, and fail independently
 - C. Using a single database for all microservices
 - D. Deploying all services in a single Availability Zone
 
+### Q0.4
+Which of the following correctly describes the IAM policy evaluation logic when multiple policies apply to a single request?
+
+- A. The most permissive policy wins
+- B. Explicit DENY overrides explicit ALLOW, and explicit ALLOW overrides implicit DENY
+- C. All policies are evaluated and the first match determines the outcome
+- D. Explicit ALLOW overrides explicit DENY
+
+### Q0.5
+What is the primary purpose of an SCP (Service Control Policy) in AWS Organizations?
+
+- A. To grant permissions to IAM users and roles across all accounts
+- B. To set the maximum available permissions for every IAM entity in the accounts it applies to
+- C. To monitor resource configuration compliance across accounts
+- D. To define which services are available in a specific AWS Region
+
 ---
 
-## 🟡 Scenario Analysis (5 questions)
+## 🟡 Scenario Analysis (7 questions)
 
-### Q0.4
+### Q0.6
 A company's web application runs on EC2 instances in a single AZ behind an ALB. The database is RDS Multi-AZ. During an AZ failure affecting the EC2 instances, users experienced 10 minutes of downtime while Auto Scaling launched new instances in a different AZ and the ALB shifted traffic.
 
 What change would have minimized the downtime to near-zero?
@@ -66,7 +82,7 @@ What change would have minimized the downtime to near-zero?
 - C. Switch from ALB to NLB for faster failover
 - D. Increase EC2 instance size for faster launch times
 
-### Q0.5
+### Q0.7
 A company's DR plan requires that the production database be replicated to a DR Region with less than 1 second of data loss (RPO ≈ 1 second) and recovery completed within 5 minutes (RTO < 5 minutes). The database must be able to serve read traffic in the DR Region during normal operations.
 
 Which database feature meets these requirements?
@@ -76,15 +92,15 @@ Which database feature meets these requirements?
 - C. Aurora Global Database
 - D. DynamoDB with DAX
 
-### Q0.6
-A solutions architect is designing a multi-account strategy for a company with 30 AWS accounts across development, testing, and production environments. The security team wants to prevent any account from creating resources outside approved Regions. What is the most efficient way to enforce this across all accounts?
+### Q0.8
+A solutions architect is designing a multi-account strategy for a company with 30 AWS accounts. The security team wants to prevent any account from creating resources outside approved Regions. What is the most efficient way to enforce this across all accounts?
 
 - A. Configure IAM policies in each account to deny resource creation in unapproved Regions
 - B. Attach an SCP to the root OU denying resource creation in unapproved Regions
 - C. Use AWS Config rules in each account to detect and alert on non-compliant resources
 - D. Create a CloudFormation template per account with Region restrictions
 
-### Q0.7
+### Q0.9
 A video processing startup has highly variable workloads — sometimes zero processing for hours, then thousands of 2-minute processing jobs submitted simultaneously. The startup has no dedicated operations team. Jobs can occasionally fail and be retried without business impact.
 
 Which combination of cost optimization and compute strategies is optimal?
@@ -94,8 +110,8 @@ Which combination of cost optimization and compute strategies is optimal?
 - C. On-Demand EC2 instances with scheduled Auto Scaling
 - D. Savings Plans with a mix of On-Demand and Spot
 
-### Q0.8
-A company's application consists of tightly coupled monolithic services. During peak traffic, a slowdown in the payment processing module causes the order placement module to also slow down, creating cascading failures across the entire application.
+### Q0.10
+A company's monolithic application experiences cascading failures: a slowdown in the payment processing module causes the order placement module to also slow down, which then impacts the inventory module. The application uses synchronous HTTP calls between modules.
 
 Which architectural pattern would prevent this cascading failure?
 
@@ -104,11 +120,31 @@ Which architectural pattern would prevent this cascading failure?
 - C. Multi-AZ deployment — deploy each module across multiple AZs
 - D. Auto Scaling — set aggressive scale-out policies for all modules
 
+### Q0.11
+A company is deploying a new internal application. The application must run 24/7 with steady, predictable traffic. The security team requires installation of a host-level monitoring agent that accesses kernel-level metrics. The network team needs to apply custom TCP tuning parameters.
+
+Which compute architecture should be chosen?
+
+- A. AWS Lambda functions orchestrated by Step Functions
+- B. Amazon ECS on Fargate with Service Auto Scaling
+- C. Amazon EC2 instances with Auto Scaling
+- D. AWS Elastic Beanstalk with immutable deployments
+
+### Q0.12
+A company wants to use a canary deployment strategy for a critical production API. The canary deployment should send 10% of production traffic to the new version, automatically monitor error rates for 15 minutes, and roll back immediately if the error rate exceeds 1%.
+
+Which AWS service provides native support for this deployment pattern?
+
+- A. AWS Elastic Beanstalk with Rolling deployments
+- B. AWS CodeDeploy with canary traffic shifting and CloudWatch alarm integration
+- C. Amazon API Gateway with canary release deployments
+- D. AWS CloudFormation with rolling update policies
+
 ---
 
-## 🔴 Similar Service Comparison (2 questions)
+## 🔴 Similar Service Comparison (4 questions)
 
-### Q0.9
+### Q0.13
 Compare Pilot Light, Warm Standby, and Multi-Site Active/Active DR strategies. A company has an RPO of < 1 second and RTO of < 1 minute. The DR Region must handle production traffic during normal operations. Which strategy must be used?
 
 - A. Pilot Light — core infrastructure running, minimal services
@@ -116,15 +152,35 @@ Compare Pilot Light, Warm Standby, and Multi-Site Active/Active DR strategies. A
 - C. Multi-Site Active/Active — fully running in both Regions simultaneously
 - D. Backup and Restore — periodic snapshots copied to DR Region
 
-### Q0.10
-A solutions architect must choose between a serverless and server-based architecture for a new application. The application needs to run continuously 24/7 with steady, predictable traffic. It requires custom OS-level monitoring agents and kernel tuning for network performance.
-
-Which architecture should be chosen?
+### Q0.14
+A solutions architect must choose between a serverless and server-based architecture. The application needs to run continuously 24/7 with steady, predictable traffic. It requires custom OS-level monitoring agents and kernel tuning. Which architecture should be chosen and why?
 
 - A. Serverless (Lambda + API Gateway + DynamoDB) — lower operational overhead
 - B. Server-based (EC2 + ALB + RDS) — serverless cannot meet kernel and OS-level requirements
 - C. Hybrid — Lambda for compute, EC2 for monitoring agents only
 - D. Serverless (Fargate + Aurora Serverless) — managed services meet all requirements
+
+### Q0.15
+A company must choose between Active-Passive and Active-Active high availability for a critical application. The application is stateful and requires session persistence. The company needs automated failover with minimal data loss.
+
+Which HA model and AWS service combination is appropriate?
+
+- A. Active-Active with DynamoDB Global Tables — both Regions serve traffic simultaneously
+- B. Active-Passive with RDS Multi-AZ — synchronous replication with automatic failover within a Region
+- C. Active-Active with EC2 Auto Scaling across multiple AZs behind an ALB
+- D. Active-Passive with Route 53 Failover routing between two Regions
+
+### Q0.16
+A company needs to choose between two cost-saving strategies for EC2 workloads:
+- Strategy X: Commit to a specific instance family in a specific AZ for 3 years; saves up to 72%
+- Strategy Y: Commit to $/hour spend for 1 year; applies to any instance family, any Region, plus Lambda and Fargate; saves up to 66%
+
+Which AWS purchase options do Strategy X and Strategy Y describe respectively?
+
+- A. X=Spot Instances, Y=Compute Savings Plans
+- B. X=Standard Reserved Instances, Y=Compute Savings Plans
+- C. X=Convertible Reserved Instances, Y=EC2 Instance Savings Plans
+- D. X=Standard Reserved Instances, Y=On-Demand Capacity Reservations
 
 ---
 
@@ -141,93 +197,223 @@ Which architecture should be chosen?
 
 **Why**: RPO answers "how much data can we afford to lose?" measured in time (e.g., 1 hour of data loss = RPO of 1 hour). RTO answers "how fast must we recover?" measured in time (e.g., recover within 4 hours = RTO of 4 hours). Lower RPO/RTO = more expensive DR solution.
 
-**📖 Textbook ref**: Cross-Cutting Concepts — Disaster Recovery
+**Why not the others**:
+- **B**: Reversed — RPO is data loss, RTO is downtime.
+- **C**: Both measure time, not compute vs storage.
+- **D**: They are distinct metrics measuring different aspects of recovery.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Disaster Recovery, "RPO: max acceptable data loss; RTO: max acceptable time"
 
 ---
 
 ### A0.2
 **Correct: C** — Blue/Green deployment.
 
-**Why**: Blue/Green creates a completely new (green) environment alongside the existing (blue) one. After validation, traffic is switched. If any issue occurs, switch traffic back to blue — instant rollback. This is the trade-off: fastest rollback, but requires double the capacity during deployment.
+**Why**: Blue/Green creates a completely new (green) environment alongside the existing (blue) one. After validation, traffic is switched via DNS or load balancer. If any issue occurs, switch traffic back to blue — instant rollback. Trade-off: requires double capacity during deployment.
 
-**📖 Textbook ref**: Cross-Cutting Concepts — Deployment Strategies; §1 — Elastic Beanstalk, "Blue/Green: Fastest rollback"
+**Why not the others**:
+- **A**: Rolling updates batches progressively — rollback requires re-deploying the old version to each instance.
+- **B**: Canary shifts a small % first, then ramps up — good for testing but not fastest rollback for the entire fleet.
+- **D**: All-at-Once updates all instances simultaneously — fastest deployment but slowest rollback (all instances already updated).
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Deployment Strategies, "Blue/Green: Fastest rollback"; §1 — Elastic Beanstalk
 
 ---
 
 ### A0.3
-**Correct: B** — Reducing dependencies between components so they can operate and scale independently.
+**Correct: B** — Reducing dependencies between components so they can operate, scale, and fail independently.
 
-**Why**: Decoupling means components interact through asynchronous, buffered channels (queues, events) rather than direct synchronous calls. This prevents cascading failures and allows each component to scale independently based on its own load. SQS, SNS, and EventBridge are the primary decoupling services.
+**Why**: Decoupling means components interact through asynchronous, buffered channels (queues, events) rather than direct synchronous calls. This prevents cascading failures and allows each component to scale independently based on its own load and failure characteristics.
 
-**📖 Textbook ref**: Cross-Cutting Concepts — Decoupling
+**Why not the others**:
+- **A**: The opposite — co-location creates tight coupling.
+- **C**: Shared database creates tight coupling at the data layer — anti-pattern for microservices.
+- **D**: Single AZ is about availability, not coupling.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Decoupling, "Reducing dependencies so components can operate, scale, and fail independently"
+
+---
+
+### A0.4
+**Correct: B** — Explicit DENY overrides explicit ALLOW, and explicit ALLOW overrides implicit DENY.
+
+**Why**: IAM evaluation starts with implicit DENY (no access by default). An explicit ALLOW in any policy overrides this. However, if ANY policy (IAM, SCP, permissions boundary, session policy) contains an explicit DENY, the request is denied — DENY always wins. This is the foundation of least-privilege security in AWS.
+
+**Why not the others**:
+- **A**: Explicit DENY always wins, not "most permissive."
+- **C**: All policies are evaluated together; there is no "first match" logic.
+- **D**: Reversed — DENY overrides ALLOW.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Security, "IAM Evaluation Logic: Explicit DENY > Explicit ALLOW > Implicit DENY"
+
+---
+
+### A0.5
+**Correct: B** — To set the maximum available permissions for every IAM entity in the accounts it applies to.
+
+**Why**: SCPs are guardrails that define the maximum permissions ceiling. They don't grant permissions themselves — they only limit what can be granted through IAM policies. Even if an account administrator attaches AdministratorAccess to a user, an SCP can block specific actions. This is the preventive governance mechanism for multi-account organizations.
+
+**Why not the others**:
+- **A**: SCPs don't grant permissions — they only limit. IAM policies are needed to grant.
+- **C**: AWS Config monitors compliance — SCPs enforce it preventively.
+- **D**: SCPs can restrict services/Regions but their purpose is broader — maximum permission boundaries.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Multi-Account Governance, "SCP: Maximum permission ceiling at OU/account level"
 
 ---
 
 ## 🟡 Scenario Analysis — Answers
 
-### A0.4
-**Correct: B** — Deploy EC2 instances across multiple AZs.
-
-**Why**: The root cause is single-AZ deployment of EC2 instances. When that AZ fails, all instances become unavailable, and the ALB has no healthy targets until new instances launch in another AZ. With instances in multiple AZs, the ALB automatically routes traffic away from the failed AZ to healthy instances in other AZs — downtime is the time to detect health check failure (seconds), not to launch new instances (minutes).
-
-**📖 Textbook ref**: Cross-Cutting Concepts — High Availability; §5 — ALB
-
----
-
-### A0.5
-**Correct: C** — Aurora Global Database.
-
-**Why**: Aurora Global Database provides cross-Region replication with < 1 second typical lag (RPO ≈ 1 sec). The secondary Region can be promoted to primary in < 1 minute (RTO < 1 min). Secondary Regions support read traffic during normal operations. This directly matches all three requirements: ~1s RPO, < 5 min RTO, read traffic in DR Region.
-
-**📖 Textbook ref**: §4 — Aurora Global Database; Cross-Cutting Concepts — DR
-
----
-
 ### A0.6
-**Correct: B** — Attach an SCP to the root OU denying resource creation in unapproved Regions.
+**Correct: B** — Deploy EC2 instances across multiple AZs with the ALB distributing across them.
 
-**Why**: An SCP attached to the root OU applies to ALL accounts in the organization (via OU inheritance). One SCP can deny all actions in unapproved Regions for all services across all accounts. This is centrally managed, cannot be overridden by account administrators, and requires no per-account configuration.
+**Why**: Single-AZ deployment is the root cause. When the single AZ fails, all instances are unavailable. ALB health checks detect failures in seconds and route traffic to healthy instances — but there are none. Auto Scaling then launches new instances in another AZ (minutes). With instances already running in multiple AZs, ALB immediately stops routing to the failed AZ — downtime ≈ health check detection time (seconds), not launch time (minutes).
 
-**📖 Textbook ref**: §6 — SCP; Cross-Cutting Concepts — Multi-Account Governance
+**Why not the others**:
+- **A**: Read Replicas help with read scaling, not instance-level HA.
+- **C**: NLB also requires multi-AZ targets for HA — the issue is single-AZ, not the LB type.
+- **D**: Larger instances launch the same speed — the problem is there are no running instances in other AZs during failure.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — High Availability, "Multi-AZ EC2 + ALB cross-zone balancing"
 
 ---
 
 ### A0.7
-**Correct: B** — Spot EC2 instances with SQS for job queuing and Auto Scaling.
+**Correct: C** — Aurora Global Database.
 
-**Why**: The workload characteristics are ideal for Spot: variable, fault-tolerant, batch nature (video processing), no dedicated ops team (need automation). SQS queues decouple submission from processing, buffering thousands of jobs. Auto Scaling based on queue depth automatically scales EC2 Spot instances up and down. Cost is minimal since Spot is up to 90% cheaper than On-Demand.
+**Why**: Aurora Global Database provides cross-Region physical replication with < 1 second typical lag (RPO ≈ 1 sec). Secondary Region can be promoted to primary in < 1 minute (RTO < 1 min). Secondary Regions are readable during normal operations — satisfying all three requirements simultaneously.
 
-**📖 Textbook ref**: §1 — Spot Instances; §7 — SQS + Auto Scaling; Cross-Cutting Concepts — Cost Optimization + Decoupling
+**Why not the others**:
+- **A**: RDS Multi-AZ is within a single Region — no cross-Region DR.
+- **B**: Cross-Region Read Replica is asynchronous with much higher lag (minutes); manual promotion takes longer.
+- **D**: DAX is an in-Region cache, not a cross-Region DR solution.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Disaster Recovery, "Aurora Global Database: < 1 sec lag, RTO < 1 min"
 
 ---
 
 ### A0.8
+**Correct: B** — Attach an SCP to the root OU denying resource creation in unapproved Regions.
+
+**Why**: A single SCP at the root OU cascades to all accounts via OU inheritance. The SCP denies all actions (`*`) with a condition on `aws:RequestedRegion` not being in the approved list. This is centrally managed, cannot be overridden by account administrators (SCP > IAM), and requires zero per-account configuration. The most scalable governance pattern.
+
+**Why not the others**:
+- **A**: IAM policies in 30 accounts require ongoing per-account management — not scalable.
+- **C**: AWS Config detects non-compliance reactively — it doesn't prevent resource creation.
+- **D**: CloudFormation per account has similar scaling issues to IAM policies.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Multi-Account Governance, "SCP Inheritance: Parent OU SCPs apply to child OUs"
+
+---
+
+### A0.9
+**Correct: B** — Spot EC2 instances with SQS for job queuing and Auto Scaling.
+
+**Why**: Multiple factors align: (1) variable workload → don't provision for peak. (2) Fault-tolerant (can retry) → Spot's interruption risk is acceptable. (3) No ops team → full automation needed. SQS decouples job submission from processing and buffers during spikes. ASG scales Spot instances based on queue depth. Spot saves up to 90% vs On-Demand.
+
+**Why not the others**:
+- **A**: Reserved for average load means paying for idle capacity during quiet periods and being under-provisioned during spikes.
+- **C**: Scheduled scaling requires predictable patterns — this workload is "sometimes zero for hours, then thousands simultaneously" (unpredictable timing).
+- **D**: Savings Plans still commit spend — Spot with SQS maximizes flexibility.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Cost Optimization + Decoupling; §1 — Spot Instances; §7 — SQS + Auto Scaling
+
+---
+
+### A0.10
 **Correct: B** — Decoupling — introduce SQS between modules.
 
-**Why**: The cascading failure is caused by tight coupling — synchronous dependencies mean one slow module blocks all others. Decoupling with SQS breaks the synchronous chain: each module reads from its input queue and writes to the next module's output queue. If payment processing slows down, its queue grows but order placement continues independently. This is the fundamental value of decoupling — independent failure domains.
+**Why**: Synchronous HTTP calls create tight coupling — one slow module blocks all callers upstream. Introducing SQS between modules converts synchronous calls to asynchronous: payment processing reads from its queue at its own pace. If it slows, the queue grows but order placement keeps accepting orders. This is the textbook cascading failure prevention pattern.
 
-**📖 Textbook ref**: Cross-Cutting Concepts — Decoupling; §7 — SQS
+**Why not the others**:
+- **A**: Vertical scaling makes individual modules faster but doesn't remove the synchronous dependency — a slow module still blocks callers.
+- **C**: Multi-AZ improves availability of individual modules but doesn't decouple them.
+- **D**: Auto Scaling helps individual modules scale but doesn't break the synchronous dependency chain.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Decoupling, "Cascading Failure Prevention: SQS between tiers"
+
+---
+
+### A0.11
+**Correct: C** — Amazon EC2 instances with Auto Scaling.
+
+**Why**: Three requirements eliminate serverless options: (1) host-level monitoring agent with kernel access — Fargate and Lambda provide no host OS access. (2) Custom TCP tuning — requires OS-level network stack configuration. (3) 24/7 steady traffic — EC2 Reserved/Savings Plans are cost-effective for continuous workloads. EC2 provides full OS/kernel control.
+
+**Why not the others**:
+- **A**: Lambda provides no OS access — cannot install kernel agents or tune TCP.
+- **B**: Fargate is serverless — no host OS access for kernel-level monitoring or TCP tuning.
+- **D**: Elastic Beanstalk can use EC2 but abstracts OS configuration — kernel tuning is limited.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Serverless, "When NOT to use serverless: OS/kernel control needed"
+
+---
+
+### A0.12
+**Correct: B** — AWS CodeDeploy with canary traffic shifting and CloudWatch alarm integration.
+
+**Why**: CodeDeploy's canary deployment supports: (1) linear traffic shifting in increments (e.g., 10% → 100%), (2) configurable bake time between increments (15 minutes), (3) automatic rollback triggered by CloudWatch alarms (error rate > 1%). This matches all three requirements exactly — percentage-based, time-based monitoring, alarm-based rollback.
+
+**Why not the others**:
+- **A**: Elastic Beanstalk Rolling is all-or-nothing per batch — not percentage-based canary.
+- **C**: API Gateway canary deployments shift traffic but are tied to a single API stage — CodeDeploy works across EC2, Lambda, and ECS.
+- **D**: CloudFormation rolling updates don't support fine-grained traffic shifting with alarm-based rollback.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Deployment Strategies, "Canary: CodeDeploy linear traffic shifting with auto rollback"
 
 ---
 
 ## 🔴 Similar Service Comparison — Answers
 
-### A0.9
+### A0.13
 **Correct: C** — Multi-Site Active/Active.
 
-**Why**: Only Active/Active meets RPO < 1 second (continuous synchronous or near-synchronous replication) and RTO < 1 minute (traffic already routed to DR Region). Pilot Light and Warm Standby involve "spinning up" resources — inherently slower. Active/Active also satisfies "handle production traffic during normal operations" — both Regions are live. This is the most expensive but most resilient strategy.
+**Why**: RPO < 1 second requires near-synchronous replication (Aurora Global Database or DynamoDB Global Tables). RTO < 1 minute requires the DR Region to already be running (no "spin-up" time). "Handle production traffic during normal operations" = both Regions are live. Only Active/Active meets all three. Pilot Light (must launch instances) and Warm Standby (must scale up) have RTOs measured in minutes to hours, not < 1 minute.
 
-**📖 Textbook ref**: Cross-Cutting Concepts — DR strategies
+**Why not the others**:
+- **A**: Pilot Light — core services running but application servers must be launched during DR (RTO > 1 min).
+- **B**: Warm Standby — scaled-down but requires scaling up (RTO could be 5-10 minutes).
+- **D**: Backup & Restore — highest RPO (hours of data loss) and RTO (hours to restore).
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Disaster Recovery, "DR Strategies (cold → hot)"
 
 ---
 
-### A0.10
+### A0.14
 **Correct: B** — Server-based (EC2 + ALB + RDS).
 
-**Why**: Two requirements make serverless impossible: (1) custom OS-level monitoring agents — Lambda and Fargate provide no host OS access. (2) kernel tuning for network performance — requires EC2 host control. Serverless abstracts away the OS. Additionally, the 24/7 steady workload favors reserved/server-based pricing over per-request serverless pricing. EC2 provides full OS control and is cost-effective for steady-state workloads.
+**Why**: Two hard requirements eliminate serverless: (1) Custom OS-level monitoring agents require host access — Lambda and Fargate abstract the OS completely. (2) Kernel tuning requires root access to the host kernel. Additionally, steady 24/7 traffic favors reserved pricing over serverless per-request pricing — EC2 with Savings Plans is significantly cheaper for continuous workloads.
 
-**📖 Textbook ref**: Cross-Cutting Concepts — Serverless "When NOT to use serverless"; §1 — Similar Service Comparison "OS/kernel control" row
+**Why not the others**:
+- **A**: Serverless cannot meet the kernel/OS requirements — this is a hard blocker, not a preference.
+- **C**: A hybrid adds complexity without benefit — if you need EC2 for agents anyway, run the full workload there.
+- **D**: Fargate and Aurora Serverless have no host OS access for monitoring agents or kernel tuning.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Serverless, "When NOT to use serverless"; §1 — Comparison table, "OS/kernel control" row
 
 ---
 
-> **📊 Chapter 0 Summary**: 3 Knowledge + 5 Scenario + 2 Comparison = 10 questions
+### A0.15
+**Correct: B** — Active-Passive with RDS Multi-AZ.
+
+**Why**: The application is stateful (session persistence needed) and runs within a single Region. RDS Multi-AZ provides synchronous replication to a standby in a different AZ — automatic failover with zero data loss (the standby is an exact synchronous copy). The application connects via the RDS endpoint which automatically resolves to the active instance. This is the within-Region, stateful HA pattern.
+
+**Why not the others**:
+- **A**: Active-Active with DynamoDB Global Tables is multi-Region and DynamoDB — may not fit a stateful relational workload.
+- **C**: Active-Active EC2 behind ALB works for stateless web/app tiers but the question focuses on the stateful database component.
+- **D**: Route 53 Failover is multi-Region — the question is about within-Region HA with the lowest data loss risk.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — High Availability, "Active-Passive: RDS Multi-AZ synchronous standby"
+
+---
+
+### A0.16
+**Correct: B** — X=Standard Reserved Instances, Y=Compute Savings Plans.
+
+**Why**: Strategy X describes Standard RIs: specific instance family, specific AZ, 1-3 year commitment, up to 72% discount. Strategy Y describes Compute Savings Plans: $/hour commitment (not instance-specific), applies to any instance family in any Region, also covers Lambda and Fargate, up to 66% discount (slightly less than RIs since it's more flexible). The key trade-off: RIs = higher discount but locked in; Compute Savings Plans = slightly lower discount but maximum flexibility.
+
+**Why not the others**:
+- **A**: Spot Instances are not a commitment — they can be terminated at any time.
+- **C**: Convertible RIs allow instance family changes but are still Region-specific and don't cover Lambda/Fargate.
+- **D**: On-Demand Capacity Reservations guarantee capacity with no discount — not a savings strategy.
+
+**📖 Textbook ref**: Cross-Cutting Concepts — Cost Optimization, "Purchase Options ranked"; §1 — Comparison, "Spot vs Reserved vs Savings Plans"
