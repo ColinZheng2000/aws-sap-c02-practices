@@ -917,7 +917,7 @@ total_files: 187
 - **Cost Explorer**：可视化分析 AWS 支出。Savings Plans 和 Reserved Instance 推荐。*(Q#232)*
 - **Compute Optimizer**：基于 ML 的 EC2, EBS, Lambda, ECS 合理配置建议。*(Q#102, Q#233)*
 - **Trusted Advisor**：跨成本、性能、安全、容错、服务限制的最佳实践检查。*(Q#102)*
-- **Migration Evaluator**：估算迁移到 AWS 的 TCO —— 生成商业案例。*(Q#124, Q#137)*
+- **Migration Evaluator**：估算迁移到 AWS 的 TCO (Total Cost of Ownership) —— 生成商业案例。*(Q#124, Q#137)*
 - **Application Discovery Service**：发现本地服务器，映射依赖关系，估算迁移成本。*(Q#124, Q#137)*
 - **📝 Q Refs**：#26, #64, #102, #124, #134, #137, #153, #210, #232, #233, #234, #245
 
