@@ -1,3 +1,13 @@
+---
+title: "AWS SAP-C02 Exam Tactics & Strategy"
+description: "Keyword-to-service mapping, exclusion rules, Choose Two patterns, decision trees, common traps"
+tags:
+  - aws
+  - resource/reference
+  - topic/exam-strategy
+created: 2026-06-16
+---
+
 # AWS SAP-C02 考试兵法
 
 > 🎯 基于 266 个真实错题和 SAP-C02 考试规律提炼

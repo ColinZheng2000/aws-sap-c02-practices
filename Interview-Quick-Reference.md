@@ -1,3 +1,13 @@
+---
+title: "AWS SAP-C02 Interview Quick Reference"
+description: "100+ interview topics organized by frequency with one-sentence answers"
+tags:
+  - aws
+  - resource/reference
+  - topic/interview
+created: 2026-06-16
+---
+
 # AWS SAP-C02 面试高频考点速查表
 
 > 📖 基于 266 个真实错题 + 211 道练习题提炼
