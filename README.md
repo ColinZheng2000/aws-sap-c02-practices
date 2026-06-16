@@ -26,12 +26,12 @@ aws-sap-c02-practices/
 ├── .github/agents/
 │   └── aws-sap-c02-tutor.agent.md              ← 🤖 Custom VS Code Copilot agent
 ├── practice/
-│   ├── Practice-Ch-00-CrossCutting.md           ← 10 questions
-│   ├── Practice-Ch-01-Compute.md                ← 22 questions
+│   ├── Practice-Ch-00-CrossCutting.md           ← 20 questions (🟢🟡🔴 labeled)
+│   ├── Practice-Ch-01-Compute.md                ← 25 questions
 │   ├── Practice-Ch-02-Containers.md             ← 10 questions
 │   ├── Practice-Ch-03-Storage.md                ← 18 questions
-│   ├── Practice-Ch-04-Database.md               ← 22 questions
-│   ├── Practice-Ch-05-Networking.md             ← 26 questions
+│   ├── Practice-Ch-04-Database.md               ← 24 questions
+│   ├── Practice-Ch-05-Networking.md             ← 28 questions
 │   ├── Practice-Ch-06-Security.md               ← 18 questions
 │   ├── Practice-Ch-07-Integration.md            ← 12 questions
 │   ├── Practice-Ch-08-Management.md             ← 14 questions
@@ -39,8 +39,19 @@ aws-sap-c02-practices/
 │   ├── Practice-Ch-10-Analytics.md              ← 9 questions
 │   ├── Practice-Ch-11-MachineLearning.md        ← 5 questions
 │   ├── Practice-Ch-12-DevTools.md               ← 7 questions
-│   └── Practice-Ch-13-EUC.md                    ← 7 questions
-├── 1.md ~ 255.md                                ← 📝 Wrong-answer collection (~187 files)
+│   ├── Practice-Ch-13-EUC.md                    ← 7 questions
+│   ├── Mock-Exam-A.md                           ← 🧪 50 Qs (balanced A/B/C/D ~25%)
+│   ├── Mock-Exam-B.md                           ← 🧪 50 Qs (Networking+Security focus)
+│   └── Mock-Exam-C.md                           ← 🧪 50 Qs (Hard: cross-domain traps)
+├── Interview-Quick-Reference.md                 ← 🎤 100+ interview topics by frequency
+├── Exam-Tactics.md                              ← 🎯 Keyword→service, exclusion rules, traps
+├── scripts/
+│   ├── scan-new-questions.ps1                   ← Scan wrong-answer .md files
+│   ├── sync-yaml-counts.ps1                     ← Auto-sync YAML question counts
+│   ├── label-practice-questions.ps1             ← Batch-label difficulty+interview tags
+│   ├── check-qref-consistency.ps1               ← Verify textbook Q Ref citations
+│   └── README.md                                ← Script usage documentation
+├── 1.md ~ 300.md                                ← 📝 Wrong-answer collection (~266 files)
 └── 999. AI Prompt.md                           ← 📋 Prompt template for question analysis
 ```
 
@@ -48,10 +59,14 @@ aws-sap-c02-practices/
 |---|---|
 | `AWS-SAP-C02-Learning-Material.md` | **Customized textbook (EN)** — 13 service domains, 80+ AWS services, Azure-equivalent mappings, 12 "Similar Service Comparison" sections for common exam traps. Generated from the author's personal wrong-answer collection. |
 | `AWS-SAP-C02-Learning-Material-CN.md` | **Customized textbook (中文)** — Same content as above, fully translated to Chinese. Technical terms (AWS services, CLI commands, Azure names) kept in English. |
-| `practice/` | **Post-chapter practice questions** — 14 files, ~194 questions across 3 tiers: 🟢 Knowledge Check, 🟡 Scenario Analysis, 🔴 Similar Service Comparison. Each file has Part A (Questions) and Part B (Answers & Explanations) separated by a STOP divider. |
-| `.github/agents/` | **VS Code Copilot agent** — "AWS SAP-C02 Tutor" custom agent for analyzing exam questions with structured output. |
-| `1.md ~ 255.md` | **Personal wrong-answer collection** — Original practice questions with detailed analysis in the format: Understanding the Problem → Services Explanation → Correct/Incorrect Options → Hands-On Knowledge. |
-| `999. AI Prompt.md` | **Prompt template** used to generate consistent question analysis. |
+| `practice/` | **Chapter practice + Mock exams** — 14 chapter files (211 questions) + 3 mock exams (150 questions). Questions labeled with difficulty (🟢🟡🔴) and interview relevance (🎤). Mock exams have balanced answer distribution (A/B/C/D ~25% each). |
+| `practice/Mock-Exam-A/B/C.md` | **Full mock exams** — 50 questions each, 120 min. Mock C is the hardest (cross-domain integration, Choose Two/Three, anti-pattern traps). |
+| `Interview-Quick-Reference.md` | **Interview prep** — 100+ topics organized by frequency (🎤🎤🎤 high / 🎤🎤 medium / 🎤 low). One-sentence answers + common confusion columns. |
+| `Exam-Tactics.md` | **Exam strategy guide** — Keyword→service mapping, exclusion rules, Choose Two patterns, decision trees, number quick-reference. |
+| `.github/agents/` | **VS Code Copilot agent** — "AWS SAP-C02 Tutor" with 📚教材维护模式 for updating textbook from wrong-answer analyses. |
+| `scripts/` | **Automation scripts** — 4 PowerShell scripts for scanning, labeling, and validating the repository. See `scripts/README.md`. |
+| `1.md ~ 300.md` | **Personal wrong-answer collection** — Detailed analyses: Problem → Services → Correct/Incorrect Options → Knowledge. (~266 files) |
+| `999. AI Prompt.md` | **Prompt template** — Standardized format for generating wrong-answer analyses with YAML frontmatter. |
 
 ---
 
@@ -86,7 +101,9 @@ Select the **AWS SAP-C02 Tutor** agent in VS Code Copilot. It analyzes questions
 
 | Feature | Description |
 |---|---|
-| 🎯 **Wrong-Answer-Driven** | Every fact in the textbook traces back to a real missed question — not generic exam dump content |
+| 🧪 **3 Mock Exams** | Full-length mock exams (50 Qs each, 150 total) with balanced A/B/C/D answer distribution. Mock C is the hardest — cross-domain integration, Choose Two/Three emphasis. |
+| 🏷️ **Question Labeling** | All 211 practice questions tagged with difficulty level (🟢 L1-Knowledge / 🟡 L2-Understanding / 🔴 L3-Application) and interview relevance (🎤 low/medium/high). |
+| 🎯 **Wrong-Answer-Driven** | Every fact in the textbook traces back to a real missed question — not generic exam dump content. Currently 266 analyzed questions across all 4 SAP-C02 exam domains. |
 | 🔄 **Azure Bridge** | Every AWS service mapped to its Azure equivalent, with specific notes for Azure DevOps engineers |
 | 🔍 **Similar Service Comparison** | 12 dedicated comparison sections covering the most confusing AWS service pairs (e.g., Route 53 Inbound vs Outbound, SQS vs SNS vs EventBridge, ECS vs EKS) |
 | 📊 **Progress Tracking** | Domain-by-domain confidence self-rating with question counts |
@@ -150,13 +167,13 @@ aws-sap-c02-practices/
 ├── .github/agents/
 │   └── aws-sap-c02-tutor.agent.md              ← 🤖 自定义 VS Code Copilot 智能体
 ├── practice/
-│   ├── Practice-Ch-00-CrossCutting.md           ← 10 题（跨领域概念）
-│   ├── Practice-Ch-01-Compute.md                ← 22 题（计算）
+│   ├── Practice-Ch-00-CrossCutting.md           ← 20 题（跨领域概念）
+│   ├── Practice-Ch-01-Compute.md                ← 25 题（计算）
 │   ├── Practice-Ch-02-Containers.md             ← 10 题（容器）
 │   ├── Practice-Ch-03-Storage.md                ← 18 题（存储）
-│   ├── Practice-Ch-04-Database.md               ← 22 题（数据库）
-│   ├── Practice-Ch-05-Networking.md             ← 26 题（网络）
-│   ├── Practice-Ch-06-Security.md               ← 18 题（安全）
+│   ├── Practice-Ch-04-Database.md               ← 26 题（数据库）
+│   ├── Practice-Ch-05-Networking.md             ← 30 题（网络）
+│   ├── Practice-Ch-06-Security.md               ← 22 题（安全）
 │   ├── Practice-Ch-07-Integration.md            ← 12 题（应用集成）
 │   ├── Practice-Ch-08-Management.md             ← 14 题（管理与治理）
 │   ├── Practice-Ch-09-Migration.md              ← 14 题（迁移）
@@ -164,7 +181,7 @@ aws-sap-c02-practices/
 │   ├── Practice-Ch-11-MachineLearning.md        ← 5 题（机器学习）
 │   ├── Practice-Ch-12-DevTools.md               ← 7 题（开发者工具）
 │   └── Practice-Ch-13-EUC.md                    ← 7 题（终端用户计算）
-├── 1.md ~ 255.md                                ← 📝 个人错题集（约 187 个文件）
+├── 1.md ~ 300.md                                ← 📝 个人错题集（约 266 个文件）
 └── 999. AI Prompt.md                           ← 📋 AI 分析题目的提示词模板
 ```
 
@@ -172,9 +189,9 @@ aws-sap-c02-practices/
 |---|---|
 | `AWS-SAP-C02-Learning-Material.md` | **定制化教材（英文）**—— 13 个服务域，80+ 项 AWS 服务，Azure 等价映射，12 个"相似服务辨析"章节应对考试陷阱。基于作者个人错题集生成。 |
 | `AWS-SAP-C02-Learning-Material-CN.md` | **定制化教材（中文）**—— 内容同上，全中文翻译。技术术语（AWS 服务名称、CLI 命令、Azure 产品名称）保留英文。 |
-| `practice/` | **章节课后习题**—— 14 个文件，约 194 道题，分三个层级：🟢 知识检查、🟡 情景分析、🔴 相似服务辨析。每题含答案和详细解析。 |
+| `practice/` | **章节课后习题**—— 14 个文件，约 219 道题，分三个层级：🟢 知识检查、🟡 情景分析、🔴 相似服务辨析。每题含答案和详细解析。 |
 | `.github/agents/` | **VS Code Copilot 智能体**——"AWS SAP-C02 Tutor" 自定义智能体，用于分析考试题目并输出结构化答案。 |
-| `1.md ~ 255.md` | **个人错题集**—— 原始练习题及详细分析，格式为：问题理解 → 服务解释 → 正确/错误选项分析 → 实战知识。 |
+| `1.md ~ 300.md` | **个人错题集**—— 原始练习题及详细分析，格式为：问题理解 → 服务解释 → 正确/错误选项分析 → 实战知识。（约 266 个文件，持续增长中） |
 | `999. AI Prompt.md` | **提示词模板**，用于生成一致的问题分析格式。 |
 
 ---
@@ -210,7 +227,7 @@ aws-sap-c02-practices/
 
 | 特性 | 说明 |
 |---|---|
-| 🎯 **错题驱动** | 教材中每条知识点都追溯到真实错题 —— 非泛泛的考题收集 |
+| 🎯 **错题驱动** | 教材中每条知识点都追溯到真实错题 —— 非泛泛的考题收集。目前已分析 266 道题目，覆盖 SAP-C02 全部四个考试领域 |
 | 🔄 **Azure 对照** | 每项 AWS 服务都映射到其 Azure 等价服务，特别针对 Azure DevOps 工程师 |
 | 🔍 **相似服务辨析** | 12 个专题对比章节，覆盖最易混淆的 AWS 服务组合 |
 | 📊 **进度跟踪** | 按领域自评自信度，附题目数量统计 |

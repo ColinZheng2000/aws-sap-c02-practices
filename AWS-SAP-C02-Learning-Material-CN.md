@@ -4,9 +4,9 @@ tags:
   - #Learning-Material
   - #AWS-Certification
 created: 2026-06-06
-updated: 2026-06-06
+updated: 2026-06-16
 total_services: 100+
-total_files: 187
+total_files: 266
 ---
 
 # AWS SAP-C02 定制化学习材料（中文版）
@@ -50,6 +50,8 @@ total_files: 187
   - **Multi-AZ vs Multi-Region**：Multi-AZ 防范 AZ 故障（区域内数据中心中断）。Multi-Region 防范区域级灾难。RDS Multi-AZ = 自动故障转移；EC2 可手动或自动。*(Q#29, Q#61)*
   - **Active-Passive vs Active-Active（主备 vs 双活）**：主备 = 主节点承载流量，备用节点待命（RDS Multi-AZ, Route 53 Failover）。双活 = 所有节点同时承载流量（ALB + 多 AZ EC2, DynamoDB Global Tables）。*(Q#19, Q#25)*
   - **ALB 健康检查**：ALB 仅路由到健康目标。健康检查间隔 + 阈值决定检测时间。跨区域负载均衡将流量分发到各 AZ。*(Q#25, Q#209)*
+  - **单 EIP 的 NAT Gateway HA 模式**：标准多 AZ NAT GW 需要每 AZ 一个 EIP。当本地防火墙仅允许单个 IP 时，部署一个 NAT GW + CloudWatch 告警 + Lambda，在故障时将 EIP 重新关联到另一个 AZ 的新 NAT GW。*(Q#206)*
+  - **ASG 零停机迁移**：从静态 EC2 过渡到 Auto Scaling 时，创建带 Launch Template 的 ASG，关联到现有 ALB 目标组，然后将现有 EC2 实例挂载到 ASG。不要删除现有 ALB —— 会导致 DNS 变更和停机。*(Q#209)*
 - **常见误区**：
   - ❌ 以为 Multi-AZ RDS 备用副本可以服务读取流量 —— 备用副本是被动的，不可访问
   - ❌ 在 ALB 后方仅部署单个 AZ 的 EC2 —— 如果该 AZ 故障，整个服务停摆
@@ -62,14 +64,18 @@ total_files: 187
 - **🔄 Azure 对照**：相同的 RPO/RTO 概念适用于 Azure（Azure Site Recovery, 跨区域复制）。DR 策略是通用的。
 - **考试关键知识点**（源自 missed question）：
   - **DR 策略（冷→热）**：**Backup & Restore**（RPO/RTO 最高，最便宜）→ **Pilot Light**（核心服务运行，DR 时扩展）→ **Warm Standby**（缩小但可用，扩展）→ **Multi-Site Active/Active**（双区域全量运行，RPO/RTO 最低，最昂贵）。*(Q#116, Q#234)*
+  - **RPO/RTO → 方案映射（考试重点）**：如果 RPO/RTO 以**小时**计（如 RPO 2h, RTO 4h）→ **AWS Backup** 加跨区域副本是"最具成本效益"的方案。如果 RPO/RTO 以**秒/分钟**计 → Aurora Global Database + DynamoDB Global Tables。考试始终将中等 RPO/RTO 与基于备份的方案配对，将低 RPO/RTO 与基于复制的方案配对。*(Q#234)*
+  - **AWS Elastic Disaster Recovery (DRS)**：针对有状态 EC2 负载的块级连续复制。实现秒到分钟级 RPO。当 EC2 应用需要 RPO < 5 分钟时使用 —— DLM 快照或 AWS Backup 单独无法为有状态实例实现 5 分钟以下的 RPO。*(Q#133)*
+  - **DLM vs DRS vs AWS Backup**：DLM = EBS 快照生命周期自动化（小时级 RPO）；DRS = 连续块级复制（分钟/秒级 RPO）；AWS Backup = 集中式多服务备份（小时级 RPO）。根据 RPO 要求匹配工具。*(Q#133)*
   - **Aurora Global Database**：典型延迟 < 1 秒 → RPO 约 1 秒。故障转移到辅助区域 < 1 分钟 → RTO < 1 分钟。辅助区域支持读取流量。*(Q#213, Q#227)*
   - **DynamoDB Global Tables**：多活 —— 任意区域读写。RPO 约 1 秒（最终一致性）。RTO 接近零（已经处于活跃状态）。*(Q#2, Q#105, Q#121)*
   - **S3 Cross-Region Replication (CRR)**：用于 DR 合规的异步复制。要求两个存储桶都启用 versioning。*(Q#28, Q#134)*
 - **常见误区**：
   - ❌ 混淆 RPO（数据丢失量）和 RTO（停机时间）
   - ❌ 以为 Pilot Light 很快 —— 你仍然需要启动实例并扩展
+  - ❌ 对 RPO > 1 小时使用 Aurora Global Database —— 过度设计且成本过高；AWS Backup 更具成本效益
   - ❌ 不定期测试 DR 计划 —— 未测试的 DR = 没有 DR
-- **📝 Q Refs**：#2, #28, #105, #114, #116, #121, #134, #213, #227, #234, #236
+- **📝 Q Refs**：#2, #28, #105, #114, #116, #121, #133, #134, #213, #227, #234, #236
 
 ### 成本优化 (Cost Optimization)
 
@@ -77,7 +83,9 @@ total_files: 187
 - **🔄 Azure 对照**：相同概念 —— Azure 有 Reserved Instances、Spot VMs、Azure Hybrid Benefit。AWS Savings Plans 是独有的（比 Azure Reservations 更广泛）。
 - **考试关键知识点**（源自 missed question）：
   - **购买选项**：On-Demand（无承诺，最贵）→ Spot（最高省 90%，可被中断）→ Reserved Instances（最高省 72%，1-3 年，AZ 特定）→ Savings Plans（最高省 72%，跨实例族灵活 + Lambda + Fargate）。*(Q#20, Q#119, Q#205, Q#247)*
-  - **Compute Savings Plans**：最灵活 —— 适用于任意实例族、任意区域，外加 Lambda 和 Fargate。最高 66% 折扣（略低于 EC2 Savings Plans 的 72%）。*(Q#247)*
+  - **Savings Plans 决策矩阵**：**EC2 Instance Savings Plan** = 最深折扣（最高 72%），适用于稳定、可预测的 EC2 负载（特定实例族/区域）。**Compute Savings Plan** = 最大灵活性（最高 66%）—— 适用于任意 EC2 实例族、任意区域，外加 Lambda 和 Fargate。对多变/不可预测的负载使用 Compute SP。*(Q#247)*
+  - **Savings Plans 不覆盖数据库服务**：MemoryDB、ElastiCache、RDS、Redshift 需要各自的预留模型 —— **Reserved Nodes**（MemoryDB/ElastiCache）或 **Reserved Instances**（RDS）。Compute Savings Plan 仅覆盖 EC2 + Lambda + Fargate。*(Q#247)*
+  - **Lambda Reserved Concurrency ≠ 成本节约**：Reserved concurrency 是容量预留/节流机制，不是计费折扣。它保证 N 个并发执行始终可用，但不降低每次调用成本。对 Lambda 成本节约，使用 Compute Savings Plan。*(Q#247)*
   - **S3 Lifecycle**：根据对象年龄自动转换到更便宜的存储层。Intelligent-Tiering 用于不可预测的访问模式。Glacier Deep Archive 用于长期保留。*(Q#34, Q#65, Q#246)*
   - **Compute Optimizer**：基于 ML 的合理配置建议，附风险分类（低/中/高）。*(Q#102, Q#233)*
 - **常见误区**：
@@ -94,12 +102,14 @@ total_files: 187
   - **IAM 评估逻辑**：显式 DENY > 显式 ALLOW > 隐式 DENY。SCP 和 Permissions Boundary 作为过滤器 —— 即使 IAM 允许，SCP 仍可拒绝。*(Q#3, Q#24, Q#148)*
   - **SCP vs IAM Policy**：SCP = OU/账户级别的最大权限上限（不可覆盖）。IAM policy = 在该上限内授予特定权限。*(Q#23, Q#210)*
   - **纵深防御层次**：Shield（DDoS 边缘）→ WAF（L7 过滤）→ Security Groups（实例防火墙，有状态）→ NACLs（子网防火墙，无状态）→ 加密（KMS 静态加密，TLS 传输加密）。*(Q#125, Q#146, Q#196)*
+  - **WAF + API Gateway + Shield DDoS 防护**：对于公开 API，结合 WAF IP 白名单（仅已知合作伙伴 IP）、WAF 速率规则（限制过度请求）、API Gateway 使用计划（每客户端配额）和 Shield Advanced（DDoS 成本保护）。WAF 在请求到达 API Gateway 之前阻止恶意请求 —— 显著节省成本（被阻止请求 $0.60/百万次 vs API Gateway $3.50/百万次）。*(Q#196)*
+  - **Global Accelerator 提供静态 IP + 保留 WAF**：ALB 不支持弹性 IP 地址（仅 DNS）。要提供静态 IP 同时保留 WAF 保护，使用 Global Accelerator —— 它提供 2 个静态 Anycast IP 并转发到 ALB。客户将 GA IP 加入白名单；WAF 保留在 ALB 上。不要用 NLB 替换 ALB（NLB 不集成 WAF）。*(Q#132)*
   - **CloudTrail + Config + CloudWatch**：治理三驾马车 —— CloudTrail = API 审计（谁做了什么），Config = 配置合规（什么被改变），CloudWatch = 运维监控（性能如何）。*(Q#35, Q#101, Q#172)*
 - **常见误区**：
   - ❌ 使用 NACLs 做实例级规则 —— 它们是无状态的子网级；使用 Security Groups
   - ❌ 以为 SCPs 授予权限 —— 它们只限制权限；你仍然需要 IAM policies 来允许
   - ❌ 只启用 CloudTrail management events —— data events（S3 对象级、Lambda）默认不记录
-- **📝 Q Refs**：#3, #23, #24, #35, #39, #59, #78, #79, #101, #103, #125, #127, #146, #148, #160, #172, #196, #210, #224, #253
+- **📝 Q Refs**：#3, #23, #24, #35, #39, #59, #78, #79, #101, #103, #125, #127, #132, #146, #148, #160, #172, #196, #210, #224, #253
 
 ### 解耦 (Decoupling)
 
@@ -173,7 +183,8 @@ total_files: 187
 - **🔄 Azure 对应**：Azure Virtual Machines
 - **🔄 Azure 对照**：类似 Azure VM，但：(1) EBS 卷独立挂载 vs Managed Disks，(2) 实例类型命名不同（`m7i.large` vs `Standard_D2s_v5`），(3) security groups = NSGs，(4) key pairs = SSH keys。EC2 有更细粒度的购买选项（On-Demand, Reserved, Savings Plans, Spot, Dedicated Hosts）。
 - **考试关键知识点**（源自 missed question）：
-  - **Placement Groups（置放群组）**：Cluster（低延迟，同 AZ），Spread（关键实例分散到不同硬件，每 AZ 最多 7 个），Partition（大规模分布式负载，每 AZ 最多 7 个分区）。Cluster 置放群组为 HPC 负载提供最高吞吐量。*(Q#195)*
+  - **Placement Groups（置放群组）**：Cluster（低延迟，同 AZ，实例间最高 10 Gbps），Spread（关键实例分散到不同硬件，每 AZ 最多 7 个），Partition（大规模分布式负载，每 AZ 最多 7 个分区）。Cluster 置放群组为 HPC 负载提供最高吞吐量。*(Q#195, Q#275)*
+  - **Placement Group 容量不足故障排除**：向现有 Cluster 置放群组添加实例时遇到"容量不足"错误，可 Stop 并 Start 群组中所有实例以在新的宿主机上重新放置 —— 这可能释放连续容量。置放群组无法合并。*(Q#275)*
   - **增强网络 (Enhanced Networking)**：ENA（最高 100 Gbps）和 EFA（用于 HPC/ML，OS-bypass）。配合置放群组发挥完整性能。*(Q#195)*
   - **Capacity Reservations（容量预留）**：On-Demand Capacity Reservations 保证特定 AZ 的容量；不同于 Reserved Instances（后者是计费折扣）。*(Q#20)*
   - **Spot Instances（竞价实例）**：最高节省 90%，可能被 2 分钟警告终止。使用 Spot Fleet 搭配多种实例类型 + 购买选项实现多样化。*(Q#129, Q#205, Q#247)*
@@ -183,7 +194,7 @@ total_files: 187
   - ❌ 混淆 Capacity Reservations（保证容量）与 Reserved Instances（计费折扣）
   - ❌ 认为 Spot 可靠 —— 始终要为中断做设计
   - ❌ 在 HPC 场景使用 Spread 置放群组（应使用 Cluster，而非 Spread）
-- **📝 Q Refs**：#20, #35, #39, #49, #50, #90, #96, #108, #109, #110, #129, #152, #161, #164, #195, #205, #206, #208, #209, #233, #250, #252, #254
+- **📝 Q Refs**：#20, #35, #39, #49, #50, #90, #96, #108, #109, #110, #129, #152, #161, #164, #195, #205, #206, #208, #209, #233, #250, #252, #254, #273, #275
 
 ### EC2 Auto Scaling
 
@@ -191,14 +202,16 @@ total_files: 187
 - **🔄 Azure 对应**：Azure Virtual Machine Scale Sets (VMSS)
 - **🔄 Azure 对照**：类似 VMSS 但：(1) Launch Templates 定义启动内容，(2) ASG lifecycle hooks 允许在启动/终止时执行自定义操作，(3) 扩缩容策略更细粒度（target tracking, step, simple, scheduled）。在 Azure DevOps 中，用 pipeline tasks 更新 VMSS 镜像 —— 类似于更新 Launch Templates。
 - **考试关键知识点**（源自 missed question）：
-  - **基于属性的实例选择 (Attribute-Based Instance Selection)**：定义实例需求（vCPU、内存）而非硬编码实例类型。ASG 自动从跨代匹配类型中择优选择。*(Q#129, Q#233)*
+  - **基于属性的实例选择 (Attribute-Based Instance Selection)**：定义实例需求（vCPU、内存）而非硬编码实例类型。ASG 自动从跨代匹配类型中择优选择，同时支持 On-Demand 和 Spot。*(Q#129, Q#233)*
   - **Scale-In Protection（缩容保护）**：防止特定实例在缩容时被终止 —— 对有状态负载或正处理消息的实例至关重要。*(Q#110)*
   - **Lifecycle Hooks（生命周期钩子）**：在实例启动/终止时暂停，执行自定义脚本（如安装软件、排空连接）。*(Q#10)*
   - **与 SQS 集成**：基于队列深度（`ApproximateNumberOfMessagesVisible`）扩缩容。*(Q#110)*
+  - **零停机迁移到 ASG**：将现有 EC2 实例挂载到新 ASG（不要删除 ALB）。ASG 自动替换故障实例；现有实例在过渡期间继续提供流量。*(Q#209)*
+  - **批处理决策（Lambda vs ECS）**：15 分钟以内的事件驱动批处理 → Lambda（无基础设施）。长时间运行的批处理或有容器依赖 → ECS on Fargate（Serverless 容器）或 AWS Batch。*(Q#204)*
 - **常见误区**：
   - ❌ Spot Fleets 中只使用单一实例类型 —— 应多样化以保证可用性
   - ❌ 忘记将 Launch Templates 附加到 ASG（新功能必须使用）
-- **📝 Q Refs**：#4, #10, #25, #29, #32, #33, #90, #108, #110, #129, #152, #204, #208, #209, #222, #233, #251
+- **📝 Q Refs**：#4, #10, #25, #29, #32, #33, #90, #108, #110, #129, #152, #204, #208, #209, #222, #233, #251, #273
 
 ### Lambda
 
@@ -224,7 +237,7 @@ total_files: 187
 - **🔄 Azure 对应**：Azure App Service
 - **🔄 Azure 对照**：与 Azure App Service 非常相似。区别：Elastic Beanstalk 让你完全访问底层资源（可以 SSH 进入 EC2），而 App Service 更抽象。基于你的 Azure DevOps 背景：部署到 Elastic Beanstalk 可以使用 `aws elasticbeanstalk create-application-version` —— 类似 `az webapp deploy`。
 - **考试关键知识点**（源自 missed question）：
-  - **Blue/Green 部署**：通过 CNAME 交换环境 URL —— 新环境（green）验证通过后，Route 53 CNAME 指向 green。零停机。*(Q#225)*
+  - **Blue/Green 部署**：通过 CNAME 交换环境 URL —— 新环境（green）验证通过后，Route 53 CNAME 指向 green。零停机。也可以使用 Route 53 加权路由在旧环境和新 Beanstalk 环境之间逐步切换流量。*(Q#225)*
   - **部署策略**：All at Once（最快，有停机），Rolling（逐批更新），Rolling with Additional Batch（无容量损失，成本更高），Immutable（新 ASG，最安全），Traffic Splitting（canary 测试）。*(Q#69)*
   - **快速回滚**：Immutable 部署支持最快回滚 —— 旧 ASG 仍在运行。*(Q#69)*
 - **常见误区**：
@@ -286,7 +299,7 @@ total_files: 187
 - **考试关键知识点**（源自 missed question）：
   - **ECS + Fargate**：无需管理 EC2 —— 每个 task 获得隔离 ENI。运维最简。*(Q#100, Q#122)*
   - **ECS + EC2**：自行管理集群，更多控制。使用 placement constraints/strategies 控制 task 放置。*(Q#100)*
-  - **ECR 集成**：容器镜像存储在 ECR。通过 ECR Scan（Basic 或 Enhanced）进行 CVE 镜像扫描。*(Q#175)*
+  - **ECR 集成**：容器镜像存储在 ECR。通过 ECR Scan（Basic 或 Enhanced）进行 CVE 镜像扫描。Enhanced scanning 与 Amazon Inspector 集成实现持续漏洞检测。通过 EventBridge → Step Functions → SNS 自动化 CVE 响应流水线。*(Q#175)*
   - **ECS Exec**：类 SSH 方式进入运行中的容器进行调试。*(Q#175)*
 - **📝 Q Refs**：#100, #122, #146, #175, #204, #234
 
@@ -297,6 +310,7 @@ total_files: 187
 - **🔄 Azure 对照**：你提到不熟悉 Kubernetes —— EKS 是 AWS 的托管 K8s。基于你的背景，ECS（AWS 原生）或 Fargate 可能比 EKS 更相关。考试考查何时选择 EKS（已有 K8s 投入、多云可移植性）vs ECS（AWS 原生、更简单）。
 - **考试关键知识点**（源自 missed question）：
   - **EKS on Fargate**：Serverless Pod —— 无需节点管理。*(Q#179)*
+  - **EKS + EFS 有状态负载**：使用 EFS 作为 EKS Pod 的持久存储 —— 支持在 Kubernetes 上运行有状态应用（如数据库、会话存储），无需管理存储卷。*(Q#179)*
   - **Global Accelerator + EKS**：为多区域 EKS 集群使用 Global Accelerator —— 提供静态 anycast IP 和改善的延迟。*(Q#162)*
 - **📝 Q Refs**：#100, #119, #162, #179
 
@@ -346,6 +360,8 @@ total_files: 187
   - **S3 Storage Lens**：组织级存储使用情况、活动趋势和成本优化建议的可见性。默认 14 天指标；高级指标（15 个月）需额外成本。*(Q#66)*
   - **S3 Replication（复制）**：CRR（Cross-Region Replication）用于 DR/合规，SRR（Same-Region）用于日志聚合。复制要求源和目标均启用 versioning。*(Q#28, Q#105)*
   - **S3 Access Points（访问点）**：命名的网络端点，带专用权限 —— 简化跨账户共享数据集的访问管理。可限制到 VPC。*(Q#224)*
+  - **S3 Replication Time Control (S3 RTC)**：可预测的复制时间 —— 99.99% 的对象在 15 分钟内完成复制。使用前缀过滤器仅对关键数据应用 RTC。通过 CloudWatch `OperationReplicationTime` 指标 + EventBridge 告警实现 SLA 合规监控。*(Q#279)*
+  - **S3 Transfer Acceleration（传输加速）**：利用 AWS 边缘节点加速远距离上传。与预签名 URL 配合使用 —— 使用加速端点生成预签名 URL。结合 S3 Multipart Upload API 优化大文件（>100 MB）上传性能。*(Q#296)*
   - **S3 Event Notifications（事件通知）**：在对象 create/delete/restore 事件上触发 Lambda, SQS 或 SNS。*(Q#113)*
   - **S3 + CloudFront**：Origin Access Control (OAC) 替代 Origin Access Identity (OAI)。将 S3 存储桶访问限制为仅 CloudFront。*(Q#5, Q#28, Q#235)*
   - **S3 + Transfer Family**：托管 SFTP/FTPS/FTP 接口到 S3。*(Q#49, Q#113, Q#230)*
@@ -353,7 +369,7 @@ total_files: 187
   - ❌ CRR vs S3 Sync：CRR 是自动且持续的；S3 sync 是一次性批量操作
   - ❌ S3 Object Lock 需要 versioning —— 没有它无法启用
   - ❌ Intelligent-Tiering 有按对象监控费（约 $0.0025/1000 对象）—— 不适合极小对象
-- **📝 Q Refs**：#10, #15, #18, #28, #31, #34, #49, #60, #65, #66, #78, #83, #92, #105, #107, #109, #113, #115, #120, #122, #130, #134, #136, #158, #224, #236, #246
+- **📝 Q Refs**：#10, #15, #18, #28, #31, #34, #49, #60, #65, #66, #78, #83, #92, #105, #107, #109, #113, #115, #120, #122, #130, #134, #136, #158, #224, #236, #246, #279, #296
 
 ### EBS (Elastic Block Store)
 
@@ -380,7 +396,7 @@ total_files: 187
 - **概述**：托管 Windows (SMB) 或 Lustre (HPC) 文件系统。FSx for Windows = 托管 Windows File Server；FSx for Lustre = 高性能计算负载。
 - **🔄 Azure 对应**：Azure NetApp Files / Azure Files
 - **考试关键知识点**（源自 missed question）：
-  - **FSx for Windows**：支持 SMB, DFS, Active Directory 集成。与 WorkSpaces 配合存储用户配置文件。*(Q#108, Q#112, Q#153)*
+  - **FSx for Windows**：支持 SMB, DFS, Active Directory 集成。与 WorkSpaces 配合存储用户配置文件。存储类型（HDD vs SSD）创建后不可更改 —— 要变更，需通过 AWS Backup 还原到具有所需规格的新文件系统。*(Q#108, Q#112, Q#153)*
   - **FSx for Lustre**：亚毫秒延迟，与 S3 集成（懒加载数据）。用于 HPC, ML, 媒体处理。*(Q#18, Q#130)*
   - **FSx + DataSync**：DataSync 可将本地文件数据迁移到 FSx for Windows。*(Q#27)*
 - **📝 Q Refs**：#18, #27, #108, #112, #130, #153
@@ -390,7 +406,7 @@ total_files: 187
 - **概述**：混合云存储 —— 本地设备（VM）连接到 S3。三种类型：File Gateway (NFS/SMB → S3), Volume Gateway (iSCSI → EBS snapshots), Tape Gateway（虚拟磁带库 → S3 Glacier）。
 - **🔄 Azure 对应**：Azure File Sync / Azure Stack Edge
 - **考试关键知识点**（源自 missed question）：
-  - **File Gateway**：提供以 S3 为后端的 NFS/SMB 共享。支持 S3 Lifecycle 策略 —— 热数据本地缓存，冷数据存入 S3 Glacier。*(Q#230, Q#246)*
+  - **File Gateway**：提供以 S3 为后端的 NFS/SMB 共享。支持 S3 Lifecycle 策略 —— 热数据本地缓存，冷数据存入 S3 Glacier Deep Archive，实现成本优化的长期保留。*(Q#230, Q#246)*
   - **与 DataSync 不同**：Storage Gateway 提供持续访问；DataSync 用于迁移/同步。*(Q#107)*
 - **📝 Q Refs**：#49, #107, #116, #246
 
@@ -400,7 +416,7 @@ total_files: 187
 - **🔄 Azure 对应**：Azure SFTP（预览版，基于 Blob Storage）
 - **考试关键知识点**（源自 missed question）：
   - **高可用 (HA)**：多 AZ 部署 —— Elastic IPs 支持故障转移。*(Q#49, Q#230)*
-  - **后端选择**：S3 或 EFS —— S3 适合简单对象访问，EFS 适合 POSIX 兼容文件操作。*(Q#230)*
+  - **后端选择**：S3 或 EFS —— S3 适合简单对象访问，EFS 适合 POSIX 兼容文件操作。Transfer Family + EFS 提供带托管 SFTP 的 POSIX 兼容共享文件访问，多 AZ 配合 Elastic IP 故障转移实现 HA。*(Q#230)*
 - **📝 Q Refs**：#49, #113, #230
 
 ---
@@ -456,11 +472,11 @@ total_files: 187
 - **概述**：MySQL/PostgreSQL 兼容，标准 MySQL 的 5 倍吞吐量，PostgreSQL 的 3 倍。自动扩缩容存储（10 GB → 128 TB）。计算和存储层分离。
 - **🔄 Azure 对应**：Azure Cosmos DB（for PostgreSQL）或 Azure Database for PostgreSQL Hyperscale (Citus)
 - **考试关键知识点**（源自 missed question）：
-  - **Aurora Global Database**：跨区域复制，典型延迟 < 1 秒。1 个主区域 + 最多 5 个辅助区域。辅助区域可提升用于 DR。RPO 约 1 秒，RTO < 1 分钟。*(Q#213, Q#227)*
+  - **Aurora Global Database**：跨区域复制，典型延迟 < 1 秒。1 个主区域 + 最多 5 个辅助区域。辅助区域可提升用于 DR。RPO 约 1 秒，RTO < 1 分钟。Write forwarding 允许辅助区域将写入转发到主区域 —— 简化多区域应用逻辑。*(Q#213, Q#227)*
   - **Aurora Auto Scaling**：Read replicas 基于负载自动扩缩容。最多 15 个副本。*(Q#4)*
   - **Aurora Serverless v2**：在几分之一秒内自动扩缩容量。用于波动/不可预测负载。*(Q#4)*
   - **Backtrack**：将数据库回退到某个时间点，无需恢复。仅限 Aurora MySQL。*(Q#213, Q#227)*
-  - **Babelfish**：在 Aurora PostgreSQL 上运行 SQL Server 应用，代码改动极小。T-SQL 兼容。*(Q#161)*
+  - **Babelfish**：在 Aurora PostgreSQL 上运行 SQL Server 应用，代码改动极小。T-SQL 兼容，包括存储过程、触发器和函数。实现 SQL Server → Aurora 的 Replatform 迁移，无需重写应用代码。*(Q#161)*
 - **📝 Q Refs**：#4, #29, #40, #92, #114, #161, #213, #227, #234, #236, #251
 
 ### DynamoDB
@@ -471,18 +487,18 @@ total_files: 187
 - **考试关键知识点**（源自 missed question）：
   - **Global Tables**：多活（任意区域读写），最终一致性。基于 DynamoDB Streams 构建。冲突解决：last-writer-wins。*(Q#2, Q#105, Q#121)*
   - **DynamoDB Streams**：有序的条目级变更序列。24 小时保留。触发 Lambda。是 Global Tables 的基础。*(Q#105)*
-  - **DAX (DynamoDB Accelerator)**：DynamoDB 的内存缓存 —— 读密集型负载微秒级延迟。直写缓存 (write-through)。不是 ElastiCache 的替代品（后者适用于任何数据库）。*(Q#199)*
-  - **容量模式**：Provisioned（可预测、更便宜）vs On-Demand（自动扩缩容、按请求付费、约 2 倍成本）。Provisioned 模式配合 Application Auto Scaling 使用。*(Q#32, Q#222)*
+  - **DAX (DynamoDB Accelerator)**：DynamoDB 的内存缓存 —— 读密集型负载微秒级延迟。直写缓存 (write-through)。DAX 专用于 DynamoDB；ElastiCache 是通用缓存（适用于任何数据库）。当需要专门为 DynamoDB 做缓存且对应用改动最小时使用 DAX。*(Q#199, Q#260)*
+  - **容量模式**：Provisioned（可预测、更便宜 —— 配合 Application Auto Scaling 使用 target tracking on consumed capacity）vs On-Demand（自动扩缩容、按请求付费、约为调优良好的 provisioned 的 2 倍成本）。在 CloudWatch 中监控 `ConsumedReadCapacityUnits` 和 `ConsumedWriteCapacityUnits`。*(Q#32, Q#222)*
   - **WCU/RCU**：Write Capacity Units（1 WCU = 1 KB 条目 1 次写入/秒），Read Capacity Units（1 RCU = 4 KB 条目 1 次强一致性读取/秒，或 2 次最终一致性读取）。*(Q#222)*
   - **属性级访问控制 (Attribute-Level Access Control)**：IAM 策略可限制对 DynamoDB 条目中特定属性（列）的访问。*(Q#148)*
-- **📝 Q Refs**：#32, #60, #101, #105, #120, #121, #131, #148, #179, #199, #222, #223, #234
+- **📝 Q Refs**：#32, #60, #101, #105, #120, #121, #131, #148, #179, #199, #222, #223, #234, #260
 
 ### ElastiCache
 
 - **概述**：托管 Redis 或 Memcached 内存缓存。Redis：多 AZ、持久化、pub/sub、地理空间；Memcached：简单、多线程。
 - **🔄 Azure 对应**：Azure Cache for Redis
 - **考试关键知识点**（源自 missed question）：
-  - **Redis**：会话存储、排行榜、实时分析、地理空间。Multi-AZ 自动故障转移。*(Q#251)*
+  - **Redis**：会话存储、排行榜、实时分析、地理空间。Multi-AZ 自动故障转移。与 RDS 配合用于会话管理 —— 将会话状态从数据库卸载到 ElastiCache 以提升性能。*(Q#251, Q#260)*
   - **Reserved Nodes**：类似 Reserved Instances 但用于 ElastiCache。1-3 年承诺可获显著折扣（最高约 60%）。*(Q#247)*
 - **📝 Q Refs**：#247, #251
 
@@ -491,7 +507,7 @@ total_files: 187
 - **DocumentDB**：MongoDB 兼容（3.6/4.0/5.0 API），托管。用于现有 MongoDB 负载迁移到 AWS。*(Q#106)*
 - **Redshift**：PB 级数据仓库，列式存储。Concurrency Scaling 用于突发查询负载。Elastic Resize 用于快速调整集群大小。*(Q#243)*
 - **OpenSearch Service**：托管 Elasticsearch/Kibana 继任者。UltraWarm 用于不频繁访问数据，Cold Storage 用于很少访问的数据。*(Q#34)*
-- **DMS (Database Migration Service)**：以最小停机时间将数据库迁移到 AWS。支持 homogeneous（相同引擎）和 heterogeneous（不同引擎）。SCT (Schema Conversion Tool) 用于 heterogeneous 模式转换。*(Q#84, Q#114, Q#158, Q#180, Q#236)*
+- **DMS (Database Migration Service)**：以最小停机时间将数据库迁移到 AWS。支持 homogeneous（相同引擎）和 heterogeneous（不同引擎）。SCT (Schema Conversion Tool) 用于 heterogeneous 模式转换。DMS 可将 S3 作为 CDC 复制的中间目标 —— Aurora → DMS → S3 用于灵活 RPO 的 DR。*(Q#84, Q#114, Q#158, Q#180, Q#236)*
 - **📝 Q Refs**：#34, #84, #106, #114, #158, #180, #236, #243
 
 ---
@@ -548,8 +564,9 @@ total_files: 187
   - **Security Groups vs NACLs**：SG = 有状态（回程流量自动允许），实例级。NACL = 无状态（必须显式允许回程），子网级。*(Q#108)*
   - **Transit Gateway**：Hub-and-spoke 网络架构 —— 连接数千 VPC 和本地网络。路由表控制流量流向。大规模场景优于 VPC peering（网状）。*(Q#1, Q#62, Q#81, Q#95, Q#218)*
   - **VPC Endpoints**：无需互联网即可私有连接 AWS 服务。Gateway endpoints（S3, DynamoDB —— 免费）。Interface endpoints（大多数其他服务 —— 由 PrivateLink 提供，$ 每小时）。*(Q#8, Q#92, Q#111)*
+  - **IPv6 迁移**：将 Amazon 提供的 IPv6 CIDR 关联到 VPC 和子网。私有子网 IPv6 出站需使用 **Egress-Only Internet Gateway**（非 NAT Gateway —— NAT GW 仅 IPv4）。从私有子网路由 `::/0` 到 Egress-Only IGW。*(Q#287)*
   - **VPC Peering**：两个 VPC 之间的 1:1 连接。不可传递（A→B 且 B→C 不意味着 A→C）。不能有重叠 CIDR。*(Q#62, Q#81)*
-- **📝 Q Refs**：#1, #8, #15, #31, #62, #81, #92, #108, #111, #135, #206, #210, #217, #218, #224, #250
+- **📝 Q Refs**：#1, #8, #15, #31, #62, #81, #92, #108, #111, #135, #206, #210, #217, #218, #224, #250, #287
 
 ### Route 53
 
@@ -562,9 +579,9 @@ total_files: 187
   - **Route 53 Resolver**：混合 DNS 解析。
     - **Inbound Endpoint**：本地 → VPC DNS 查询（在 VPC 中放置 ENI，本地转发到这些 IP）。*(Q#1, Q#217)*
     - **Outbound Endpoint**：VPC → 本地 DNS 查询（本地域名的转发规则）。*(Q#217)*
-  - **Resolver Rules**：将特定域名的 DNS 查询转发到特定 IP。可通过 RAM 跨账户共享。*(Q#255)*
+  - **Resolver Rules**：将特定域名的 DNS 查询转发到特定 IP（条件转发）。可通过 RAM 跨账户共享。与 Direct Connect 配合实现混合 DNS：本地域名查询 → Outbound Resolver → 本地 DNS 服务器。*(Q#255)*
   - **Health Checks**：通过 HTTP/HTTPS/TCP 监控端点。可绑定 Route 53 路由策略实现自动故障转移。
-- **📝 Q Refs**：#1, #2, #19, #25, #28, #29, #49, #88, #121, #152, #217, #225, #234, #255
+- **📝 Q Refs**：#1, #2, #19, #25, #28, #29, #49, #88, #121, #152, #217, #225, #234, #255, #291
 
 ### API Gateway
 
@@ -577,6 +594,7 @@ total_files: 187
   - **Throttling & Usage Plans**：API 密钥 + usage plans 控制每客户端速率限制。保护后端免于过载。*(Q#17)*
   - **故障转移 (Failover)**：使用 Regional 端点 + Route 53 failover（不要使用多区域 edge-optimized —— edge-optimized 是单个区域在 CloudFront 后面）。*(Q#2)*
   - **WebSocket**：API Gateway 支持 WebSocket 实现实时双向通信。*(Q#223)*
+  - **HTTP API + SQS 服务集成**：API Gateway HTTP API 支持直接 AWS 服务集成 —— 无需 Lambda 直接在接入点写入 SQS。理想用于 IoT 数据接入：吸收不可预测的突发流量，SQS 缓冲消息，零数据丢失。*(Q#143)*
 - **📝 Q Refs**：#2, #5, #14, #17, #36, #88, #111, #121, #122, #143, #162, #196, #234
 
 ### CloudFront
@@ -585,11 +603,11 @@ total_files: 187
 - **🔄 Azure 对应**：Azure CDN / Azure Front Door
 - **🔄 Azure 对照**：类似 Azure Front Door（全球负载均衡器 + CDN）。CloudFront 有更多边缘节点（450+ vs 190+）。关键区别：CloudFront 使用 "distributions"，Front Door 使用 "endpoints"。Lambda@Edge = Azure Front Door Rules Engine。
 - **考试关键知识点**（源自 missed question）：
-  - **Origin Groups**：主 + 辅助源站实现故障转移。*(Q#28)*
-  - **缓存优化**：查询字符串标准化、缓存策略、源站请求策略。*(Q#235)*
+  - **Origin Groups**：主 + 辅助源站实现 CDN 级故障转移。比 Route 53 DNS 故障转移更快（DNS 缓存导致延迟）。配置为缓存行为的源站故障转移。*(Q#28, Q#291)*
+  - **缓存优化**：查询字符串标准化 —— 使用 Lambda@Edge 规范化查询参数以便 CloudFront 有效缓存（如重排查询参数、转小写、剥离无关参数）。*(Q#235)*
   - **Lambda@Edge**：在边缘运行代码 —— 请求/响应操纵、A/B 测试、安全请求头注入。Viewer 事件（5 秒超时）vs Origin 事件（30 秒超时）。*(Q#5, Q#235)*
   - **OAC (Origin Access Control)**：限制 S3 访问仅允许 CloudFront —— 替代 OAI。*(Q#28)*
-- **📝 Q Refs**：#5, #11, #14, #28, #105, #127, #162, #201, #235
+- **📝 Q Refs**：#5, #11, #14, #28, #105, #127, #162, #201, #235, #291
 
 ### Direct Connect
 
@@ -608,8 +626,8 @@ total_files: 187
 - **🔄 Azure 对应**：Azure Virtual WAN Hub
 - **🔄 Azure 对照**：类似 Virtual WAN Hub。TGW Route Tables = Virtual WAN Route Tables。TGW 是大规模 AWS 网络的中心连接构造。
 - **考试关键知识点**（源自 missed question）：
-  - **TGW Route Tables**：分段隔离 —— 通过将开发/生产 VPC 关联到不同路由表实现隔离。*(Q#218)*
-  - **TGW + VPN**：将 Site-to-Site VPN 挂接到 TGW —— 所有连接的 VPC 都能访问本地。*(Q#62, Q#250)*
+  - **TGW Route Tables**：分段隔离 —— 每条路由表控制哪些附件之间可以收发流量。这是大规模网络分段的主要工具。*(Q#218)*
+  - **TGW + VPN**：将 Site-to-Site VPN 挂接到 TGW —— 所有连接的 VPC 都能访问本地。配合 CloudFormation 实现 TGW + VPN 测试环境自动化部署。*(Q#62, Q#250)*
   - **TGW + DX**：将 Direct Connect Gateway 挂接到 TGW。*(Q#95)*
   - **TGW Peering**：跨区域连接 TGW 实现全球网络。*(Q#81)*
 - **📝 Q Refs**：#1, #62, #81, #95, #218, #250
@@ -627,7 +645,7 @@ total_files: 187
   - **ALB**：支持加权目标组实现 blue/green 部署。通过基于应用的 cookie 实现 sticky sessions。*(Q#4, Q#152)*
   - **NLB**：保留源 IP；每 AZ 一个静态 IP；每 AZ 可拥有 Elastic IP。支持 TLS 终结。*(Q#19, Q#121)*
   - **ALB + WAF**：ALB 与 WAF 集成实现 Layer 7 保护。NLB 不能与 WAF 集成（仅 L4）。*(Q#146)*
-  - **ALB Target Groups**：可指向 EC2, ECS, Lambda, IP 地址。健康检查确定目标健康状态。*(Q#152)*
+  - **ALB Target Groups**：可指向 EC2, ECS, Lambda, IP 地址。加权目标组实现金丝雀部署（如 90% 旧 → 10% 新）。在目标组级别启用 stickiness 确保分阶段发布期间的会话持久性。*(Q#152)*
 - **📝 Q Refs**：#4, #19, #25, #29, #121, #126, #127, #146, #152, #162, #209, #251
 
 ### Global Accelerator
@@ -635,9 +653,9 @@ total_files: 187
 - **概述**：通过 AWS 全球网络路由流量，改善全球应用的可用性和性能。提供 2 个静态 Anycast IP。路由到最优区域端点。
 - **🔄 Azure 对应**：Azure Front Door (Global) / Azure Traffic Manager
 - **考试关键知识点**（源自 missed question）：
-  - **vs CloudFront**：Global Accelerator 通过 AWS 骨干网路由（不是边缘缓存）—— 用于 TCP/UDP、游戏、VoIP、IoT。CloudFront 用于 HTTP/S 内容缓存。*(Q#121, Q#162)*
-  - **静态 IP**：两个不变的 anycast IP —— 将 DNS 指向这两个 IP。*(Q#162)*
-- **📝 Q Refs**：#121, #162
+  - **vs CloudFront**：Global Accelerator 通过 AWS 骨干网路由（不是边缘缓存）—— 用于 TCP/UDP、游戏、VoIP、IoT 及非 HTTP 协议（如 WebDAV）。CloudFront 用于 HTTP/S 内容缓存。*(Q#121, Q#162)*
+  - **静态 IP**：两个不变的 anycast IP —— 将 DNS 指向这两个 IP。当客户需要将固定 IP 加入白名单同时保留 ALB + WAF 架构时使用。ALB 不能有 EIP；GA 提供静态 IP。*(Q#132, Q#162)*
+- **📝 Q Refs**：#121, #132, #162
 
 ### 其他网络服务
 
@@ -704,9 +722,10 @@ total_files: 187
   - **IAM Roles vs Resource-Based Policies**：Role = "此主体可以做什么"；Resource policy = "谁可以访问此资源"（如 S3 bucket policy, KMS key policy）。跨账户访问：role（主体承担角色）或 resource policy（授予访问权限）。*(Q#16, Q#103, Q#117, Q#118)*
   - **IAM DB Authentication**：RDS/Aurora MySQL 和 PostgreSQL 可使用 IAM 令牌认证 —— 应用中无密码。令牌有效期 15 分钟。*(Q#92)*
   - **Permissions Boundary（权限边界）**：IAM 实体可拥有的最大权限 —— 即使附加了更宽泛的策略。防止权限提升。*(Q#148)*
-  - **Access Analyzer**：分析资源策略中意外的公开/跨账户访问。生成发现结果。可在部署前验证策略。*(Q#101, Q#136)*
+  - **Access Analyzer**：分析资源策略中意外的公开/跨账户访问。生成发现结果。配合 EventBridge → SNS 实现 S3 存储桶公开暴露时的自动告警。持续监控公开资源暴露的最佳工具。*(Q#101, Q#136)*
   - **IAM Identity Center (SSO)**：AWS 账户 + 业务应用的单点登录。与 AD 集成（通过 AD Connector 或 Managed AD）。SCIM 用于自动预置。*(Q#16, Q#56, Q#252)*
-- **📝 Q Refs**：#16, #23, #24, #56, #59, #78, #92, #101, #103, #117, #118, #148, #254
+  - **无 Organizations 时的 IAM 策略**：当账户无法加入 Organizations（无 SCP 可用）时，使用 IAM Deny 策略配合条件（`ec2:InstanceType`、`aws:RequestedRegion`）限制资源启动。显式 Deny 是独立账户中最强的控制手段。*(Q#278)*
+- **📝 Q Refs**：#16, #23, #24, #56, #59, #78, #92, #101, #103, #117, #118, #136, #148, #254, #271, #278
 
 ### AWS Organizations & SCP
 
@@ -718,7 +737,8 @@ total_files: 187
   - **Deny List vs Allow List**：Deny list（默认 FullAWSAccess，添加 deny SCPs）—— 更易管理。Allow list（移除 FullAWSAccess，添加 allow SCPs）—— 更严格，维护工作更多。*(Q#3)*
   - **SCP 继承**：父 OU 的 SCP 适用于子 OU。账户级 SCP 可更严格但不能更宽松。*(Q#24)*
   - **Tag Policies**：标准化组织内的标签。强制执行标签键、值和格式。与 Cost Explorer 配合用于成本分摊。*(Q#232)*
-- **📝 Q Refs**：#3, #23, #24, #30, #35, #56, #67, #210, #224, #232, #245
+  - **Control Tower + Identity Center + Config**：现代多账户治理技术栈 —— Control Tower 用于 landing zone/OU 创建，IAM Identity Center 用于 SSO，Config 用于合规监控。三者共同提供预防性（SCP）+ 检测性（Config）+ 身份（SSO）控制。*(Q#267)*
+- **📝 Q Refs**：#3, #23, #24, #30, #35, #56, #67, #210, #224, #232, #245, #267
 
 ### KMS (Key Management Service)
 
@@ -737,10 +757,10 @@ total_files: 187
 - **🔄 Azure 对应**：Azure Key Vault (secrets)
 - **🔄 Azure 对照**：在 Azure DevOps 中，你在 pipeline 中使用 Key Vault 注入密钥 —— `AzureKeyVault@2` task。AWS 等价：CodeBuild/CodePipeline 中的 `aws secretsmanager get-secret-value`。Secrets Manager 可通过 Lambda 自动轮换 RDS 密码 —— 类似 Azure Key Vault 自动轮换。
 - **考试关键知识点**（源自 missed question）：
-  - **轮换 (Rotation)**：内置 RDS, Redshift, DocumentDB 的轮换。使用 Lambda 生成新密码，同时更新 Secrets Manager 和数据库。*(Q#160, Q#164)*
+  - **轮换 (Rotation)**：内置 RDS, Redshift, DocumentDB 的轮换。使用 Lambda 生成新密码，同时更新 Secrets Manager 和数据库。也支持 EC2 SSH 密钥轮换 —— Lambda 生成新密钥对，更新 Secrets Manager，并使用 Systems Manager Run Command 将新公钥部署到实例。*(Q#160, Q#163, Q#164)*
   - **跨账户**：通过 resource policies 共享密钥。*(Q#103)*
   - **vs Parameter Store**：Secrets Manager = 轮换、跨账户、$0.40/密钥/月；Parameter Store = 免费、无轮换、10K 参数限制。*(Q#21, Q#164)*
-- **📝 Q Refs**：#21, #103, #160, #164
+- **📝 Q Refs**：#21, #103, #160, #163, #164
 
 ### WAF & Shield
 
@@ -826,7 +846,7 @@ total_files: 187
 - **概述**：Pub/sub 消息。Topics → Subscriptions（SQS, Lambda, HTTP/S, email, SMS, 移动推送）。Fan-out：一条消息 → 多个订阅者。
 - **🔄 Azure 对应**：Azure Event Grid / Azure Notification Hubs
 - **考试关键知识点**（源自 missed question）：
-  - **Fan-out 模式**：SNS → 多个 SQS 队列（每个消费者一个）。每个队列独立处理消息。*(Q#131)*
+  - **Fan-out 模式**：SNS → 多个 SQS 队列（每个消费者一个）。每个队列独立处理消息。对于微服务删除事件，需考虑 EventBridge（模式匹配）vs SNS（所有订阅者接收所有消息）。*(Q#131)*
   - **SNS + SQS**：SNS 投递到 SQS 实现持久化处理。如果订阅者（Lambda）失败，消息必须持久化 → SQS。*(Q#142)*
   - **SNS + Lambda**：直接触发 —— Lambda 即时处理。无持久化顾虑。*(Q#113, Q#142)*
 - **📝 Q Refs**：#35, #109, #113, #131, #136, #142, #172, #175
@@ -836,7 +856,7 @@ total_files: 187
 - **概述**：Serverless 事件总线。SaaS 集成（Zendesk, Datadog, PagerDuty）。模式匹配规则将事件路由到目标。Schema registry 用于事件发现。
 - **🔄 Azure 对应**：Azure Event Grid
 - **考试关键知识点**（源自 missed question）：
-  - **vs SNS**：EventBridge = 基于模式的路由（规则匹配事件属性）；SNS = 基于主题（订阅者接收所有消息）。EventBridge 有第三方 SaaS 集成。*(Q#131)*
+  - **vs SNS**：EventBridge = 基于模式的路由（规则匹配事件属性）；SNS = 基于主题（订阅者接收所有消息）。EventBridge 有第三方 SaaS 集成。对于带模式匹配的微服务 fan-out 删除 → EventBridge Custom Event Bus。*(Q#131)*
   - **EventBridge + Step Functions**：编排由事件触发的复杂工作流。*(Q#104)*
   - **自动化**：EventBridge + Lambda + SSM 实现自动修复（如 S3 公开访问 → EventBridge → Lambda → 修复）。*(Q#35, Q#136)*
 - **📝 Q Refs**：#10, #35, #96, #104, #112, #131, #134, #136, #175
@@ -883,18 +903,19 @@ total_files: 187
 - **🔄 Azure 对应**：Azure Resource Manager (ARM) / Bicep
 - **🔄 Azure 对照**：**这是你的强项！** 你使用 Azure DevOps pipelines + ARM/Bicep 部署基础设施。CloudFormation 在概念上几乎相同。关键映射：CloudFormation template = ARM template；CloudFormation Stack = Resource Group deployment；CloudFormation StackSets = Deployment Stacks (Azure)。在你的 pipeline 中，`aws cloudformation deploy` 替代 `az deployment group create`。
 - **考试关键知识点**（源自 missed question）：
-  - **StackSets**：从中央管理账户将同一模板部署到多个账户/区域。Self-managed 或 service-managed 权限。*(Q#30, Q#67, Q#210)*
+  - **StackSets**：跨多个账户/区域从中央管理员部署同一模板。Self-managed 或 service-managed 权限。*(Q#30, Q#67, Q#210)*
+  - **Custom Resources（自定义资源）**：使用 Lambda 支持的自定义资源执行 CloudFormation 原生不支持的操作（如 S3 lifecycle 配置、外部 API 调用）。自定义资源响应必须发送到预签名 S3 URL。*(Q#262)*
   - **Nested Stacks**：将大型模板分解为更小的可重用部分。与 StackSets 不同（后者将同一堆栈部署到多个位置）。*(Q#67)*
   - **Drift Detection（漂移检测）**：检测资源是否在 CloudFormation 之外被更改。*(Q#232)*
   - **Change Sets（变更集）**：在应用更改前预览 —— 理解部署的影响。*(Q#59)*
-- **📝 Q Refs**：#14, #21, #30, #48, #59, #67, #134, #232, #245, #250
+- **📝 Q Refs**：#14, #21, #30, #48, #59, #67, #134, #232, #245, #250, #262, #266
 
 ### Systems Manager (SSM)
 
 - **概述**：运维管理套件。Parameter Store, Session Manager, Automation, Patch Manager, Run Command, Fleet Manager, Inventory。
 - **🔄 Azure 对应**：Azure Automation / Azure Update Manager / Azure Arc
 - **考试关键知识点**（源自 missed question）：
-  - **Session Manager**：基于浏览器的 SSH/RDP 访问 EC2 —— 无需堡垒主机，无需开放入站端口。通过 CloudTrail + S3 日志可审计。*(Q#252, Q#254)*
+  - **Session Manager**：基于浏览器的 SSH/RDP 访问 EC2 —— 无需堡垒主机、无需开放入站端口。通过 CloudTrail + S3 日志可审计。配合 IAM Identity Center 实现 Windows 实例的集中访问管理。*(Q#252, Q#254)*
   - **Fleet Manager**：管理 EC2 实例机群 —— 查看性能、排障、运行命令。*(Q#252)*
   - **Automation**：常见维护任务的 Runbook（AMI 创建、实例停止/启动、补丁）。*(Q#125)*
   - **Run Command**：远程在托管实例上执行脚本 —— 无需 SSH。*(Q#90)*
@@ -963,7 +984,7 @@ total_files: 187
   - **支持的目标**：S3, EFS, FSx for Windows, FSx for Lustre。*(Q#27, Q#130)*
   - **增量传送**：初次完整同步后仅传送变更文件 —— 节省带宽。*(Q#27)*
   - **DataSync + Direct Connect**：使用 Direct Connect 在大数据传送期间获得稳定带宽。*(Q#27)*
-- **📝 Q Refs**：#27, #107, #114, #130, #158
+- **📝 Q Refs**：#27, #107, #114, #130, #158, #264, #285
 
 ### Snow Family (Snowball Edge / Snowmobile)
 
@@ -983,6 +1004,7 @@ total_files: 187
 - **考试关键知识点**（源自 missed question）：
   - **持续复制 (Continuous Replication)**：块级复制保持源和目标同步直到切换。最小停机时间。
   - **vs DMS**：MGN 迁移整台服务器（OS + 应用 + 数据）；DMS 仅迁移数据库。Lift-and-shift 用 MGN，仅数据库迁移（含模式转换）用 DMS。*(Q#116)*
+  - **vs DataSync + DMS**：MGN = 服务器级；DataSync = 文件级；DMS = 数据库级。根据迁移粒度选择。
 - **📝 Q Refs**：#116
 
 ### Application Discovery Service
@@ -1165,7 +1187,7 @@ total_files: 187
 - **概述**：托管构建服务 —— 编译代码、运行测试、产出制品。按分钟付费。
 - **🔄 Azure 对应**：Azure DevOps Build Pipelines / Azure Pipelines 构建任务
 - **考试关键知识点**（源自 missed question）：
-  - **buildspec.yml**：定义构建命令、制品、缓存设置。*(Q#134)*
+  - **buildspec.yml**：定义构建命令、制品、缓存设置。可用于克隆 CodeCommit 仓库、创建 zip 并复制到 S3 实现跨区域备份。*(Q#134)*
 - **📝 Q Refs**：#134, #208
 
 ### CodeCommit
@@ -1214,7 +1236,7 @@ total_files: 187
 - **概述**：应用流式传输 —— 通过浏览器将 Windows 应用流式传输到任何设备。应用在 AWS 上运行，在用户浏览器中渲染。默认无状态（非持久化）。用于 SaaS 交付、培训环境、安全访问内部应用。
 - **🔄 Azure 对应**：Azure Virtual Desktop RemoteApp
 - **考试关键知识点**（源自 missed question）：
-  - **迁移**：无需重写即可重新托管遗留 Windows 应用 —— 通过 AppStream 流式传输同时逐步现代化后端。*(Q#219)*
+  - **迁移**：无需重写即可重新托管遗留 Windows 应用 —— 通过 AppStream 流式传输同时逐步现代化后端。适用于无法轻松容器化的遗留 .NET/WPF 应用。*(Q#219)*
   - **vs WorkSpaces**：AppStream 流式传输单个应用；WorkSpaces 流式传输完整桌面。AppStream 默认非持久化；WorkSpaces 持久化。AppStream 按运行小时计费；WorkSpaces 按月计费。*(Q#219)*
   - **Fleets**：Always-On（即时连接，运行中计费）或 On-Demand（等待预置，按使用计费）。
   - **AD 集成**：可加入 Active Directory 进行用户认证和应用访问控制。
@@ -1225,7 +1247,7 @@ total_files: 187
 - **概述**：在本地运行的 AWS 托管基础设施 —— 与 AWS 区域相同的 API、工具和服务。AWS 在你的数据中心交付、安装和维护机架。支持 EC2, EBS, ECS, EKS, RDS, S3 (Outposts bucket)。
 - **🔄 Azure 对应**：Azure Stack HCI / Azure Arc
 - **考试关键知识点**（源自 missed question）：
-  - **一致体验**：相同的 AWS API、CLI、控制台 —— 开发者在本地和云端无需学习不同工具。*(Q#149)*
+  - **一致体验**：相同的 AWS API、CLI、控制台 —— 开发者在本地和云端无需学习不同工具。一次构建，部署到 Region、Outposts 或 Snowball Edge。*(Q#149)*
   - **数据驻留**：满足监管要求的同时将数据保留在本地并使用 AWS 服务。*(Q#149)*
   - **低延迟**：工厂车间、医疗影像、金融交易的亚毫秒级延迟。*(Q#149)*
   - **vs Snowball Edge**：Outposts = 永久本地安装（42U 机架）；Snowball Edge = 便携、临时、容量较小。Outposts 支持更多服务（RDS, ECS）。*(Q#149)*
@@ -1319,22 +1341,22 @@ total_files: 187
 
 | 领域 | 涵盖服务 | 题目数 | 自信度（自评） |
 |---|---|---|---|
-| 🌐 Cross-Cutting | HA, DR, Cost, Security, Decoupling, Serverless, Governance, Deployments | ~40 | /10 |
-| 💻 Compute | EC2, Lambda, EB, Batch | ~45 | /10 |
-| 📦 Containers | ECS, EKS, ECR, Fargate | ~12 | /10 |
-| 💾 Storage | S3, EBS, EFS, FSx, Storage Gateway, Transfer Family | ~35 | /10 |
-| 🗄️ Database | RDS, Aurora, DynamoDB, ElastiCache, DocumentDB, Redshift, DMS | ~40 | /10 |
-| 🌐 Networking | VPC, Route 53, API Gateway, CloudFront, Direct Connect, Transit Gateway, ALB/NLB, Global Accelerator | ~55 | /10 |
-| 🔐 Security | IAM, Organizations/SCP, KMS, Secrets Manager, WAF/Shield, CloudTrail, Config | ~35 | /10 |
-| 🔗 Integration | SQS, SNS, EventBridge, Step Functions, AppSync | ~20 | /10 |
-| 📊 Management | CloudFormation, Systems Manager, CloudWatch, Service Catalog, AWS Backup, Cost Management | ~30 | /10 |
-| 🚚 Migration | DMS, DataSync, Snow Family, MGN, Migration Hub | ~20 | /10 |
-| 📈 Analytics | Athena, EMR, Glue, QuickSight, Redshift, OpenSearch | ~10 | /10 |
+| 🌐 Cross-Cutting | HA, DR, Cost, Security, Decoupling, Serverless, Governance, Deployments | ~44 | /10 |
+| 💻 Compute | EC2, Lambda, EB, Batch | ~48 | /10 |
+| 📦 Containers | ECS, EKS, ECR, Fargate | ~14 | /10 |
+| 💾 Storage | S3, EBS, EFS, FSx, Storage Gateway, Transfer Family | ~38 | /10 |
+| 🗄️ Database | RDS, Aurora, DynamoDB, ElastiCache, DocumentDB, Redshift, DMS | ~45 | /10 |
+| 🌐 Networking | VPC, Route 53, API Gateway, CloudFront, Direct Connect, Transit Gateway, ALB/NLB, Global Accelerator | ~60 | /10 |
+| 🔐 Security | IAM, Organizations/SCP, KMS, Secrets Manager, WAF/Shield, CloudTrail, Config | ~40 | /10 |
+| 🔗 Integration | SQS, SNS, EventBridge, Step Functions, AppSync | ~22 | /10 |
+| 📊 Management | CloudFormation, Systems Manager, CloudWatch, Service Catalog, AWS Backup, Cost Management | ~32 | /10 |
+| 🚚 Migration | DMS, DataSync, Snow Family, MGN, Migration Hub, Transfer Family | ~24 | /10 |
+| 📈 Analytics | Athena, EMR, Glue, QuickSight, Redshift, OpenSearch | ~12 | /10 |
 | 🤖 ML | SageMaker, IoT Greengrass | ~3 | /10 |
 | 🛠️ Developer Tools | CodeDeploy, CodePipeline, CodeBuild, CodeCommit | ~8 | /10 |
-| 🖥️ EUC | WorkSpaces, AppStream, Outposts | ~5 | /10 |
+| 🖥️ EUC | WorkSpaces, AppStream, Outposts, Directory Service | ~7 | /10 |
 
-> **missed question 文件总数**：187 | **涵盖规范服务**：~80+ | **最后更新**：2026-06-06
+> **missed question 文件总数**：266 | **涵盖规范服务**：~100+ | **最后更新**：2026-06-16
 
 ---
 

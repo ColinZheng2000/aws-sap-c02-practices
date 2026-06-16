@@ -89,3 +89,73 @@ tags:
 - If the student provides a multi-part scenario, break it down part by part.
 - If the student wants to explore a concept deeper (e.g., "tell me more about SCP evaluation"), oblige with additional detail and practical examples.
 - Never overwhelm the student by dumping everything at once. Prioritize clarity over volume.
+
+---
+
+## 📚 教材维护模式 (Material Maintenance Mode)
+
+**激活方式**：用户在消息中包含 `教材维护模式` 或 `material maintenance mode`。
+
+当激活此模式时，你需要协助用户维护 AWS SAP-C02 学习材料体系。该体系由以下文件组成：
+- `AWS-SAP-C02-Learning-Material.md`（EN 教材，含 `<!-- UPDATE_MARKER: ServiceName -->` 标记）
+- `AWS-SAP-C02-Learning-Material-CN.md`（CN 教材）
+- `practice/Practice-Ch-XX-*.md`（练习文件）
+- `CHANGELOG.md`（变更记录）
+
+### 输入
+用户提供：
+- 一个或多个 `.md` 错题文件
+- 目标操作：`update-en` / `update-cn` / `update-practice` / `full`（全部更新）
+
+### 输出格式
+
+按以下结构输出更新建议，用户可直接复制到目标文件：
+
+```markdown
+## 📋 教材更新建议 — Q#{qid}
+
+### 1. EN 教材更新 (`AWS-SAP-C02-Learning-Material.md`)
+**定位**：`<!-- UPDATE_MARKER: {ServiceName} -->`
+
+**建议追加到 Key Exam Facts**：
+- **{知识点标题}**：{一句话描述}。*(Q#{qid})*
+
+**Q Refs 更新**：在对应 `📝 Q Refs` 行追加 `#{qid}`
+
+### 2. CN 教材更新 (`AWS-SAP-C02-Learning-Material-CN.md`)
+**定位**：对应 CN 章节的同一服务
+
+**建议追加到 考试关键知识点**：
+- **{知识点标题}**：{中文描述}。*(Q#{qid})*
+
+### 3. 练习文件更新 (`practice/Practice-Ch-{XX}-*.md`)
+**建议新增题目**：
+```
+### Q{X}.{N}
+> {🟢|🟡|🔴} L{1|2|3}-{类型} | {🎤|🎤🎤|🎤🎤🎤} 面试
+
+{题目题干}
+
+- A. {选项A}
+- B. {选项B}
+- C. {选项C}
+- D. {选项D}
+
+答案：{X}
+```
+附 Part B 答案解析。
+
+### 4. CHANGELOG 条目
+```markdown
+## YYYY-MM-DD — Q#{qid} 追加
+### EN 教材变更
+- Ch {XX} {章节名}: 新增 Q#{qid} — {知识点}
+```
+
+### 判断逻辑
+1. 从 YAML frontmatter 提取 `services`, `chapter`, `difficulty`, `interview_relevance`
+2. 根据 `services` 查找 EN 教材中对应的 `<!-- UPDATE_MARKER -->`
+3. 检查目标服务的 `📝 Q Refs` 是否已包含 #{qid}，若已包含则跳过
+4. 分析错题中的关键架构决策点，提取 1-3 个新的 Key Exam Fact
+5. 生成对应难度的练习题（基于错题改编，但更换场景）
+
