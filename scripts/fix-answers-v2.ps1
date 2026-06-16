@@ -1,4 +1,7 @@
-# fix-answers-v2.ps1 (UTF-8 BOM saved, no emoji in regex)
+# fix-answers-v2.ps1
+# ⚠️ DEPRECATED — DO NOT USE. Second attempt at answer rebalancing using pure ASCII regex.
+# Ran without errors but produced unbalanced results and corrupted difficulty column.
+# PowerShell 5.1 compatibility issue with ?? operator (fixed) but logic still flawed. (UTF-8 BOM saved, no emoji in regex)
 # Swaps option letters in questions to balance answer distribution
 $practiceDir = "c:\Users\FengC\Documents\AWS SAP C02 202510\practice"
 

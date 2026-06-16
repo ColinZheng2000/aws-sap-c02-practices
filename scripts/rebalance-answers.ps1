@@ -1,4 +1,7 @@
 # rebalance-answers.ps1
+# ⚠️ DEPRECATED — DO NOT USE. This script attempted to redistribute answer letters
+# in mock exams but caused file corruption (scrambled option letters, overwrote difficulty
+# columns). PowerShell 5.1 Unicode/emoji encoding issues. Mock exams were manually fixed.
 # Purpose: Redistribute answer letters across mock exams so no single letter dominates
 # Strategy: Rotate option positions within questions to achieve ~25% per option
 # Usage: .\scripts\rebalance-answers.ps1 [-TargetFile "Mock-Exam-A.md"] [-DryRun]

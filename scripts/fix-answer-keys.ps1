@@ -1,4 +1,7 @@
 # fix-answer-keys.ps1
+# ⚠️ DEPRECATED — DO NOT USE. This script was an early attempt at fixing the mock exam
+# answer distribution B-bias. It corrupted files due to PowerShell 5.1 encoding issues.
+# Mock exams were manually fixed instead. Kept for historical reference only.
 # Purpose: Rescan each mock exam question and fix the answer key to match actual correct option
 # Reads question content, identifies correct answer, updates answer key table ONLY
 # Usage: .\scripts\fix-answer-keys.ps1
