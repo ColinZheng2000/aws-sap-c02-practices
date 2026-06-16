@@ -19,11 +19,11 @@ services:
 # Chapter 8 Practice: 📊 Management & Governance
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers and explanations.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` �?Section 8 (CloudFormation, Systems Manager, CloudWatch, Service Catalog, AWS Backup, Other Management Services) + Similar Service Comparison: IaC & Governance
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md`  → Section 8 (CloudFormation, Systems Manager, CloudWatch, Service Catalog, AWS Backup, Other Management Services) + Similar Service Comparison: IaC & Governance
 
 ---
 
-# Part A �?Questions
+# Part A  → Questions
 
 ## 🟢 Knowledge Check (5 questions)
 
@@ -168,7 +168,7 @@ A solutions architect needs to deploy infrastructure to a single AWS account in 
 ### Q8.13
 
 > 🟡 L2-理解 | 🎤🎤 中频面试
-A company needs to back up only EBS volumes and create AMIs of EC2 instances on a daily schedule. The backups must be retained for 7 days. The solution should be simple and focus exclusively on EBS and EC2 �?no other services need backup.
+A company needs to back up only EBS volumes and create AMIs of EC2 instances on a daily schedule. The backups must be retained for 7 days. The solution should be simple and focus exclusively on EBS and EC2  → no other services need backup.
 
 Which service provides the simplest, most targeted solution?
 
@@ -191,127 +191,127 @@ Which service combination answers this question?
 
 ---
 
-# Part B �?Answers & Explanations
+# Part B  → Answers & Explanations
 
 > ⚠️ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## 🟢 Knowledge Check �?Answers
+## 🟢 Knowledge Check  → Answers
 
 ### A8.1
-**Correct: B** �?CloudFormation StackSets.
+**Correct: B**  → CloudFormation StackSets.
 
 **Why**: StackSets is designed for multi-account, multi-Region deployments. A StackSet created in a central administrator account can deploy stacks to target accounts (within the same Organization) across multiple Regions. You can use service-managed permissions (automatic) or self-managed permissions (manual role creation in each account). One operation deploys to all 20 accounts × 3 Regions = 60 stacks.
 
 **Why not the others**:
-- **A**: Nested Stacks are for breaking a large single-account/single-Region stack into reusable components �?not multi-account.
+- **A**: Nested Stacks are for breaking a large single-account/single-Region stack into reusable components  → not multi-account.
 - **C**: Change Sets preview the impact of changes to a single stack.
 - **D**: Drift Detection identifies resources changed outside CloudFormation.
 
-**📖 Textbook ref**: §8 �?CloudFormation, "StackSets: Multi-account, multi-Region"
+**📖 Textbook ref**: §8  → CloudFormation, "StackSets: Multi-account, multi-Region"
 
 ---
 
 ### A8.2
-**Correct: B** �?Systems Manager Session Manager.
+**Correct: B**  → Systems Manager Session Manager.
 
 **Why**: Session Manager provides browser-based (or CLI-based) shell access to EC2 instances via the SSM Agent. It requires no inbound security group rules, no bastion host, and no SSH keys. All session activity is logged to CloudTrail and optionally to S3/CloudWatch Logs for full auditability. It uses IAM policies to control who can start sessions on which instances.
 
 **Why not the others**:
 - **A**: Run Command executes scripts remotely but doesn't provide interactive shell access.
-- **C**: Fleet Manager is a UI for managing fleets �?it uses Session Manager for shell access.
+- **C**: Fleet Manager is a UI for managing fleets  → it uses Session Manager for shell access.
 - **D**: Patch Manager applies OS patches; it doesn't provide interactive access.
 
-**📖 Textbook ref**: §8 �?Systems Manager, "Session Manager: No bastion host, no open inbound ports"
+**📖 Textbook ref**: §8  → Systems Manager, "Session Manager: No bastion host, no open inbound ports"
 
 ---
 
 ### A8.3
-**Correct: B** �?CloudWatch Alarm.
+**Correct: B**  → CloudWatch Alarm.
 
-**Why**: A CloudWatch Alarm watches a single metric over a specified time period and performs one or more actions when the metric crosses a defined threshold. In this case: metric = CPUUtilization, statistic = Average, period = 5 minutes, threshold = 80%, action = Auto Scaling policy. This is the standard CloudWatch �?Auto Scaling integration.
+**Why**: A CloudWatch Alarm watches a single metric over a specified time period and performs one or more actions when the metric crosses a defined threshold. In this case: metric = CPUUtilization, statistic = Average, period = 5 minutes, threshold = 80%, action = Auto Scaling policy. This is the standard CloudWatch  → Auto Scaling integration.
 
 **Why not the others**:
 - **A**: Metric filters extract metric data from logs but don't trigger alarms directly.
 - **C**: Dashboards display metrics visually but don't trigger actions.
 - **D**: Synthetics monitors application endpoints via canaries, not EC2 CPU metrics.
 
-**📖 Textbook ref**: §8 �?CloudWatch, "Alarms: Trigger Auto Scaling based on metric thresholds"
+**📖 Textbook ref**: §8  → CloudWatch, "Alarms: Trigger Auto Scaling based on metric thresholds"
 
 ---
 
 ### A8.4
-**Correct: B** �?AWS Service Catalog.
+**Correct: B**  → AWS Service Catalog.
 
-**Why**: Service Catalog allows administrators to create "products" from approved CloudFormation templates. Users can browse and launch only approved products. This enforces governance �?teams cannot deploy arbitrary configurations. Administrators can update the underlying templates and version the products. This is the self-service with guardrails model.
+**Why**: Service Catalog allows administrators to create "products" from approved CloudFormation templates. Users can browse and launch only approved products. This enforces governance  → teams cannot deploy arbitrary configurations. Administrators can update the underlying templates and version the products. This is the self-service with guardrails model.
 
 **Why not the others**:
 - **A**: Config detects non-compliance after deployment; it doesn't prevent deployment of unapproved configurations.
 - **C**: SCPs limit which services/actions can be used but don't control the specific resource configurations.
 - **D**: StackSets deploy the same stack across accounts but don't prevent users from deploying other stacks.
 
-**📖 Textbook ref**: §8 �?Service Catalog, "Users deploy only approved configurations"
+**📖 Textbook ref**: §8  → Service Catalog, "Users deploy only approved configurations"
 
 ---
 
 ### A8.5
-**Correct: B** �?5 minutes (Basic Monitoring).
+**Correct: B**  → 5 minutes (Basic Monitoring).
 
 **Why**: EC2 Basic Monitoring (free) sends metric data to CloudWatch at 5-minute intervals. This includes metrics like CPUUtilization, NetworkIn, NetworkOut, StatusCheckFailed. Detailed Monitoring (paid) sends data at 1-minute intervals and must be explicitly enabled per instance.
 
 **Why not the others**: 1 minute is Detailed Monitoring (paid); 15 minutes and 1 hour are not EC2 CloudWatch metric intervals.
 
-**📖 Textbook ref**: §8 �?CloudWatch, "Metrics: Default (free) vs Detailed Monitoring (1-min, $)"
+**📖 Textbook ref**: §8  → CloudWatch, "Metrics: Default (free) vs Detailed Monitoring (1-min, $)"
 
 ---
 
-## 🟡 Scenario Analysis �?Answers
+## 🟡 Scenario Analysis  → Answers
 
 ### A8.6
-**Correct: B** �?CloudFormation Drift Detection.
+**Correct: B**  → CloudFormation Drift Detection.
 
 **Why**: Drift Detection compares the current state of resources in a CloudFormation stack with the original template definitions. It identifies resources that have been changed outside CloudFormation (e.g., manually via console or CLI). The result shows which resources have drifted and what properties changed. This is exactly the tool for finding manually modified resources in a CloudFormation-managed infrastructure.
 
 **Why not the others**:
-- **A**: Change Sets preview planned changes before applying them �?they don't detect historical unauthorized changes.
+- **A**: Change Sets preview planned changes before applying them  → they don't detect historical unauthorized changes.
 - **C**: Stack Policies protect resources from unintended updates during CloudFormation stack updates, not from out-of-band changes.
-- **D**: Rollback Triggers monitor CloudWatch alarms during stack creation/update �?not for drift detection.
+- **D**: Rollback Triggers monitor CloudWatch alarms during stack creation/update  → not for drift detection.
 
-**📖 Textbook ref**: §8 �?CloudFormation, "Drift Detection"
+**📖 Textbook ref**: §8  → CloudFormation, "Drift Detection"
 
 ---
 
 ### A8.7
-**Correct: B** �?AWS Backup with a Backup Plan, cross-Region copy, and cross-account management via Organizations.
+**Correct: B**  → AWS Backup with a Backup Plan, cross-Region copy, and cross-account management via Organizations.
 
 **Why**: AWS Backup is the centralized backup service that supports multiple services (RDS, DynamoDB, EFS, EBS, EC2, FSx, and more). A Backup Plan defines the schedule (nightly), retention (35 days), and cross-Region copy rules. With AWS Organizations integration, you can manage backup policies centrally across all accounts.
 
 **Why not the others**:
-- **A**: Configuring each service's native backup separately in 30 accounts is an operational nightmare �?no centralized management.
-- **C**: DLM only handles EBS snapshots and AMIs �?not RDS, DynamoDB, or EFS.
-- **D**: Custom Lambda adds operational overhead �?AWS Backup is the managed solution.
+- **A**: Configuring each service's native backup separately in 30 accounts is an operational nightmare  → no centralized management.
+- **C**: DLM only handles EBS snapshots and AMIs  → not RDS, DynamoDB, or EFS.
+- **D**: Custom Lambda adds operational overhead  → AWS Backup is the managed solution.
 
-**📖 Textbook ref**: §8 �?AWS Backup, "Centralized backup management across services"
+**📖 Textbook ref**: §8  → AWS Backup, "Centralized backup management across services"
 
 ---
 
 ### A8.8
-**Correct: B** �?Patch Manager with Patch Baselines + Maintenance Windows.
+**Correct: B**  → Patch Manager with Patch Baselines + Maintenance Windows.
 
 **Why**: Systems Manager Patch Manager uses patch baselines to define which patches to apply (by severity, classification, or explicit lists). Maintenance Windows define when patches can be applied. Patch Manager can run across accounts (using Systems Manager in each account), and it generates compliance reports showing patched vs. non-compliant instances. This is the managed, scalable approach to fleet-wide patching.
 
 **Why not the others**:
-- **A**: Run Command + custom script works but lacks built-in compliance reporting �?you'd need to build that.
+- **A**: Run Command + custom script works but lacks built-in compliance reporting  → you'd need to build that.
 - **C**: Manually logging into 500 instances is impractical.
 - **D**: Fleet Manager provides visibility but is not a patching automation tool.
 
-**📖 Textbook ref**: §8 �?Systems Manager, "Patch Manager" and "Automation"
+**📖 Textbook ref**: §8  → Systems Manager, "Patch Manager" and "Automation"
 
 ---
 
 ### A8.9
-**Correct: B** �?Cost and Usage Reports (CUR) + Amazon Athena + Amazon QuickSight.
+**Correct: B**  → Cost and Usage Reports (CUR) + Amazon Athena + Amazon QuickSight.
 
 **Why**: CUR provides the most detailed cost data (hourly granularity, per-resource, per-tag). CUR data is delivered to S3. Athena can query CUR data directly in S3 using standard SQL. QuickSight connects to Athena as a data source to create interactive, shareable dashboards with visualizations, trends, and drill-downs. This is the enterprise cost visualization pattern.
 
@@ -320,12 +320,12 @@ Which service combination answers this question?
 - **C**: Trusted Advisor checks best practices; CloudWatch dashboards are for operational metrics, not cost.
 - **D**: Compute Optimizer focuses on resource sizing, not overall cost visualization.
 
-**📖 Textbook ref**: §8 �?Cost Explorer; §10 �?Athena + QuickSight
+**📖 Textbook ref**: §8  → Cost Explorer; §10  → Athena + QuickSight
 
 ---
 
 ### A8.10
-**Correct: B** �?AWS Compute Optimizer.
+**Correct: B**  → AWS Compute Optimizer.
 
 **Why**: Compute Optimizer uses ML to analyze historical utilization metrics (CPU, memory, network, disk) and provides rightsizing recommendations with confidence scores. It classifies recommendations as low, medium, or high risk, helping teams prioritize safe changes. It covers EC2 instances, Auto Scaling groups, EBS volumes, Lambda functions, and ECS services on Fargate.
 
@@ -334,65 +334,65 @@ Which service combination answers this question?
 - **C**: CloudWatch Anomaly Detection identifies metric anomalies, not rightsizing recommendations.
 - **D**: Cost Explorer Rightsizing Recommendations is a simpler feature based on basic utilization thresholds, not ML.
 
-**📖 Textbook ref**: §8 �?Compute Optimizer, "ML-based rightsizing"
+**📖 Textbook ref**: §8  → Compute Optimizer, "ML-based rightsizing"
 
 ---
 
 ### A8.11
-**Correct: A** �?CloudFormation triggered by CodePipeline on PR events.
+**Correct: A**  → CloudFormation triggered by CodePipeline on PR events.
 
-**Why**: This is the CI/CD pattern for infrastructure. A CodePipeline pipeline is triggered by a PR event (via EventBridge or CodeCommit/GitHub integration). The pipeline runs CloudFormation to create the test environment stack (VPC, EC2, SG). When the PR is merged, a cleanup action in the pipeline deletes the CloudFormation stack, removing all resources. This is fully automated �?zero manual intervention.
+**Why**: This is the CI/CD pattern for infrastructure. A CodePipeline pipeline is triggered by a PR event (via EventBridge or CodeCommit/GitHub integration). The pipeline runs CloudFormation to create the test environment stack (VPC, EC2, SG). When the PR is merged, a cleanup action in the pipeline deletes the CloudFormation stack, removing all resources. This is fully automated  → zero manual intervention.
 
 **Why not the others**:
 - **B**: StackSets is for multi-account deployment, not for automating individual PR environments.
-- **C**: Service Catalog provides self-service but still requires manual launch �?not automated on PR events.
+- **C**: Service Catalog provides self-service but still requires manual launch  → not automated on PR events.
 - **D**: Manual CLI is the opposite of minimal operational overhead.
 
-**📖 Textbook ref**: §8 �?CloudFormation, "Infrastructure as Code declarative"; §12 �?CodePipeline, "Source �?Build �?Deploy"
+**📖 Textbook ref**: §8  → CloudFormation, "Infrastructure as Code declarative"; §12  → CodePipeline, "Source  → Build  → Deploy"
 
 ---
 
-## 🔴 Similar Service Comparison �?Answers
+## 🔴 Similar Service Comparison  → Answers
 
 ### A8.12
-**Correct: B** �?CloudFormation Stack.
+**Correct: B**  → CloudFormation Stack.
 
 **Why**: A CloudFormation Stack deploys resources to a single account in a single Region. It's version-controlled (template in source control), repeatable (same template creates identical environments), and is the fundamental IaC primitive. StackSets, Service Catalog, and Config all build on top of this basic unit.
 
 **Why not the others**:
-- **A**: StackSets is for multi-account, multi-Region �?overkill for a single account/Region.
-- **C**: Service Catalog is for governed self-service across an organization �?overkill for one deployment.
+- **A**: StackSets is for multi-account, multi-Region  → overkill for a single account/Region.
+- **C**: Service Catalog is for governed self-service across an organization  → overkill for one deployment.
 - **D**: Config tracks compliance but doesn't deploy resources.
 
-**📖 Textbook ref**: §8 �?Similar Service Comparison, "CloudFormation vs StackSets vs Service Catalog"
+**📖 Textbook ref**: §8  → Similar Service Comparison, "CloudFormation vs StackSets vs Service Catalog"
 
 ---
 
 ### A8.13
-**Correct: B** �?Amazon Data Lifecycle Manager (DLM).
+**Correct: B**  → Amazon Data Lifecycle Manager (DLM).
 
 **Why**: DLM is purpose-built for automating EBS snapshots and AMI creation. It uses lifecycle policies to define schedules, retention rules, and optional cross-account sharing. For EBS + EC2 only, DLM is simpler than AWS Backup (which is a multi-service platform) and more reliable than custom Lambda. If the company later expands to other services, they can migrate to AWS Backup.
 
 **Why not the others**:
-- **A**: AWS Backup works but is a broader platform �?simpler to use DLM when scope is limited to EBS/EC2.
-- **C**: Custom Lambda requires development and maintenance �?not the simplest solution.
+- **A**: AWS Backup works but is a broader platform  → simpler to use DLM when scope is limited to EBS/EC2.
+- **C**: Custom Lambda requires development and maintenance  → not the simplest solution.
 - **D**: CloudFormation doesn't schedule recurring operations; it deploys resources once.
 
-**📖 Textbook ref**: §8 �?Similar Service Comparison, "AWS Backup vs DLM vs Manual Snapshots"; §3 �?EBS, "DLM"
+**📖 Textbook ref**: §8  → Similar Service Comparison, "AWS Backup vs DLM vs Manual Snapshots"; §3  → EBS, "DLM"
 
 ---
 
 ### A8.14
-**Correct: B** �?CloudFormation Drift Detection to detect changes outside CloudFormation.
+**Correct: B**  → CloudFormation Drift Detection to detect changes outside CloudFormation.
 
-**Why**: Drift Detection is specifically designed to answer this question: "Has this resource been changed outside of the CloudFormation stack that manages it?" If the S3 bucket was created via CloudFormation, drift detection will show that its `PublicAccessBlockConfiguration` no longer matches the template definition �?indicating someone changed it outside the approved process. This is more direct than combining CloudTrail + Config.
+**Why**: Drift Detection is specifically designed to answer this question: "Has this resource been changed outside of the CloudFormation stack that manages it?" If the S3 bucket was created via CloudFormation, drift detection will show that its `PublicAccessBlockConfiguration` no longer matches the template definition  → indicating someone changed it outside the approved process. This is more direct than combining CloudTrail + Config.
 
 **Why not the others**:
 - **A**: CloudTrail + Config works but requires correlation: CloudTrail shows who made the `PutBucketPublicAccessBlock` call, Config shows the current state. Drift Detection directly answers "was this changed outside CloudFormation."
 - **C**: CloudWatch logs don't track resource configuration states.
 - **D**: Systems Manager Inventory tracks software inventory on instances, not S3 bucket configurations.
 
-**📖 Textbook ref**: §8 �?CloudFormation, "Drift Detection: Detect when resources changed outside CloudFormation"
+**📖 Textbook ref**: §8  → CloudFormation, "Drift Detection: Detect when resources changed outside CloudFormation"
 
 ---
 

@@ -17,14 +17,14 @@ services:
   - DMS
 ---
 
-# Chapter 4 Practice: 🗄�?Database
+# Chapter 4 Practice: 🗄 → Database
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers and explanations.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` �?Section 4 (RDS, Aurora, DynamoDB, ElastiCache, Other Databases, DMS) + Similar Service Comparison: Database
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md`  → Section 4 (RDS, Aurora, DynamoDB, ElastiCache, Other Databases, DMS) + Similar Service Comparison: Database
 
 ---
 
-# Part A �?Questions
+# Part A  → Questions
 
 ## 🟢 Knowledge Check (8 questions)
 
@@ -115,7 +115,7 @@ How are DynamoDB Write Capacity Units (WCU) calculated?
 ### Q4.9
 
 > 🟡 L2-理解 | 🎤🎤 中频面试
-A company runs a three-tier web application on AWS. The database tier uses RDS for MySQL with a Multi-AZ deployment. During a recent failover test, the application experienced 1�? minutes of downtime while the standby was promoted to primary.
+A company runs a three-tier web application on AWS. The database tier uses RDS for MySQL with a Multi-AZ deployment. During a recent failover test, the application experienced 1 →  minutes of downtime while the standby was promoted to primary.
 
 The company wants to reduce failover time and also reduce the connection overhead from the application's Lambda functions, which frequently open new database connections.
 
@@ -176,7 +176,7 @@ A company stores session state for its web application in ElastiCache for Redis.
 ### Q4.14
 
 > 🟡 L2-理解 | 🎤🎤 中频面试
-An IoT application ingests sensor data at unpredictable rates �?from hundreds of writes per second to millions during peak events. The data model is key-value with JSON documents. The team wants zero capacity planning and automatic scaling.
+An IoT application ingests sensor data at unpredictable rates  → from hundreds of writes per second to millions during peak events. The data model is key-value with JSON documents. The team wants zero capacity planning and automatic scaling.
 
 Which DynamoDB configuration should be used?
 
@@ -276,10 +276,10 @@ An application requires sub-millisecond latency for session data and can use any
 > 🟡 L2-理解 | 🎤🎤 中频面试
 A company's DynamoDB table has highly variable traffic, ranging from near-zero at night to hundreds of thousands of reads per second during the day. The pattern is unpredictable. Which capacity mode should be chosen, and why?
 
-- A. Provisioned capacity �?it is cheaper regardless of traffic pattern
-- B. On-Demand capacity �?it automatically scales to handle unpredictable traffic without capacity planning
-- C. Reserved capacity �?it provides a 72% discount for a 1-year commitment
-- D. Provisioned capacity with scheduled auto scaling �?it adjusts based on a predefined schedule
+- A. Provisioned capacity  → it is cheaper regardless of traffic pattern
+- B. On-Demand capacity  → it automatically scales to handle unpredictable traffic without capacity planning
+- C. Reserved capacity  → it provides a 72% discount for a 1-year commitment
+- D. Provisioned capacity with scheduled auto scaling  → it adjusts based on a predefined schedule
 
 ### Q4.23
 
@@ -307,55 +307,55 @@ Which feature should be enabled to handle the burst query load without resizing 
 
 ---
 
-# Part B �?Answers & Explanations
+# Part B  → Answers & Explanations
 
 > ⚠️ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## 🟢 Knowledge Check �?Answers
+## 🟢 Knowledge Check  → Answers
 
 ### A4.1
-**Correct: B** �?Multi-AZ deployment.
+**Correct: B**  → Multi-AZ deployment.
 
-**Why**: Multi-AZ deploys a synchronous standby replica in a different Availability Zone. When the primary instance fails (hardware, AZ outage, or storage failure), RDS automatically fails over to the standby �?typically within 60�?20 seconds. The database endpoint DNS remains the same, so no application changes are needed.
+**Why**: Multi-AZ deploys a synchronous standby replica in a different Availability Zone. When the primary instance fails (hardware, AZ outage, or storage failure), RDS automatically fails over to the standby  → typically within 60 → 20 seconds. The database endpoint DNS remains the same, so no application changes are needed.
 
 **Why not the others**:
-- **A**: Read Replicas are read-only copies for scaling; they use async replication and cannot automatically fail over �?manual promotion is required.
+- **A**: Read Replicas are read-only copies for scaling; they use async replication and cannot automatically fail over  → manual promotion is required.
 - **C**: Cross-Region Read Replica provides DR across Regions but requires manual promotion (not automatic failover for the primary Region).
 - **D**: RDS Proxy manages connection pooling; it does not provide high availability of the database itself.
 
-**📖 Textbook ref**: §4 �?RDS, "Multi-AZ: Synchronous standby in different AZ"
+**📖 Textbook ref**: §4  → RDS, "Multi-AZ: Synchronous standby in different AZ"
 
 ---
 
 ### A4.2
-**Correct: C** �?15.
+**Correct: C**  → 15.
 
 **Why**: Amazon Aurora supports up to 15 Read Replicas, compared to standard RDS which supports up to 5. The replicas share the same underlying storage layer, enabling fast replica creation (typically minutes) and low replication lag (< 100 ms typical).
 
 **Why not the others**: 5 is the RDS Read Replica limit, not Aurora. 10 and 20 are not the correct limits for any AWS database service.
 
-**📖 Textbook ref**: §4 �?Aurora, "Up to 15 replicas"; Similar Service Comparison table, "Scalability" row
+**📖 Textbook ref**: §4  → Aurora, "Up to 15 replicas"; Similar Service Comparison table, "Scalability" row
 
 ---
 
 ### A4.3
-**Correct: C** �?DynamoDB Global Tables.
+**Correct: C**  → DynamoDB Global Tables.
 
-**Why**: Global Tables provide fully managed multi-active replication �?you can read from and write to any replica table in any Region. DynamoDB automatically replicates writes across Regions with eventual consistency (typically < 1 second). Conflict resolution is last-writer-wins. Each Region's application accesses its local table with single-digit millisecond latency.
+**Why**: Global Tables provide fully managed multi-active replication  → you can read from and write to any replica table in any Region. DynamoDB automatically replicates writes across Regions with eventual consistency (typically < 1 second). Conflict resolution is last-writer-wins. Each Region's application accesses its local table with single-digit millisecond latency.
 
 **Why not the others**:
 - **A**: Streams capture item-level changes and are the underlying technology for Global Tables, but Streams alone require custom code to replicate across Regions.
-- **B**: DAX is an in-memory cache �?it improves read performance within a Region; it does not replicate data across Regions.
+- **B**: DAX is an in-memory cache  → it improves read performance within a Region; it does not replicate data across Regions.
 - **D**: Auto Scaling adjusts provisioned capacity within a single Region; it does not replicate data.
 
-**📖 Textbook ref**: §4 �?DynamoDB, "Global Tables: Multi-active"
+**📖 Textbook ref**: §4  → DynamoDB, "Global Tables: Multi-active"
 
 ---
 
 ### A4.4
-**Correct: A** �?Rewinds the database to a previous point in time without a restore; Aurora MySQL only.
+**Correct: A**  → Rewinds the database to a previous point in time without a restore; Aurora MySQL only.
 
 **Why**: Aurora Backtrack lets you "rewind" the database to a specific point in time within the backtrack window (up to 72 hours), without requiring a full database restore from a backup. This is dramatically faster than point-in-time recovery (which requires restoring from a snapshot and replaying logs). Backtrack is supported only on Aurora MySQL, not Aurora PostgreSQL.
 
@@ -364,262 +364,262 @@ Which feature should be enabled to handle the burst query load without resizing 
 - **C**: This describes database cloning, not Backtrack.
 - **D**: This describes automated backups, not Backtrack.
 
-**📖 Textbook ref**: §4 �?Aurora, "Backtrack: Rewind database WITHOUT restore. Only for Aurora MySQL"
+**📖 Textbook ref**: §4  → Aurora, "Backtrack: Rewind database WITHOUT restore. Only for Aurora MySQL"
 
 ---
 
 ### A4.5
-**Correct: B** �?AWS Schema Conversion Tool (SCT).
+**Correct: B**  → AWS Schema Conversion Tool (SCT).
 
-**Why**: SCT converts database schema objects �?including tables, views, stored procedures, and functions �?from one database engine to another. Oracle �?PostgreSQL involves different data types, PL/SQL vs PL/pgSQL stored procedures, and different system functions, all of which SCT can automatically convert (with an assessment report showing what needs manual intervention). SCT is used alongside DMS for heterogeneous migrations.
+**Why**: SCT converts database schema objects  → including tables, views, stored procedures, and functions  → from one database engine to another. Oracle  → PostgreSQL involves different data types, PL/SQL vs PL/pgSQL stored procedures, and different system functions, all of which SCT can automatically convert (with an assessment report showing what needs manual intervention). SCT is used alongside DMS for heterogeneous migrations.
 
 **Why not the others**:
 - **A**: DMS alone handles homogeneous (same engine) migrations; for heterogeneous (different engine), it needs SCT for schema conversion first. DMS can migrate data but cannot convert schema objects.
-- **C**: DataSync moves files �?it has nothing to do with database schema conversion.
+- **C**: DataSync moves files  → it has nothing to do with database schema conversion.
 - **D**: MGN migrates entire servers (OS + apps + DB), not just the database schema.
 
-**📖 Textbook ref**: §4 �?SCT; §9 �?Migration, "SCT: Heterogeneous Only"
+**📖 Textbook ref**: §4  → SCT; §9  → Migration, "SCT: Heterogeneous Only"
 
 ---
 
 ### A4.6
-**Correct: C** �?DynamoDB Accelerator (DAX).
+**Correct: C**  → DynamoDB Accelerator (DAX).
 
-**Why**: DAX is a fully managed, in-memory cache purpose-built for DynamoDB. It delivers microsecond response times for read-heavy workloads and is a write-through cache (writes go to DynamoDB first, then DAX). It is integrated directly with the DynamoDB API �?no application code changes beyond pointing to the DAX cluster endpoint.
+**Why**: DAX is a fully managed, in-memory cache purpose-built for DynamoDB. It delivers microsecond response times for read-heavy workloads and is a write-through cache (writes go to DynamoDB first, then DAX). It is integrated directly with the DynamoDB API  → no application code changes beyond pointing to the DAX cluster endpoint.
 
 **Why not the others**:
-- **A**: ElastiCache for Redis works with any database but is not specifically optimized for DynamoDB �?it doesn't provide microsecond latency with the DynamoDB API.
+- **A**: ElastiCache for Redis works with any database but is not specifically optimized for DynamoDB  → it doesn't provide microsecond latency with the DynamoDB API.
 - **B**: ElastiCache for Memcached also works with any database but lacks the DynamoDB-specific optimization.
 - **D**: CloudFront is a CDN for HTTP/S content, not a database cache.
 
-**📖 Textbook ref**: §4 �?DynamoDB, "DAX: In-memory cache �?microsecond latency"
+**📖 Textbook ref**: §4  → DynamoDB, "DAX: In-memory cache  → microsecond latency"
 
 ---
 
 ### A4.7
-**Correct: B** �?Amazon DocumentDB.
+**Correct: B**  → Amazon DocumentDB.
 
-**Why**: Amazon DocumentDB is a fully managed, MongoDB-compatible (3.6, 4.0, and 5.0 API) database service. It is designed specifically for existing MongoDB workloads �?applications using MongoDB drivers and tools can connect to DocumentDB with minimal to no code changes.
+**Why**: Amazon DocumentDB is a fully managed, MongoDB-compatible (3.6, 4.0, and 5.0 API) database service. It is designed specifically for existing MongoDB workloads  → applications using MongoDB drivers and tools can connect to DocumentDB with minimal to no code changes.
 
 **Why not the others**:
-- **A**: DynamoDB is a different NoSQL model (key-value/document) �?not MongoDB-compatible.
+- **A**: DynamoDB is a different NoSQL model (key-value/document)  → not MongoDB-compatible.
 - **C**: Aurora does not offer MongoDB compatibility.
 - **D**: RDS does not support MongoDB as an engine.
 
-**📖 Textbook ref**: §4 �?Other Databases, "DocumentDB: MongoDB-compatible"
+**📖 Textbook ref**: §4  → Other Databases, "DocumentDB: MongoDB-compatible"
 
 ---
 
 ### A4.8
-**Correct: B** �?1 WCU = 1 write per second for an item up to 1 KB.
+**Correct: B**  → 1 WCU = 1 write per second for an item up to 1 KB.
 
 **Why**: One Write Capacity Unit (WCU) represents one write request per second for an item up to 1 KB in size. If the item is larger (e.g., 1.5 KB), it consumes 2 WCUs. For transactional writes, each item consumes 2 WCUs (one for the write and one for the transaction log).
 
 **Why not the others**:
-- **A**: 4 KB is the Read Capacity Unit (RCU) size for strongly consistent reads �?not the WCU size.
+- **A**: 4 KB is the Read Capacity Unit (RCU) size for strongly consistent reads  → not the WCU size.
 - **C & D**: These are made-up numbers with no basis in DynamoDB's actual throughput model.
 
-**📖 Textbook ref**: §4 �?DynamoDB, "WCU/RCU: 1 WCU = 1 write/sec for 1 KB item"
+**📖 Textbook ref**: §4  → DynamoDB, "WCU/RCU: 1 WCU = 1 write/sec for 1 KB item"
 
 ---
 
-## 🟡 Scenario Analysis �?Answers
+## 🟡 Scenario Analysis  → Answers
 
 ### A4.9
-**Correct: A** �?Switch to Aurora with RDS Proxy.
+**Correct: A**  → Switch to Aurora with RDS Proxy.
 
-**Why**: Aurora typically provides faster failover than standard RDS Multi-AZ (often < 30 seconds vs 60�?20 seconds for RDS). RDS Proxy pools and shares database connections across Lambda invocations �?Lambda functions can reuse connections instead of opening new ones on every invocation, dramatically reducing connection overhead and allowing more concurrent Lambda functions.
+**Why**: Aurora typically provides faster failover than standard RDS Multi-AZ (often < 30 seconds vs 60 → 20 seconds for RDS). RDS Proxy pools and shares database connections across Lambda invocations  → Lambda functions can reuse connections instead of opening new ones on every invocation, dramatically reducing connection overhead and allowing more concurrent Lambda functions.
 
 **Why not the others**:
 - **B**: Read Replicas help with read scaling, not failover speed or connection pooling.
-- **C**: DynamoDB is NoSQL �?migrating a MySQL application is typically a major refactoring effort, not a quick change.
+- **C**: DynamoDB is NoSQL  → migrating a MySQL application is typically a major refactoring effort, not a quick change.
 - **D**: Larger instances and Provisioned IOPS improve performance, not failover time or connection overhead.
 
-**📖 Textbook ref**: §4 �?Aurora overview; §4 �?RDS Proxy
+**📖 Textbook ref**: §4  → Aurora overview; §4  → RDS Proxy
 
 ---
 
 ### A4.10
-**Correct: B** �?DynamoDB Global Tables.
+**Correct: B**  → DynamoDB Global Tables.
 
-**Why**: Global Tables enable multi-active replication �?users in Asia-Pacific can read from and write to the table in the closest Region (e.g., ap-southeast-1) with single-digit millisecond latency. Writes are automatically replicated to other Regions. The application simply points to the DynamoDB endpoint in its own Region. This is the exact use case Global Tables was designed for.
+**Why**: Global Tables enable multi-active replication  → users in Asia-Pacific can read from and write to the table in the closest Region (e.g., ap-southeast-1) with single-digit millisecond latency. Writes are automatically replicated to other Regions. The application simply points to the DynamoDB endpoint in its own Region. This is the exact use case Global Tables was designed for.
 
 **Why not the others**:
-- **A**: DynamoDB does not have "Cross-Region Read Replicas" �?that is an RDS concept. Global Tables is the DynamoDB multi-Region feature.
-- **C**: Streams with a custom Lambda replicator is a DIY approach that introduces operational overhead �?Global Tables is managed.
-- **D**: DAX improves read latency within a single Region �?it does not solve multi-Region latency for reads and does not solve writes at all.
+- **A**: DynamoDB does not have "Cross-Region Read Replicas"  → that is an RDS concept. Global Tables is the DynamoDB multi-Region feature.
+- **C**: Streams with a custom Lambda replicator is a DIY approach that introduces operational overhead  → Global Tables is managed.
+- **D**: DAX improves read latency within a single Region  → it does not solve multi-Region latency for reads and does not solve writes at all.
 
-**📖 Textbook ref**: §4 �?DynamoDB, "Global Tables: Multi-active (read/write to any Region)"
+**📖 Textbook ref**: §4  → DynamoDB, "Global Tables: Multi-active (read/write to any Region)"
 
 ---
 
 ### A4.11
-**Correct: B and E** �?Aurora Global Database + Automated backups with point-in-time recovery.
+**Correct: B and E**  → Aurora Global Database + Automated backups with point-in-time recovery.
 
 **Why**:
 - **B (Global Database)**: Provides cross-Region disaster recovery with < 1 second typical replication lag, achieving the ~1 second RPO. The secondary Region can be promoted to primary in < 1 minute (RTO).
 - **E (Automated backups with PITR)**: Aurora automated backups support point-in-time recovery to any second within the retention period (up to 35 days). This satisfies the 24-hour PITR requirement.
 
 **Why not the others**:
-- **A**: Backtrack provides fast rewind without restore, but it's only for Aurora MySQL and has a maximum window of 72 hours �?it doesn't provide cross-Region DR.
+- **A**: Backtrack provides fast rewind without restore, but it's only for Aurora MySQL and has a maximum window of 72 hours  → it doesn't provide cross-Region DR.
 - **C**: Auto Scaling adds read replicas for performance, not DR or PITR.
 - **D**: Serverless v2 handles variable capacity, not DR or PITR.
 
-**📖 Textbook ref**: §4 �?Aurora, "Global Database" and "Backtrack"
+**📖 Textbook ref**: §4  → Aurora, "Global Database" and "Backtrack"
 
 ---
 
 ### A4.12
-**Correct: C** �?Use AWS DMS with ongoing replication (CDC).
+**Correct: C**  → Use AWS DMS with ongoing replication (CDC).
 
 **Why**: DMS with Change Data Capture (CDC) performs an initial full load of the source database, then continuously replicates ongoing changes. The source database remains fully operational throughout. When ready for cutover, you stop application writes to the source, let DMS catch up the final few transactions, and switch the application to the RDS endpoint. This achieves minimal downtime (minutes rather than hours).
 
 **Why not the others**:
-- **A**: mysqldump requires significant downtime �?the source must be locked or made read-only during export and import.
-- **B**: DataSync moves files �?it cannot replicate a live database with ongoing transactions.
-- **D**: SCT is for schema conversion between different engines (heterogeneous). MySQL �?RDS MySQL is homogeneous �?SCT is not needed.
+- **A**: mysqldump requires significant downtime  → the source must be locked or made read-only during export and import.
+- **B**: DataSync moves files  → it cannot replicate a live database with ongoing transactions.
+- **D**: SCT is for schema conversion between different engines (heterogeneous). MySQL  → RDS MySQL is homogeneous  → SCT is not needed.
 
-**📖 Textbook ref**: §4 �?DMS; §9 �?Migration, "DMS: CDC for minimal downtime"
+**📖 Textbook ref**: §4  → DMS; §9  → Migration, "DMS: CDC for minimal downtime"
 
 ---
 
 ### A4.13
-**Correct: B** �?Redis cluster with Multi-AZ enabled and automatic failover.
+**Correct: B**  → Redis cluster with Multi-AZ enabled and automatic failover.
 
-**Why**: ElastiCache for Redis with Multi-AZ provides automatic failover �?a read replica in a different AZ is automatically promoted to primary if the primary fails or the AZ becomes unavailable. Since Redis with Multi-AZ replicates data to the replica, session data is preserved. The failover process is transparent to the application.
+**Why**: ElastiCache for Redis with Multi-AZ provides automatic failover  → a read replica in a different AZ is automatically promoted to primary if the primary fails or the AZ becomes unavailable. Since Redis with Multi-AZ replicates data to the replica, session data is preserved. The failover process is transparent to the application.
 
 **Why not the others**:
-- **A**: A single-node cluster has no replication �?losing the node means losing all session data.
+- **A**: A single-node cluster has no replication  → losing the node means losing all session data.
 - **C**: Cluster mode is for horizontal scaling (partitioning data across shards), not high availability per se.
 - **D**: Encryption alone does not provide data durability during an AZ failure.
 
-**📖 Textbook ref**: §4 �?ElastiCache, "Redis: Multi-AZ with auto-failover"
+**📖 Textbook ref**: §4  → ElastiCache, "Redis: Multi-AZ with auto-failover"
 
 ---
 
 ### A4.14
-**Correct: B** �?DynamoDB with On-Demand Capacity mode.
+**Correct: B**  → DynamoDB with On-Demand Capacity mode.
 
-**Why**: On-Demand capacity mode automatically scales to handle any volume of traffic �?from zero to millions of requests per second �?without capacity planning. You pay per request (about 2x the provisioned cost for steady-state workloads). For unpredictable IoT ingestion with extreme peaks, On-Demand eliminates the risk of throttling during surprise events and the overhead of managing auto scaling.
+**Why**: On-Demand capacity mode automatically scales to handle any volume of traffic  → from zero to millions of requests per second  → without capacity planning. You pay per request (about 2x the provisioned cost for steady-state workloads). For unpredictable IoT ingestion with extreme peaks, On-Demand eliminates the risk of throttling during surprise events and the overhead of managing auto scaling.
 
 **Why not the others**:
 - **A**: Provisioned capacity with auto scaling is cheaper for predictable workloads, but auto scaling reacts to metrics and may not scale fast enough for a sudden million-write spike.
-- **C**: Reserved Capacity is a billing discount for provisioned capacity �?it doesn't help with unpredictable scaling.
-- **D**: DAX is a read cache �?it does not buffer or scale writes.
+- **C**: Reserved Capacity is a billing discount for provisioned capacity  → it doesn't help with unpredictable scaling.
+- **D**: DAX is a read cache  → it does not buffer or scale writes.
 
-**📖 Textbook ref**: §4 �?DynamoDB, "Capacity Modes: Provisioned vs On-Demand"
+**📖 Textbook ref**: §4  → DynamoDB, "Capacity Modes: Provisioned vs On-Demand"
 
 ---
 
 ### A4.15
-**Correct: C** �?Babelfish for Aurora PostgreSQL.
+**Correct: C**  → Babelfish for Aurora PostgreSQL.
 
-**Why**: Babelfish is a feature of Aurora PostgreSQL that enables SQL Server applications to run with minimal code changes. It provides T-SQL compatibility �?stored procedures, functions, data types, and SQL dialect are mostly compatible with SQL Server. This allows the company to switch from SQL Server licensing to the more cost-effective Aurora PostgreSQL, while keeping T-SQL and minimizing application changes.
+**Why**: Babelfish is a feature of Aurora PostgreSQL that enables SQL Server applications to run with minimal code changes. It provides T-SQL compatibility  → stored procedures, functions, data types, and SQL dialect are mostly compatible with SQL Server. This allows the company to switch from SQL Server licensing to the more cost-effective Aurora PostgreSQL, while keeping T-SQL and minimizing application changes.
 
 **Why not the others**:
-- **A & B**: These keep the company on SQL Server with its higher licensing costs �?the question says they want to reduce licensing costs.
-- **D**: DMS + SCT converting to MySQL would require rewriting T-SQL to MySQL dialect �?much more code change than Babelfish.
+- **A & B**: These keep the company on SQL Server with its higher licensing costs  → the question says they want to reduce licensing costs.
+- **D**: DMS + SCT converting to MySQL would require rewriting T-SQL to MySQL dialect  → much more code change than Babelfish.
 
-**📖 Textbook ref**: §4 �?Aurora, "Babelfish: Run SQL Server applications on Aurora PostgreSQL"
+**📖 Textbook ref**: §4  → Aurora, "Babelfish: Run SQL Server applications on Aurora PostgreSQL"
 
 ---
 
 ### A4.16
-**Correct: C** �?IAM policy with fine-grained access control for specific DynamoDB attributes.
+**Correct: C**  → IAM policy with fine-grained access control for specific DynamoDB attributes.
 
 **Why**: DynamoDB supports attribute-level access control through IAM policies. Using the `dynamodb:Attributes` condition key, you can restrict which attributes (columns) a role can read or write. For example, the `CustomerService` role can read/write customer ID and order history but NOT phone number or email, while the `Admin` role has full access. This is enforced at the DynamoDB API level.
 
 **Why not the others**:
 - **A**: Encryption protects data at rest but does not control which IAM roles can see which attributes.
 - **B**: VPC Endpoint policies control network-level access, not attribute-level permissions.
-- **D**: Streams capture changes �?they have nothing to do with access control.
+- **D**: Streams capture changes  → they have nothing to do with access control.
 
-**📖 Textbook ref**: §4 �?DynamoDB, "Attribute-Level Access Control"
+**📖 Textbook ref**: §4  → DynamoDB, "Attribute-Level Access Control"
 
 ---
 
 ### A4.17
-**Correct: B** �?SCT to assess and convert the schema, then DMS with CDC for data migration.
+**Correct: B**  → SCT to assess and convert the schema, then DMS with CDC for data migration.
 
-**Why**: This is the standard heterogeneous migration pattern: (1) SCT analyzes the source Oracle schema, converts it to Aurora PostgreSQL including stored procedures (PL/SQL �?PL/pgSQL), custom data types, and views. It generates an assessment report showing what auto-converted vs. needs manual attention. (2) DMS with CDC performs the data migration with ongoing replication for minimal cutover downtime. Both steps together handle schema + data for a complex Oracle �?Aurora PostgreSQL migration.
+**Why**: This is the standard heterogeneous migration pattern: (1) SCT analyzes the source Oracle schema, converts it to Aurora PostgreSQL including stored procedures (PL/SQL  → PL/pgSQL), custom data types, and views. It generates an assessment report showing what auto-converted vs. needs manual attention. (2) DMS with CDC performs the data migration with ongoing replication for minimal cutover downtime. Both steps together handle schema + data for a complex Oracle  → Aurora PostgreSQL migration.
 
 **Why not the others**:
-- **A**: DMS alone cannot convert Oracle schema (PL/SQL, types, views) to PostgreSQL �?that requires SCT.
+- **A**: DMS alone cannot convert Oracle schema (PL/SQL, types, views) to PostgreSQL  → that requires SCT.
 - **C**: DataSync is for files, not database schemas.
-- **D**: VM Import brings the entire Oracle server to EC2 �?this is rehosting, not migrating to Aurora PostgreSQL.
+- **D**: VM Import brings the entire Oracle server to EC2  → this is rehosting, not migrating to Aurora PostgreSQL.
 
-**📖 Textbook ref**: §4 �?DMS and SCT; §9 �?Migration, "SCT + DMS for heterogeneous"
+**📖 Textbook ref**: §4  → DMS and SCT; §9  → Migration, "SCT + DMS for heterogeneous"
 
 ---
 
 ### A4.18
-**Correct: A** �?Aurora Auto Scaling for Read Replicas.
+**Correct: A**  → Aurora Auto Scaling for Read Replicas.
 
 **Why**: Aurora Auto Scaling dynamically adjusts the number of Read Replicas based on load. During monthly reporting (3x traffic), Aurora adds replicas to handle the read-heavy reporting workload. During normal operations, it scales back down to the minimum. The application must direct read traffic to the reader endpoint. For write scaling, the compute on the primary may need adjustment, but the 3x spike is described as reporting (typically read-heavy).
 
 **Why not the others**:
-- **B**: Aurora Serverless v2 scales compute (ACUs) dynamically �?it could handle the spikes but is more appropriate for unpredictable (not predictable monthly) workloads, and may be more expensive than provisioned + auto scaling for steady-state with known peaks.
+- **B**: Aurora Serverless v2 scales compute (ACUs) dynamically  → it could handle the spikes but is more appropriate for unpredictable (not predictable monthly) workloads, and may be more expensive than provisioned + auto scaling for steady-state with known peaks.
 - **C**: Cross-Region Read Replicas are for global distribution, not handling load spikes.
-- **D**: Provisioned IOPS on the cluster volume is not a feature �?Aurora storage auto-scales and has distributed IOPS built in.
+- **D**: Provisioned IOPS on the cluster volume is not a feature  → Aurora storage auto-scales and has distributed IOPS built in.
 
-**📖 Textbook ref**: §4 �?Aurora, "Auto Scaling: Read replicas auto-scale based on load"
+**📖 Textbook ref**: §4  → Aurora, "Auto Scaling: Read replicas auto-scale based on load"
 
 ---
 
-## 🔴 Similar Service Comparison �?Answers
+## 🔴 Similar Service Comparison  → Answers
 
 ### A4.19
-**Correct: B** �?RDS or Aurora (relational database).
+**Correct: B**  → RDS or Aurora (relational database).
 
 **Why**: The workload explicitly requires complex JOINs across multiple tables, ACID transactions, and has a predictable access pattern. These are classic relational database requirements. DynamoDB is a NoSQL key-value/document store that does not support complex JOINs or native ACID transactions across multiple items/tables (it supports transactions within a single table and across tables, but not the complex multi-table JOINs that are fundamental to relational databases).
 
 **Why not the others**:
-- **A & C**: DynamoDB is not suitable for complex JOINs �?data must be modeled to avoid JOINs entirely.
+- **A & C**: DynamoDB is not suitable for complex JOINs  → data must be modeled to avoid JOINs entirely.
 - **D**: ElastiCache is an in-memory cache, not a primary database for persistent, transactional data.
 
-**📖 Textbook ref**: §4 �?Similar Service Comparison, "RDS vs Aurora vs DynamoDB" �?Data model row
+**📖 Textbook ref**: §4  → Similar Service Comparison, "RDS vs Aurora vs DynamoDB"  → Data model row
 
 ---
 
 ### A4.20
-**Correct: B** �?DMS alone for MySQL; SCT + DMS for Oracle.
+**Correct: B**  → DMS alone for MySQL; SCT + DMS for Oracle.
 
-**Why**: MySQL 5.7 �?MySQL 8.0 (RDS) is a homogeneous migration �?the source and target engines are the same family. DMS handles the data migration alone (schema is compatible). Oracle 12c �?Aurora PostgreSQL is a heterogeneous migration �?different engines with incompatible schemas. SCT must convert the Oracle schema (PL/SQL, data types, etc.) to PostgreSQL first, then DMS migrates the data.
+**Why**: MySQL 5.7  → MySQL 8.0 (RDS) is a homogeneous migration  → the source and target engines are the same family. DMS handles the data migration alone (schema is compatible). Oracle 12c  → Aurora PostgreSQL is a heterogeneous migration  → different engines with incompatible schemas. SCT must convert the Oracle schema (PL/SQL, data types, etc.) to PostgreSQL first, then DMS migrates the data.
 
 **Why not the others**:
-- **A**: DMS alone cannot handle heterogeneous (Oracle �?PostgreSQL) �?schema conversion is needed.
-- **C**: Reversed �?SCT is needed for the heterogeneous migration (Oracle), not the homogeneous one (MySQL).
+- **A**: DMS alone cannot handle heterogeneous (Oracle  → PostgreSQL)  → schema conversion is needed.
+- **C**: Reversed  → SCT is needed for the heterogeneous migration (Oracle), not the homogeneous one (MySQL).
 - **D**: DataSync is not a database migration tool.
 
-**📖 Textbook ref**: §4 �?Similar Service Comparison, "DMS vs DataSync vs SCT"; §4 �?SCT, "Heterogeneous Only"
+**📖 Textbook ref**: §4  → Similar Service Comparison, "DMS vs DataSync vs SCT"; §4  → SCT, "Heterogeneous Only"
 
 ---
 
 ### A4.21
-**Correct: B** �?Amazon ElastiCache for Redis.
+**Correct: B**  → Amazon ElastiCache for Redis.
 
 **Why**: ElastiCache works with ANY database or application. It connects to RDS for PostgreSQL, caches query results and session data, and provides sub-millisecond response times. Redis supports rich data structures ideal for session management (hashes, strings with TTL). It is the universal caching solution for relational databases.
 
 **Why not the others**:
-- **A**: DAX is purpose-built for DynamoDB ONLY �?it cannot cache data from RDS, Aurora, or any other database.
-- **C**: CloudFront caches HTTP/S content at the edge �?not database query results or sessions.
-- **D**: Read Replicas are read-only copies of the database �?they do not provide sub-millisecond caching and are for read scaling, not caching.
+- **A**: DAX is purpose-built for DynamoDB ONLY  → it cannot cache data from RDS, Aurora, or any other database.
+- **C**: CloudFront caches HTTP/S content at the edge  → not database query results or sessions.
+- **D**: Read Replicas are read-only copies of the database  → they do not provide sub-millisecond caching and are for read scaling, not caching.
 
-**📖 Textbook ref**: §4 �?Similar Service Comparison, "ElastiCache vs DAX vs CloudFront Caching"
+**📖 Textbook ref**: §4  → Similar Service Comparison, "ElastiCache vs DAX vs CloudFront Caching"
 
 ---
 
 ### A4.22
-**Correct: B** �?On-Demand capacity �?it automatically scales to handle unpredictable traffic without capacity planning.
+**Correct: B**  → On-Demand capacity  → it automatically scales to handle unpredictable traffic without capacity planning.
 
-**Why**: On-Demand mode is designed for workloads with unpredictable traffic patterns. It instantly scales to accommodate any volume (up to virtually unlimited throughput) �?no provisioning, no auto scaling policies, no throttling when traffic exceeds provisioned capacity. The trade-off is cost: On-Demand is approximately 2x the price of fully utilized provisioned capacity for steady-state workloads.
+**Why**: On-Demand mode is designed for workloads with unpredictable traffic patterns. It instantly scales to accommodate any volume (up to virtually unlimited throughput)  → no provisioning, no auto scaling policies, no throttling when traffic exceeds provisioned capacity. The trade-off is cost: On-Demand is approximately 2x the price of fully utilized provisioned capacity for steady-state workloads.
 
 **Why not the others**:
-- **A**: Provisioned is cheaper for steady/predictable workloads �?but this scenario is explicitly unpredictable.
-- **C**: Reserved capacity is a billing discount on provisioned capacity �?it still requires capacity planning.
-- **D**: Scheduled auto scaling requires a PREDICTABLE schedule �?the scenario says unpredictable.
+- **A**: Provisioned is cheaper for steady/predictable workloads  → but this scenario is explicitly unpredictable.
+- **C**: Reserved capacity is a billing discount on provisioned capacity  → it still requires capacity planning.
+- **D**: Scheduled auto scaling requires a PREDICTABLE schedule  → the scenario says unpredictable.
 
-**📖 Textbook ref**: §4 �?DynamoDB, "Capacity Modes"; §4 �?Similar Service Comparison, "Serverless" row for DynamoDB
+**📖 Textbook ref**: §4  → DynamoDB, "Capacity Modes"; §4  → Similar Service Comparison, "Serverless" row for DynamoDB
 
 ---
 
