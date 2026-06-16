@@ -13,21 +13,21 @@ services:
   - CodeCommit
 ---
 
-# Chapter 12 Practice: ğŸ› ï¸?Developer Tools â€?Your Expertise Zone!
+# Chapter 12 Practice: ğŸ› ï¿½?Developer Tools ï¿½?Your Expertise Zone!
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 12 (CodeDeploy, CodePipeline, CodeBuild, CodeCommit) + Similar Service Comparison: CI/CD
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 12 (CodeDeploy, CodePipeline, CodeBuild, CodeCommit) + Similar Service Comparison: CI/CD
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ğŸŸ¢ Knowledge Check (2 questions)
 
 ### Q12.1
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-A deployment to EC2 must shift traffic incrementally â€?10% of traffic first, then monitor for 10 minutes, then 100%. If CloudWatch alarms trigger during the test, the deployment must automatically roll back. Which CodeDeploy deployment type should be used?
+A deployment to EC2 must shift traffic incrementally ï¿½?10% of traffic first, then monitor for 10 minutes, then 100%. If CloudWatch alarms trigger during the test, the deployment must automatically roll back. Which CodeDeploy deployment type should be used?
 
 - A. Blue/Green deployment
 - B. Canary deployment (linear traffic shifting)
@@ -91,7 +91,7 @@ Which CodeDeploy configuration provides this? (Choose two.)
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
 A company uses three distinct AWS developer tools. Match each tool to its purpose:
 - Tool X: Compiles code, runs unit tests, produces a deployable artifact
-- Tool Y: Orchestrates the flow from source â†?build â†?staging â†?production
+- Tool Y: Orchestrates the flow from source ï¿½?build ï¿½?staging ï¿½?production
 - Tool Z: Manages the deployment strategy (blue/green, canary) to compute resources
 
 Which mapping is correct?
@@ -104,7 +104,7 @@ Which mapping is correct?
 ### Q12.7
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-An Azure DevOps engineer (you!) is learning AWS CI/CD. You use Azure Pipelines for end-to-end CI/CD â€?source control, build, and release management in one YAML pipeline. In AWS, which single service is the closest equivalent to the entire Azure Pipelines workflow?
+An Azure DevOps engineer (you!) is learning AWS CI/CD. You use Azure Pipelines for end-to-end CI/CD ï¿½?source control, build, and release management in one YAML pipeline. In AWS, which single service is the closest equivalent to the entire Azure Pipelines workflow?
 
 - A. AWS CodeBuild
 - B. AWS CodeDeploy
@@ -113,82 +113,82 @@ An Azure DevOps engineer (you!) is learning AWS CI/CD. You use Azure Pipelines f
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ğŸŸ¢ Knowledge Check â€?Answers
+## ğŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A12.1
-**Correct: B** â€?Canary deployment (linear traffic shifting).
+**Correct: B** ï¿½?Canary deployment (linear traffic shifting).
 
 **Why**: CodeDeploy canary deployments shift traffic incrementally in defined percentages (e.g., 10%, then 100%) with a bake time between each increment. If CloudWatch alarms trigger at any point, CodeDeploy automatically rolls back the deployment. This is the exact pattern described in the scenario.
 
 **Why not the others**: Blue/Green replaces the entire fleet at once. In-place updates instances progressively but doesn't do incremental traffic shifting with bake times.
 
-**ğŸ“– Textbook ref**: Â§12 â€?CodeDeploy, "Canary Deployments: Shift traffic incrementally with auto rollback"
+**ğŸ“– Textbook ref**: Â§12 ï¿½?CodeDeploy, "Canary Deployments: Shift traffic incrementally with auto rollback"
 
 ---
 
 ### A12.2
-**Correct: B** â€?buildspec.yml.
+**Correct: B** ï¿½?buildspec.yml.
 
 **Why**: buildspec.yml is the CodeBuild configuration file. It defines the build phases (install, pre_build, build, post_build), artifacts to output, and cache settings for speeding up subsequent builds. appspec.yml is for CodeDeploy, not CodeBuild.
 
-**ğŸ“– Textbook ref**: Â§12 â€?CodeBuild, "buildspec.yml"
+**ğŸ“– Textbook ref**: Â§12 ï¿½?CodeBuild, "buildspec.yml"
 
 ---
 
-## ğŸŸ¡ Scenario Analysis â€?Answers
+## ğŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A12.3
-**Correct: C** â€?AWS CodePipeline.
+**Correct: C** ï¿½?AWS CodePipeline.
 
-**Why**: CodePipeline is the CI/CD orchestrator â€?it coordinates the entire flow: source stage (CodeCommit) â†?build stage (CodeBuild, including Docker build + ECR push) â†?deploy stage (CodeDeploy, blue/green to ECS). CodePipeline manages the transitions, passes artifacts between stages, and handles pipeline-level triggers.
+**Why**: CodePipeline is the CI/CD orchestrator ï¿½?it coordinates the entire flow: source stage (CodeCommit) ï¿½?build stage (CodeBuild, including Docker build + ECR push) ï¿½?deploy stage (CodeDeploy, blue/green to ECS). CodePipeline manages the transitions, passes artifacts between stages, and handles pipeline-level triggers.
 
-**ğŸ“– Textbook ref**: Â§12 â€?CodePipeline, "CI/CD orchestration"; Â§12 â€?Similar Service Comparison table
+**ğŸ“– Textbook ref**: Â§12 ï¿½?CodePipeline, "CI/CD orchestration"; Â§12 ï¿½?Similar Service Comparison table
 
 ---
 
 ### A12.4
-**Correct: D** â€?ValidateService.
+**Correct: D** ï¿½?ValidateService.
 
 **Why**: The ValidateService hook runs AFTER the application has started successfully but BEFORE traffic is routed to the new instances. It's designed specifically for running validation tests before declaring the deployment successful. If the validation fails, the deployment is marked as failed and can be configured to roll back.
 
 **Why not the others**: BeforeInstall runs before the old app is stopped. AfterInstall runs after the new app is installed but before it starts. ApplicationStart runs when the app starts.
 
-**ğŸ“– Textbook ref**: Â§12 â€?CodeDeploy, "Deployment Hooks"
+**ğŸ“– Textbook ref**: Â§12 ï¿½?CodeDeploy, "Deployment Hooks"
 
 ---
 
 ### A12.5
-**Correct: A and B** â€?Rollback on deployment failure + CloudWatch alarm monitoring.
+**Correct: A and B** ï¿½?Rollback on deployment failure + CloudWatch alarm monitoring.
 
-**Why**: CodeDeploy supports two rollback triggers: (A) If any instance fails deployment, CodeDeploy can automatically stop and roll back. (B) You can associate CloudWatch alarms with the deployment group â€?if an alarm triggers (e.g., high error rate), CodeDeploy rolls back. Both are configured in the deployment group settings.
+**Why**: CodeDeploy supports two rollback triggers: (A) If any instance fails deployment, CodeDeploy can automatically stop and roll back. (B) You can associate CloudWatch alarms with the deployment group ï¿½?if an alarm triggers (e.g., high error rate), CodeDeploy rolls back. Both are configured in the deployment group settings.
 
-**ğŸ“– Textbook ref**: Â§12 â€?CodeDeploy, "Canary Deployments: automatic rollback on alarm"
+**ğŸ“– Textbook ref**: Â§12 ï¿½?CodeDeploy, "Canary Deployments: automatic rollback on alarm"
 
 ---
 
-## ğŸ”´ Similar Service Comparison â€?Answers
+## ğŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A12.6
-**Correct: B** â€?X=CodeBuild, Y=CodePipeline, Z=CodeDeploy.
+**Correct: B** ï¿½?X=CodeBuild, Y=CodePipeline, Z=CodeDeploy.
 
-**Why**: CodeBuild = build/test/package (compile + artifact). CodePipeline = orchestration (source â†?build â†?test â†?deploy flow). CodeDeploy = deployment strategy (blue/green, canary, rolling to EC2/Lambda/ECS).
+**Why**: CodeBuild = build/test/package (compile + artifact). CodePipeline = orchestration (source ï¿½?build ï¿½?test ï¿½?deploy flow). CodeDeploy = deployment strategy (blue/green, canary, rolling to EC2/Lambda/ECS).
 
-**ğŸ“– Textbook ref**: Â§12 â€?Similar Service Comparison table
+**ğŸ“– Textbook ref**: Â§12 ï¿½?Similar Service Comparison table
 
 ---
 
 ### A12.7
-**Correct: C** â€?AWS CodePipeline.
+**Correct: C** ï¿½?AWS CodePipeline.
 
-**Why**: CodePipeline is conceptually the closest single service to the entire Azure Pipelines workflow â€?it orchestrates source, build, and deploy stages. However, the more precise answer is that CodePipeline + CodeBuild + CodeDeploy together = one Azure Pipeline. But given the choice of a "single service," CodePipeline is the orchestrator, analogous to how Azure Pipelines orchestrates the entire CI/CD flow.
+**Why**: CodePipeline is conceptually the closest single service to the entire Azure Pipelines workflow ï¿½?it orchestrates source, build, and deploy stages. However, the more precise answer is that CodePipeline + CodeBuild + CodeDeploy together = one Azure Pipeline. But given the choice of a "single service," CodePipeline is the orchestrator, analogous to how Azure Pipelines orchestrates the entire CI/CD flow.
 
-**ğŸ“– Textbook ref**: Â§12 â€?CodePipeline, "Your core expertise!"
+**ğŸ“– Textbook ref**: Â§12 ï¿½?CodePipeline, "Your core expertise!"
 
 ---
 

@@ -18,11 +18,11 @@ services:
 # Chapter 3 Practice: ðŸ’¾ Storage
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers and explanations.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 3 (S3, EBS, EFS, FSx, Storage Gateway, Transfer Family) + Similar Service Comparison: Storage & Data Transfer
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 3 (S3, EBS, EFS, FSx, Storage Gateway, Transfer Family) + Similar Service Comparison: Storage & Data Transfer
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ðŸŸ¢ Knowledge Check (7 questions)
 
@@ -183,7 +183,7 @@ Which service and configuration should be used?
 ### Q3.15
 
 > ðŸŸ¡ L2-ç†è§£ | ðŸŽ¤ðŸŽ¤ ä¸­é¢‘é¢è¯•
-A company has 500 GB of small log files (average 10 KB each) stored in S3 Standard. Access patterns are unpredictable â€?some files are accessed daily, others sit untouched for months. The company wants to optimize costs without analyzing access patterns or creating lifecycle rules.
+A company has 500 GB of small log files (average 10 KB each) stored in S3 Standard. Access patterns are unpredictable ï¿½?some files are accessed daily, others sit untouched for months. The company wants to optimize costs without analyzing access patterns or creating lifecycle rules.
 
 Which S3 feature should be used?
 
@@ -230,272 +230,272 @@ A company wants to run a Windows application on EC2 that requires shared file st
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ðŸŸ¢ Knowledge Check â€?Answers
+## ðŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A3.1
-**Correct: C** â€?S3 Glacier Deep Archive.
+**Correct: C** ï¿½?S3 Glacier Deep Archive.
 
-**Why**: Glacier Deep Archive is the lowest-cost S3 storage class, designed for long-term retention of data that is rarely accessed. Standard retrieval time is up to 12 hours (Bulk retrieval is 48 hours). It costs approximately $0.00099/GB/month â€?about 1/10th the cost of S3 Standard. This is ideal for 7-year audit log retention.
+**Why**: Glacier Deep Archive is the lowest-cost S3 storage class, designed for long-term retention of data that is rarely accessed. Standard retrieval time is up to 12 hours (Bulk retrieval is 48 hours). It costs approximately $0.00099/GB/month ï¿½?about 1/10th the cost of S3 Standard. This is ideal for 7-year audit log retention.
 
 **Why not the others**:
-- **A**: Standard-IA is for infrequent access (millisecond retrieval) â€?far more expensive than Deep Archive for rarely accessed data.
+- **A**: Standard-IA is for infrequent access (millisecond retrieval) ï¿½?far more expensive than Deep Archive for rarely accessed data.
 - **B**: Glacier Flexible Retrieval offers faster retrieval (minutes to hours) at a higher cost than Deep Archive.
 - **D**: One Zone-IA stores data in a single AZ (not durable against AZ failure) and is not the cheapest option for archival.
 
-**ðŸ“– Textbook ref**: Â§3 â€?S3, "Storage Classes: Glacier Deep Archive (12 hrs, cheapest)"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?S3, "Storage Classes: Glacier Deep Archive (12 hrs, cheapest)"
 
 ---
 
 ### A3.2
-**Correct: B** â€?CRR requires versioning to be enabled on both the source and destination buckets.
+**Correct: B** ï¿½?CRR requires versioning to be enabled on both the source and destination buckets.
 
-**Why**: S3 CRR automatically replicates new objects (and optionally existing objects) from a source bucket to a destination bucket in a different Region. A prerequisite is that versioning must be enabled on both buckets. Replication is ongoing and near real-time â€?it's not a one-time sync.
+**Why**: S3 CRR automatically replicates new objects (and optionally existing objects) from a source bucket to a destination bucket in a different Region. A prerequisite is that versioning must be enabled on both buckets. Replication is ongoing and near real-time ï¿½?it's not a one-time sync.
 
 **Why not the others**:
 - **A**: Versioning IS required on the destination bucket as well as the source.
 - **C**: With S3 Batch Replication, existing objects CAN be replicated. Without it, only new objects are replicated.
 - **D**: CRR is ongoing replication, not one-time. S3 Sync (CLI) is one-time.
 
-**ðŸ“– Textbook ref**: Â§3 â€?S3, "S3 Replication: CRR requires versioning on both source and destination"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?S3, "S3 Replication: CRR requires versioning on both source and destination"
 
 ---
 
 ### A3.3
-**Correct: C** â€?Amazon EFS (Elastic File System).
+**Correct: C** ï¿½?Amazon EFS (Elastic File System).
 
-**Why**: EFS is a fully managed NFS file system that is Regional (accessible from any AZ in the Region). It automatically scales as data is added or removed â€?no capacity provisioning needed. Hundreds or thousands of EC2 instances can mount the same EFS file system simultaneously. It is Linux-only (NFSv4 protocol).
+**Why**: EFS is a fully managed NFS file system that is Regional (accessible from any AZ in the Region). It automatically scales as data is added or removed ï¿½?no capacity provisioning needed. Hundreds or thousands of EC2 instances can mount the same EFS file system simultaneously. It is Linux-only (NFSv4 protocol).
 
 **Why not the others**:
-- **A**: S3 is object storage, not a mountable POSIX file system â€?mounting S3 as a file system via third-party tools adds complexity and latency.
+- **A**: S3 is object storage, not a mountable POSIX file system ï¿½?mounting S3 as a file system via third-party tools adds complexity and latency.
 - **B**: EBS Multi-Attach (io2 only) supports a limited number of instances within a single AZ.
-- **D**: FSx for Windows uses SMB, not NFS â€?SMB is for Windows, NFS is for Linux.
+- **D**: FSx for Windows uses SMB, not NFS ï¿½?SMB is for Windows, NFS is for Linux.
 
-**ðŸ“– Textbook ref**: Â§3 â€?EFS, "Multi-AZ: Regional â€?accessible from any AZ"; Similar Service Comparison, "S3 vs EBS vs EFS vs FSx"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?EFS, "Multi-AZ: Regional ï¿½?accessible from any AZ"; Similar Service Comparison, "S3 vs EBS vs EFS vs FSx"
 
 ---
 
 ### A3.4
-**Correct: B** â€?EBS volumes are AZ-scoped; snapshots are Region-scoped (stored in S3).
+**Correct: B** ï¿½?EBS volumes are AZ-scoped; snapshots are Region-scoped (stored in S3).
 
-**Why**: An EBS volume exists in a single Availability Zone and can only be attached to EC2 instances in that same AZ (except io2 Multi-Attach, which is still AZ-limited). EBS snapshots are stored in Amazon S3 (invisible to you as EBS resources), which is Regionally resilient â€?snapshots are available from any AZ in the Region. You can create a new volume from a snapshot in any AZ in the same Region.
+**Why**: An EBS volume exists in a single Availability Zone and can only be attached to EC2 instances in that same AZ (except io2 Multi-Attach, which is still AZ-limited). EBS snapshots are stored in Amazon S3 (invisible to you as EBS resources), which is Regionally resilient ï¿½?snapshots are available from any AZ in the Region. You can create a new volume from a snapshot in any AZ in the same Region.
 
 **Why not the others**:
-- **A**: Snapshots are not AZ-scoped â€?they live in S3 and work cross-AZ.
-- **C & D**: Both are wrong â€?volumes are AZ-scoped, snapshots are Region-scoped.
+- **A**: Snapshots are not AZ-scoped ï¿½?they live in S3 and work cross-AZ.
+- **C & D**: Both are wrong ï¿½?volumes are AZ-scoped, snapshots are Region-scoped.
 
-**ðŸ“– Textbook ref**: Â§3 â€?EBS, "Azure Bridge: EBS is AZ-scoped"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?EBS, "Azure Bridge: EBS is AZ-scoped"
 
 ---
 
 ### A3.5
-**Correct: C** â€?AWS Transfer Family.
+**Correct: C** ï¿½?AWS Transfer Family.
 
-**Why**: AWS Transfer Family is a fully managed service that provides SFTP, FTPS, and FTP interfaces backed by S3 (or EFS). No servers to manage â€?you configure the endpoint, authenticate users (Service Managed, AD, or custom IdP), and files are stored directly in S3. This is the serverless, managed approach to file transfer.
+**Why**: AWS Transfer Family is a fully managed service that provides SFTP, FTPS, and FTP interfaces backed by S3 (or EFS). No servers to manage ï¿½?you configure the endpoint, authenticate users (Service Managed, AD, or custom IdP), and files are stored directly in S3. This is the serverless, managed approach to file transfer.
 
 **Why not the others**:
 - **A**: File Gateway presents NFS/SMB shares, not SFTP.
 - **B**: DataSync is for bulk data transfer/migration, not an ongoing SFTP service.
 - **D**: FSx for Windows provides SMB shares, not SFTP.
 
-**ðŸ“– Textbook ref**: Â§3 â€?Transfer Family, "Managed SFTP/FTPS/FTP with S3 backend"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?Transfer Family, "Managed SFTP/FTPS/FTP with S3 backend"
 
 ---
 
 ### A3.6
-**Correct: C** â€?Origin Access Control (OAC).
+**Correct: C** ï¿½?Origin Access Control (OAC).
 
 **Why**: OAC is the recommended way to restrict S3 bucket access to only CloudFront. It replaces the older Origin Access Identity (OAI) method. OAC supports additional features like SSE-KMS encrypted buckets and granular policy conditions. With OAC, CloudFront uses a signed request that S3 validates, ensuring the S3 bucket URL cannot be accessed directly.
 
 **Why not the others**:
-- **A**: Block Public Access prevents all public access â€?it doesn't selectively allow CloudFront.
+- **A**: Block Public Access prevents all public access ï¿½?it doesn't selectively allow CloudFront.
 - **B**: Access Points provide named network endpoints with permissions but don't specifically restrict to CloudFront.
 - **D**: Object Lock is for WORM (Write Once Read Many) compliance, not access control.
 
-**ðŸ“– Textbook ref**: Â§3 â€?S3, "S3 + CloudFront: OAC replaces OAI"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?S3, "S3 + CloudFront: OAC replaces OAI"
 
 ---
 
 ### A3.7
-**Correct: B** â€?It automatically moves objects between Frequent and Infrequent access tiers based on access patterns.
+**Correct: B** ï¿½?It automatically moves objects between Frequent and Infrequent access tiers based on access patterns.
 
-**Why**: S3 Intelligent-Tiering monitors access patterns of objects and automatically moves them between the Frequent Access tier and the Infrequent Access tier (and within the Archive Instant Access and Deep Archive Access tiers for the optional asynchronous tiers). If an object is not accessed for 30 consecutive days, it is moved to the Infrequent tier (lower cost). If accessed again, it moves back to Frequent. There are no retrieval fees â€?you pay only a small per-object monitoring fee.
+**Why**: S3 Intelligent-Tiering monitors access patterns of objects and automatically moves them between the Frequent Access tier and the Infrequent Access tier (and within the Archive Instant Access and Deep Archive Access tiers for the optional asynchronous tiers). If an object is not accessed for 30 consecutive days, it is moved to the Infrequent tier (lower cost). If accessed again, it moves back to Frequent. There are no retrieval fees ï¿½?you pay only a small per-object monitoring fee.
 
 **Why not the others**:
 - **A**: Intelligent-Tiering does not compress data.
 - **C**: Intelligent-Tiering does not delete data.
 - **D**: Intelligent-Tiering does not replicate data.
 
-**ðŸ“– Textbook ref**: Â§3 â€?S3, "S3 Intelligent-Tiering: Auto-moves based on access patterns"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?S3, "S3 Intelligent-Tiering: Auto-moves based on access patterns"
 
 ---
 
-## ðŸŸ¡ Scenario Analysis â€?Answers
+## ðŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A3.8
-**Correct: D** â€?Transition to S3 Standard-IA after 30 days, then to Glacier Flexible Retrieval after 120 days, then to Glacier Deep Archive after 365 days.
+**Correct: D** ï¿½?Transition to S3 Standard-IA after 30 days, then to Glacier Flexible Retrieval after 120 days, then to Glacier Deep Archive after 365 days.
 
 **Why**: The access pattern maps to storage classes:
-- **0â€?0 days**: Frequent diagnostic access â†?keep in S3 Standard (not mentioned as a transition â€?it starts here).
-- **30â€?20 days**: Occasional follow-up access (milliseconds retrieval acceptable) â†?Standard-IA.
-- **120 daysâ€? year**: Accessed occasionally (minutes to hours retrieval acceptable) â†?Glacier Flexible Retrieval.
-- **> 1 year**: Regulatory retention, almost never accessed â†?Glacier Deep Archive (cheapest).
+- **0ï¿½?0 days**: Frequent diagnostic access ï¿½?keep in S3 Standard (not mentioned as a transition ï¿½?it starts here).
+- **30ï¿½?20 days**: Occasional follow-up access (milliseconds retrieval acceptable) ï¿½?Standard-IA.
+- **120 daysï¿½? year**: Accessed occasionally (minutes to hours retrieval acceptable) ï¿½?Glacier Flexible Retrieval.
+- **> 1 year**: Regulatory retention, almost never accessed ï¿½?Glacier Deep Archive (cheapest).
 
-The transitions match: Standard â†?Standard-IA at 30 days â†?Glacier Flexible at 120 days â†?Deep Archive at 365 days.
+The transitions match: Standard ï¿½?Standard-IA at 30 days ï¿½?Glacier Flexible at 120 days ï¿½?Deep Archive at 365 days.
 
 **Why not the others**:
-- **A**: Skips the Flexible Retrieval tier â€?going directly to Deep Archive at 90 days is too aggressive when data is still occasionally accessed.
-- **B**: One Zone-IA is not durable against AZ failure â€?inappropriate for medical records requiring durability. Plus, Flexible Retrieval at 90 days is too soon â€?data is accessed until 120 days.
-- **C**: Intelligent-Tiering is for unpredictable access â€?this access pattern is predictable (time-based).
+- **A**: Skips the Flexible Retrieval tier ï¿½?going directly to Deep Archive at 90 days is too aggressive when data is still occasionally accessed.
+- **B**: One Zone-IA is not durable against AZ failure ï¿½?inappropriate for medical records requiring durability. Plus, Flexible Retrieval at 90 days is too soon ï¿½?data is accessed until 120 days.
+- **C**: Intelligent-Tiering is for unpredictable access ï¿½?this access pattern is predictable (time-based).
 
-**ðŸ“– Textbook ref**: Â§3 â€?S3, "Storage Classes" continuum; Â§3 â€?Common Pitfalls
+**ðŸ“– Textbook ref**: Â§3 ï¿½?S3, "Storage Classes" continuum; Â§3 ï¿½?Common Pitfalls
 
 ---
 
 ### A3.9
-**Correct: B** â€?AWS DataSync.
+**Correct: B** ï¿½?AWS DataSync.
 
-**Why**: DataSync is designed for online data transfer between on-premises and AWS (S3, EFS, FSx). With a 1 Gbps connection, transferring 80 TB would take approximately 8â€? days at full utilization (80 TB Ã— 8 bits/byte Ã· 1 Gbps â‰?178 hours), which fits within the 2-week window. DataSync supports incremental sync after the initial full transfer. Bandwidth throttling prevents saturation of the shared connection.
+**Why**: DataSync is designed for online data transfer between on-premises and AWS (S3, EFS, FSx). With a 1 Gbps connection, transferring 80 TB would take approximately 8ï¿½? days at full utilization (80 TB Ã— 8 bits/byte Ã· 1 Gbps ï¿½?178 hours), which fits within the 2-week window. DataSync supports incremental sync after the initial full transfer. Bandwidth throttling prevents saturation of the shared connection.
 
 **Why not the others**:
-- **A**: Snowball Edge is for > 10 TB when the network is too slow or expensive â€?1 Gbps can handle 80 TB within the timeframe.
+- **A**: Snowball Edge is for > 10 TB when the network is too slow or expensive ï¿½?1 Gbps can handle 80 TB within the timeframe.
 - **C**: Storage Gateway provides ongoing access, not one-time migration.
 - **D**: S3 Transfer Acceleration improves upload speed over long distances but doesn't provide the scheduling, throttling, and incremental sync features needed.
 
-**ðŸ“– Textbook ref**: Â§3 â€?Similar Service Comparison, "S3 CRR vs DataSync vs Storage Gateway vs Snow Family"; Â§9 â€?Migration, "DataSync: Online file transfer"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?Similar Service Comparison, "S3 CRR vs DataSync vs Storage Gateway vs Snow Family"; Â§9 ï¿½?Migration, "DataSync: Online file transfer"
 
 ---
 
 ### A3.10
-**Correct: B** â€?Amazon FSx for Lustre.
+**Correct: B** ï¿½?Amazon FSx for Lustre.
 
-**Why**: FSx for Lustre is purpose-built for HPC workloads. Key features matching the scenario: (1) sub-millisecond latencies, (2) POSIX-compliant file system, (3) seamless S3 integration â€?it can "lazy load" data from S3 on first access, meaning the Lustre file system appears to contain all S3 objects, but data is pulled from S3 only when accessed. This is ideal for HPC processing of S3 datasets.
+**Why**: FSx for Lustre is purpose-built for HPC workloads. Key features matching the scenario: (1) sub-millisecond latencies, (2) POSIX-compliant file system, (3) seamless S3 integration ï¿½?it can "lazy load" data from S3 on first access, meaning the Lustre file system appears to contain all S3 objects, but data is pulled from S3 only when accessed. This is ideal for HPC processing of S3 datasets.
 
 **Why not the others**:
-- **A**: EFS is NFS-based and designed for general-purpose shared storage â€?it doesn't offer sub-millisecond latency or the S3 lazy-load integration.
+- **A**: EFS is NFS-based and designed for general-purpose shared storage ï¿½?it doesn't offer sub-millisecond latency or the S3 lazy-load integration.
 - **C**: FSx for Windows uses SMB protocol and is designed for Windows workloads, not Linux HPC.
-- **D**: EBS is block storage for single instances (except io2 Multi-Attach, which is AZ-limited) â€?not shared across an HPC cluster.
+- **D**: EBS is block storage for single instances (except io2 Multi-Attach, which is AZ-limited) ï¿½?not shared across an HPC cluster.
 
-**ðŸ“– Textbook ref**: Â§3 â€?FSx, "FSx for Lustre: Sub-millisecond latencies, integrates with S3 (lazy load data)"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?FSx, "FSx for Lustre: Sub-millisecond latencies, integrates with S3 (lazy load data)"
 
 ---
 
 ### A3.11
-**Correct: C** â€?Amazon FSx for Windows File Server.
+**Correct: C** ï¿½?Amazon FSx for Windows File Server.
 
-**Why**: FSx for Windows provides fully managed Windows file shares (SMB protocol) that integrate with on-premises Active Directory. Combined with FSLogix profile containers, you can store user profiles on FSx â€?users can log in to any WorkSpace and their profile is mounted from the central FSx share. This is the native AWS solution for Windows profile management with WorkSpaces.
+**Why**: FSx for Windows provides fully managed Windows file shares (SMB protocol) that integrate with on-premises Active Directory. Combined with FSLogix profile containers, you can store user profiles on FSx ï¿½?users can log in to any WorkSpace and their profile is mounted from the central FSx share. This is the native AWS solution for Windows profile management with WorkSpaces.
 
 **Why not the others**:
-- **A**: EFS is NFS (Linux), not SMB (Windows) â€?WorkSpaces (Windows) needs SMB.
+- **A**: EFS is NFS (Linux), not SMB (Windows) ï¿½?WorkSpaces (Windows) needs SMB.
 - **B**: S3 File Gateway is for hybrid access, not a native file system for WorkSpaces profiles.
-- **D**: EBS snapshots are backup â€?not shared file storage accessible simultaneously from multiple WorkSpaces.
+- **D**: EBS snapshots are backup ï¿½?not shared file storage accessible simultaneously from multiple WorkSpaces.
 
-**ðŸ“– Textbook ref**: Â§3 â€?FSx, "FSx for Windows: Used with WorkSpaces for user profiles"; Â§13 â€?WorkSpaces, "FSx for User Profiles"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?FSx, "FSx for Windows: Used with WorkSpaces for user profiles"; Â§13 ï¿½?WorkSpaces, "FSx for User Profiles"
 
 ---
 
 ### A3.12
-**Correct: B** â€?Enable EBS encryption by default in the Region; existing volumes are not affected but all new volumes will be encrypted.
+**Correct: B** ï¿½?Enable EBS encryption by default in the Region; existing volumes are not affected but all new volumes will be encrypted.
 
-**Why**: "EBS encryption by default" is a Region-level setting. Once enabled, all new EBS volumes and snapshots created in that Region are automatically encrypted at rest using the specified KMS key. Existing unencrypted volumes are not retroactively encrypted â€?this is important because encrypting an existing volume requires creating an encrypted snapshot and restoring it, which involves downtime.
+**Why**: "EBS encryption by default" is a Region-level setting. Once enabled, all new EBS volumes and snapshots created in that Region are automatically encrypted at rest using the specified KMS key. Existing unencrypted volumes are not retroactively encrypted ï¿½?this is important because encrypting an existing volume requires creating an encrypted snapshot and restoring it, which involves downtime.
 
 **Why not the others**:
 - **A**: Manually encrypting hundreds of volumes individually is not efficient.
-- **C**: This is a valid approach for encrypting existing volumes, but the question asks for the most efficient approach to ensure new volumes are encrypted â€?that's simply enabling the default setting.
+- **C**: This is a valid approach for encrypting existing volumes, but the question asks for the most efficient approach to ensure new volumes are encrypted ï¿½?that's simply enabling the default setting.
 - **D**: Deleting and recreating causes unacceptable downtime and data loss risk.
 
-**ðŸ“– Textbook ref**: Â§3 â€?EBS, "Encryption by Default: Can be enabled per Region"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?EBS, "Encryption by Default: Can be enabled per Region"
 
 ---
 
 ### A3.13
-**Correct: B** â€?AWS Storage Gateway File Gateway.
+**Correct: B** ï¿½?AWS Storage Gateway File Gateway.
 
-**Why**: File Gateway provides NFS (and SMB) file shares to on-premises servers. It caches frequently accessed data on the local gateway appliance (low latency for hot data) while automatically tiering infrequently accessed data to S3. The on-prem NFS clients see a standard NFS share â€?no modifications needed. S3 Lifecycle policies can further reduce costs by transitioning cold data to Glacier storage classes.
+**Why**: File Gateway provides NFS (and SMB) file shares to on-premises servers. It caches frequently accessed data on the local gateway appliance (low latency for hot data) while automatically tiering infrequently accessed data to S3. The on-prem NFS clients see a standard NFS share ï¿½?no modifications needed. S3 Lifecycle policies can further reduce costs by transitioning cold data to Glacier storage classes.
 
 **Why not the others**:
 - **A**: DataSync is for migration/sync, not ongoing access with local caching.
-- **C**: Transfer Family provides SFTP/FTPS/FTP â€?not NFS shares.
+- **C**: Transfer Family provides SFTP/FTPS/FTP ï¿½?not NFS shares.
 - **D**: Direct Connect provides network connectivity, not a file storage service.
 
-**ðŸ“– Textbook ref**: Â§3 â€?Storage Gateway, "File Gateway: NFS/SMB shares backed by S3"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?Storage Gateway, "File Gateway: NFS/SMB shares backed by S3"
 
 ---
 
 ### A3.14
-**Correct: A** â€?AWS Transfer Family with S3 backend and FTPS protocol enabled.
+**Correct: A** ï¿½?AWS Transfer Family with S3 backend and FTPS protocol enabled.
 
-**Why**: Transfer Family supports FTP, FTPS (FTP over SSL), and SFTP protocols natively. With S3 as the backend, files uploaded by partners are stored directly in S3 and immediately available for processing. Transfer Family is Multi-AZ (via Elastic IP failover). This is a fully managed service â€?no EC2 instances to manage.
+**Why**: Transfer Family supports FTP, FTPS (FTP over SSL), and SFTP protocols natively. With S3 as the backend, files uploaded by partners are stored directly in S3 and immediately available for processing. Transfer Family is Multi-AZ (via Elastic IP failover). This is a fully managed service ï¿½?no EC2 instances to manage.
 
 **Why not the others**:
-- **B**: Self-managed EC2 with vsftpd requires OS patching, scaling, and HA management â€?more operational overhead.
+- **B**: Self-managed EC2 with vsftpd requires OS patching, scaling, and HA management ï¿½?more operational overhead.
 - **C**: File Gateway provides NFS/SMB, not FTP/S protocols.
 - **D**: EFS does not natively provide an SFTP or FTPS interface.
 
-**ðŸ“– Textbook ref**: Â§3 â€?Transfer Family, "Managed SFTP/FTPS/FTP service" and "Highly Available: Multi-AZ deployment"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?Transfer Family, "Managed SFTP/FTPS/FTP service" and "Highly Available: Multi-AZ deployment"
 
 ---
 
 ### A3.15
-**Correct: B** â€?S3 Intelligent-Tiering.
+**Correct: B** ï¿½?S3 Intelligent-Tiering.
 
-**Why**: The scenario has two key requirements: (1) unpredictable access patterns, and (2) no desire to analyze patterns or create lifecycle rules. Intelligent-Tiering is designed for exactly this â€?it automatically moves objects between Frequent and Infrequent tiers based on actual access patterns, with no management overhead. However, the student should note that with 10 KB average object size and the per-object monitoring fee (~$0.0025/1000 objects), 500 GB of 10 KB files = ~50 million objects, resulting in ~$125/month in monitoring fees. This is an important cost consideration, but the question asks specifically about the feature designed for this use case.
+**Why**: The scenario has two key requirements: (1) unpredictable access patterns, and (2) no desire to analyze patterns or create lifecycle rules. Intelligent-Tiering is designed for exactly this ï¿½?it automatically moves objects between Frequent and Infrequent tiers based on actual access patterns, with no management overhead. However, the student should note that with 10 KB average object size and the per-object monitoring fee (~$0.0025/1000 objects), 500 GB of 10 KB files = ~50 million objects, resulting in ~$125/month in monitoring fees. This is an important cost consideration, but the question asks specifically about the feature designed for this use case.
 
 **Why not the others**:
-- **A**: Standard-IA has a 30-day minimum storage duration â€?if files are accessed within 30 days, you pay retrieval costs. It requires lifecycle rules.
+- **A**: Standard-IA has a 30-day minimum storage duration ï¿½?if files are accessed within 30 days, you pay retrieval costs. It requires lifecycle rules.
 - **C**: One Zone-IA doesn't survive AZ failure and still requires lifecycle rules.
-- **D**: Glacier Instant Retrieval is for long-term archive with instant access â€?too expensive for potentially frequently accessed data.
+- **D**: Glacier Instant Retrieval is for long-term archive with instant access ï¿½?too expensive for potentially frequently accessed data.
 
-**ðŸ“– Textbook ref**: Â§3 â€?S3, "S3 Intelligent-Tiering" and "Common Pitfalls"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?S3, "S3 Intelligent-Tiering" and "Common Pitfalls"
 
 ---
 
-## ðŸ”´ Similar Service Comparison â€?Answers
+## ðŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A3.16
-**Correct: C** â€?S3 with S3 Select or Athena for querying.
+**Correct: C** ï¿½?S3 with S3 Select or Athena for querying.
 
-**Why**: S3 is Regionally resilient (survives AZ failure), handles continuous writes of any volume, and is cost-effective for log data. S3 Select lets you run SQL queries directly on objects (retrieving only the needed data), and Athena lets you run full SQL queries on S3 data without loading it into a database. This combination is ideal for logging â†?querying workflows.
+**Why**: S3 is Regionally resilient (survives AZ failure), handles continuous writes of any volume, and is cost-effective for log data. S3 Select lets you run SQL queries directly on objects (retrieving only the needed data), and Athena lets you run full SQL queries on S3 data without loading it into a database. This combination is ideal for logging ï¿½?querying workflows.
 
 **Why not the others**:
 - **A**: EBS in a single AZ does not survive AZ failure.
 - **B**: EFS is shared but far more expensive per GB than S3 for log storage. It's also Linux-only (NFS).
 - **D**: EBS with snapshots adds complexity (snapshot scheduling, management) and doesn't provide native SQL querying.
 
-**ðŸ“– Textbook ref**: Â§3 â€?Similar Service Comparison, "S3 vs EBS vs EFS vs FSx"; Â§10 â€?Athena
+**ðŸ“– Textbook ref**: Â§3 ï¿½?Similar Service Comparison, "S3 vs EBS vs EFS vs FSx"; Â§10 ï¿½?Athena
 
 ---
 
 ### A3.17
-**Correct: C** â€?AWS Snowball Edge (multiple devices if needed).
+**Correct: C** ï¿½?AWS Snowball Edge (multiple devices if needed).
 
-**Why**: At 500 Mbps with business traffic, transferring 200 TB would take ~37 days at maximum speed, and you can't use the full bandwidth without impacting business operations. Snowball Edge (80 TB per device) â€?3 devices can handle 200 TB in parallel. The physical transfer (ship â†?AWS â†?data loaded to S3) takes about a week per device. This is far faster than online transfer and doesn't impact business internet.
+**Why**: At 500 Mbps with business traffic, transferring 200 TB would take ~37 days at maximum speed, and you can't use the full bandwidth without impacting business operations. Snowball Edge (80 TB per device) ï¿½?3 devices can handle 200 TB in parallel. The physical transfer (ship ï¿½?AWS ï¿½?data loaded to S3) takes about a week per device. This is far faster than online transfer and doesn't impact business internet.
 
 **Why not the others**:
-- **A**: S3 Transfer Acceleration helps with latency but not bandwidth â€?you're still limited by the 500 Mbps pipe.
+- **A**: S3 Transfer Acceleration helps with latency but not bandwidth ï¿½?you're still limited by the 500 Mbps pipe.
 - **B**: DataSync with throttling would take even longer with reduced bandwidth.
 - **D**: Installing Direct Connect for a one-time 200 TB migration is not cost-effective and takes weeks to provision.
 
-**ðŸ“– Textbook ref**: Â§3 â€?Similar Service Comparison, "S3 CRR vs DataSync vs Storage Gateway vs Snow Family"; Â§9 â€?Snow Family, "> 10 TB, slow/expensive network"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?Similar Service Comparison, "S3 CRR vs DataSync vs Storage Gateway vs Snow Family"; Â§9 ï¿½?Snow Family, "> 10 TB, slow/expensive network"
 
 ---
 
 ### A3.18
-**Correct: B** â€?Amazon FSx for Windows File Server.
+**Correct: B** ï¿½?Amazon FSx for Windows File Server.
 
 **Why**: FSx for Windows provides native SMB protocol support, integrates with on-premises Active Directory (either directly or via AD Connector), and supports Multi-AZ deployment for high availability. Multiple EC2 instances across two AZs can mount the same FSx file system simultaneously via SMB. This is the native, managed Windows shared storage solution on AWS.
 
 **Why not the others**:
-- **A**: EFS uses NFS (Linux), not SMB (Windows) â€?it cannot serve as native Windows shared storage.
-- **C**: EBS Multi-Attach is for io2 volumes in a single AZ â€?limited to a small number of instances.
+- **A**: EFS uses NFS (Linux), not SMB (Windows) ï¿½?it cannot serve as native Windows shared storage.
+- **C**: EBS Multi-Attach is for io2 volumes in a single AZ ï¿½?limited to a small number of instances.
 - **D**: A third-party SMB gateway on EC2 adds management overhead and potential performance bottlenecks vs. a native managed service.
 
-**ðŸ“– Textbook ref**: Â§3 â€?FSx, "FSx for Windows: SMB, DFS, Active Directory integration"; Similar Service Comparison, "S3 vs EBS vs EFS vs FSx"
+**ðŸ“– Textbook ref**: Â§3 ï¿½?FSx, "FSx for Windows: SMB, DFS, Active Directory integration"; Similar Service Comparison, "S3 vs EBS vs EFS vs FSx"
 
 ---
 

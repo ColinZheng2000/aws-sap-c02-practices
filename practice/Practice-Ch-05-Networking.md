@@ -27,11 +27,11 @@ services:
 # Chapter 5 Practice: ðŸŒ Networking & Content Delivery
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers and explanations.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 5 (VPC, Route 53, API Gateway, CloudFront, Direct Connect, Transit Gateway, Load Balancers, Global Accelerator) + Similar Service Comparison: Networking
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 5 (VPC, Route 53, API Gateway, CloudFront, Direct Connect, Transit Gateway, Load Balancers, Global Accelerator) + Similar Service Comparison: Networking
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ðŸŸ¢ Knowledge Check (10 questions)
 
@@ -142,7 +142,7 @@ Which AWS service provides two static Anycast IP addresses that serve as a fixed
 ### Q5.11
 
 > ðŸŸ¡ L2-ç†è§£ | ðŸŽ¤ðŸŽ¤ ä¸­é¢‘é¢è¯•
-A company has a VPC with private subnets across three Availability Zones. Each private subnet contains application servers that need to access the internet for software updates. The solutions architect must ensure high availability of the internet access path â€?if one AZ fails, instances in the other AZs must still reach the internet.
+A company has a VPC with private subnets across three Availability Zones. Each private subnet contains application servers that need to access the internet for software updates. The solutions architect must ensure high availability of the internet access path ï¿½?if one AZ fails, instances in the other AZs must still reach the internet.
 
 What is the correct NAT Gateway deployment strategy?
 
@@ -154,7 +154,7 @@ What is the correct NAT Gateway deployment strategy?
 ### Q5.12
 
 > ðŸŸ¡ L2-ç†è§£ | ðŸŽ¤ðŸŽ¤ ä¸­é¢‘é¢è¯•
-A company has three VPCs (Dev, Test, Prod) that need to communicate with each other and with an on-premises data center via Direct Connect. The solutions architect must design a scalable network architecture that allows future VPCs to be added easily. Network segmentation is required â€?Dev and Test VPCs should not be able to communicate with Prod VPCs.
+A company has three VPCs (Dev, Test, Prod) that need to communicate with each other and with an on-premises data center via Direct Connect. The solutions architect must design a scalable network architecture that allows future VPCs to be added easily. Network segmentation is required ï¿½?Dev and Test VPCs should not be able to communicate with Prod VPCs.
 
 Which architecture meets these requirements?
 
@@ -166,7 +166,7 @@ Which architecture meets these requirements?
 ### Q5.13
 
 > ðŸŸ¡ L2-ç†è§£ | ðŸŽ¤ðŸŽ¤ ä¸­é¢‘é¢è¯•
-A company deploys a REST API using Amazon API Gateway. The API must be accessible ONLY from within specific VPCs â€?no public internet access allowed. Several trusted partner accounts in the same organization also need access to this API from their own VPCs.
+A company deploys a REST API using Amazon API Gateway. The API must be accessible ONLY from within specific VPCs ï¿½?no public internet access allowed. Several trusted partner accounts in the same organization also need access to this API from their own VPCs.
 
 Which combination of API Gateway endpoint type and access control should be used?
 
@@ -278,9 +278,9 @@ Which AWS feature should be used?
 > ðŸŸ¡ L2-ç†è§£ | ðŸŽ¤ðŸŽ¤ ä¸­é¢‘é¢è¯•
 A company needs to connect 3 VPCs. A year later, the company plans to connect 100+ VPCs. The solutions architect must choose a connectivity solution today that supports both the immediate need and the future scale. Which solution should be chosen?
 
-- A. VPC Peering â€?it supports up to 125 peers and can scale to 100
-- B. Transit Gateway â€?it supports hub-and-spoke topology and scales to thousands of VPCs
-- C. PrivateLink â€?it supports consumer-provider model with no connection limits
+- A. VPC Peering ï¿½?it supports up to 125 peers and can scale to 100
+- B. Transit Gateway ï¿½?it supports hub-and-spoke topology and scales to thousands of VPCs
+- C. PrivateLink ï¿½?it supports consumer-provider model with no connection limits
 - D. VPC Peering now, then migrate to Transit Gateway when scaling beyond 100
 
 ### Q5.23
@@ -349,7 +349,7 @@ What should the solutions architect configure?
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 >
@@ -357,65 +357,65 @@ What should the solutions architect configure?
 
 ---
 
-## ðŸŸ¢ Knowledge Check â€?Answers
+## ðŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A5.1
-**Correct: B** â€?NAT Gateway placed in a public subnet.
+**Correct: B** ï¿½?NAT Gateway placed in a public subnet.
 
 **Why**: A NAT Gateway enables instances in private subnets to initiate outbound connections to the internet (e.g., download updates) while preventing inbound connections from the internet. The NAT Gateway itself is placed in a public subnet (because it needs internet access), and private subnet route tables direct 0.0.0.0/0 traffic to it.
 
 **Why not the others**:
-- **A**: An Internet Gateway attached to private subnets would make them public â€?contradicting the "must NOT be reachable" requirement.
+- **A**: An Internet Gateway attached to private subnets would make them public ï¿½?contradicting the "must NOT be reachable" requirement.
 - **C**: VPC endpoints provide private access to AWS services, not general internet access.
 - **D**: Elastic IPs make instances directly reachable from the internet, violating the requirement.
 
-**ðŸ“– Textbook ref**: Â§5 â€?VPC, "Azure Bridge"; Â§5 â€?Other Networking Services, "NAT Gateway"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?VPC, "Azure Bridge"; Â§5 ï¿½?Other Networking Services, "NAT Gateway"
 
 ---
 
 ### A5.2
-**Correct: C** â€?Security Groups are stateful and allow rules only; NACLs are stateless and support allow and deny rules.
+**Correct: C** ï¿½?Security Groups are stateful and allow rules only; NACLs are stateless and support allow and deny rules.
 
-**Why**: Security Groups are stateful â€?if you allow outbound traffic, the return traffic is automatically allowed regardless of inbound rules. They support allow rules only (implicit deny). NACLs are stateless â€?you must explicitly allow both inbound and outbound (return) traffic in separate rules. NACLs support both allow and deny rules.
+**Why**: Security Groups are stateful ï¿½?if you allow outbound traffic, the return traffic is automatically allowed regardless of inbound rules. They support allow rules only (implicit deny). NACLs are stateless ï¿½?you must explicitly allow both inbound and outbound (return) traffic in separate rules. NACLs support both allow and deny rules.
 
 **Why not the others**:
-- **A**: Reversed â€?Security Groups are stateful, NACLs are stateless.
-- **B**: Reversed â€?Security Groups apply at the instance level (ENI), NACLs apply at the subnet level.
-- **D**: Reversed â€?Security Groups allow only; NACLs support both allow and deny.
+- **A**: Reversed ï¿½?Security Groups are stateful, NACLs are stateless.
+- **B**: Reversed ï¿½?Security Groups apply at the instance level (ENI), NACLs apply at the subnet level.
+- **D**: Reversed ï¿½?Security Groups allow only; NACLs support both allow and deny.
 
-**ðŸ“– Textbook ref**: Â§5 â€?VPC, "Security Groups vs NACLs"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?VPC, "Security Groups vs NACLs"
 
 ---
 
 ### A5.3
-**Correct: C** â€?AWS PrivateLink with a Network Load Balancer in VPC B.
+**Correct: C** ï¿½?AWS PrivateLink with a Network Load Balancer in VPC B.
 
 **Why**: PrivateLink enables private connectivity even between VPCs with overlapping CIDRs. VPC B exposes its service via an NLB, and VPC A creates a VPC Endpoint (Interface type) to access it. The connection uses AWS's private network and the overlapping CIDRs are not an issue because PrivateLink uses NAT at the endpoint.
 
 **Why not the others**:
 - **A**: VPC Peering explicitly does not support overlapping CIDRs.
 - **B**: Transit Gateway also does not support routing between VPCs with overlapping CIDRs.
-- **D**: Gateway endpoints are only for S3 and DynamoDB â€?not for arbitrary application services.
+- **D**: Gateway endpoints are only for S3 and DynamoDB ï¿½?not for arbitrary application services.
 
-**ðŸ“– Textbook ref**: Â§5 â€?VPC, "Overlapping CIDRs"; Â§5 â€?Similar Service Comparison, "Overlapping CIDRs" row
+**ðŸ“– Textbook ref**: Â§5 ï¿½?VPC, "Overlapping CIDRs"; Â§5 ï¿½?Similar Service Comparison, "Overlapping CIDRs" row
 
 ---
 
 ### A5.4
-**Correct: B** â€?Gateway endpoints for both S3 and DynamoDB.
+**Correct: B** ï¿½?Gateway endpoints for both S3 and DynamoDB.
 
 **Why**: Gateway endpoints are the only type that is free (no hourly charge) and both S3 and DynamoDB are the only two AWS services that support Gateway endpoints. They work by adding routes in the VPC route table.
 
 **Why not the others**:
 - **A**: Interface endpoints (powered by PrivateLink) have an hourly charge + data processing fees.
-- **C & D**: There is no combination needed â€?both S3 and DynamoDB support Gateway endpoints.
+- **C & D**: There is no combination needed ï¿½?both S3 and DynamoDB support Gateway endpoints.
 
-**ðŸ“– Textbook ref**: Â§5 â€?VPC, "VPC Endpoints"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?VPC, "VPC Endpoints"
 
 ---
 
 ### A5.5
-**Correct: D** â€?Multi-Value Answer routing policy.
+**Correct: D** ï¿½?Multi-Value Answer routing policy.
 
 **Why**: Multi-Value Answer routing returns up to 8 healthy records selected at random. It can be combined with health checks so only healthy resources are returned. This is distinct from Simple routing (no health check), Weighted (traffic split percentage), and Failover (one primary, one secondary).
 
@@ -424,112 +424,112 @@ What should the solutions architect configure?
 - **B**: Failover returns only the primary or secondary, not multiple records.
 - **C**: Latency routing returns the lowest-latency record, not up to 8.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Route 53, "Routing Policies"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Route 53, "Routing Policies"
 
 ---
 
 ### A5.6
-**Correct: B** â€?Site-to-Site VPN as a backup to Direct Connect.
+**Correct: B** ï¿½?Site-to-Site VPN as a backup to Direct Connect.
 
-**Why**: This is a classic enterprise pattern â€?use Direct Connect as the primary (private, dedicated, consistent performance) connection and a Site-to-Site VPN over the public internet as a backup. Both connect to the same VPC/VGW or TGW. If DX fails, traffic fails over to the VPN. The VPN is encrypted (IPsec), satisfying the encryption requirement.
+**Why**: This is a classic enterprise pattern ï¿½?use Direct Connect as the primary (private, dedicated, consistent performance) connection and a Site-to-Site VPN over the public internet as a backup. Both connect to the same VPC/VGW or TGW. If DX fails, traffic fails over to the VPN. The VPN is encrypted (IPsec), satisfying the encryption requirement.
 
 **Why not the others**:
-- **A**: A second DX provides higher availability but is not cost-effective â€?a VPN is significantly cheaper.
+- **A**: A second DX provides higher availability but is not cost-effective ï¿½?a VPN is significantly cheaper.
 - **C**: Client VPN is for individual remote users, not site-to-site connectivity.
 - **D**: TGW peering connects Regions, not on-prem to AWS.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Direct Connect, "DC + VPN"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Direct Connect, "DC + VPN"
 
 ---
 
 ### A5.7
-**Correct: B** â€?Application Load Balancer (ALB).
+**Correct: B** ï¿½?Application Load Balancer (ALB).
 
-**Why**: ALB operates at Layer 7 and supports advanced request routing: path-based (e.g., /api/* â†?target group A; /images/* â†?target group B), host-based (e.g., api.example.com â†?target group C), header-based, and method-based routing. ALB natively supports HTTP/2, WebSocket, and gRPC protocols.
+**Why**: ALB operates at Layer 7 and supports advanced request routing: path-based (e.g., /api/* ï¿½?target group A; /images/* ï¿½?target group B), host-based (e.g., api.example.com ï¿½?target group C), header-based, and method-based routing. ALB natively supports HTTP/2, WebSocket, and gRPC protocols.
 
 **Why not the others**:
-- **A**: NLB operates at Layer 4 and does not inspect HTTP headers â€?no path or host routing.
+- **A**: NLB operates at Layer 4 and does not inspect HTTP headers ï¿½?no path or host routing.
 - **C**: GWLB does not terminate connections; it routes to appliances transparently.
 - **D**: CLB is the legacy predecessor and does not support path/host routing or WebSocket.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Load Balancers, ALB row
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Load Balancers, ALB row
 
 ---
 
 ### A5.8
-**Correct: B** â€?To restrict S3 bucket access so that content can only be served through CloudFront.
+**Correct: B** ï¿½?To restrict S3 bucket access so that content can only be served through CloudFront.
 
-**Why**: OAC (Origin Access Control) replaces the older OAI (Origin Access Identity). It uses a CloudFront-specific principal to authenticate requests to S3, ensuring that the S3 bucket cannot be accessed directly via its S3 URL â€?all access must go through the CloudFront distribution URL. This prevents bypassing CloudFront caching, WAF, and other edge features.
+**Why**: OAC (Origin Access Control) replaces the older OAI (Origin Access Identity). It uses a CloudFront-specific principal to authenticate requests to S3, ensuring that the S3 bucket cannot be accessed directly via its S3 URL ï¿½?all access must go through the CloudFront distribution URL. This prevents bypassing CloudFront caching, WAF, and other edge features.
 
 **Why not the others**:
 - **A**: TLS between CloudFront and origin is configured separately (origin protocol policy).
 - **C**: User authentication is handled by signed URLs/cookies or Cognito, not by OAC.
 - **D**: Cache behavior is configured on the distribution's cache policy, not OAC.
 
-**ðŸ“– Textbook ref**: Â§5 â€?CloudFront, "OAC (Origin Access Control)"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?CloudFront, "OAC (Origin Access Control)"
 
 ---
 
 ### A5.9
-**Correct: B** â€?Inbound Resolver Endpoint.
+**Correct: B** ï¿½?Inbound Resolver Endpoint.
 
 **Why**: Route 53 Resolver Inbound Endpoint enables DNS queries from outside AWS (on-premises) to resolve DNS names in Route 53 private hosted zones. You place ENIs in your VPC, and on-prem DNS servers forward queries for `cloud.example.com` to these ENI IP addresses.
 
 **Why not the others**:
-- **A**: Outbound endpoint is for AWS resources to resolve on-prem DNS names â€?the opposite direction.
+- **A**: Outbound endpoint is for AWS resources to resolve on-prem DNS names ï¿½?the opposite direction.
 - **C**: Resolver Rules are used with Outbound endpoints to forward specific domains.
 - **D**: Running your own DNS forwarder on EC2 adds operational overhead; Resolver is the managed alternative.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Route 53 Resolver, "Inbound Endpoint"; Similar Service Comparison â€?Resolver Inbound vs Outbound
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Route 53 Resolver, "Inbound Endpoint"; Similar Service Comparison ï¿½?Resolver Inbound vs Outbound
 
 ---
 
 ### A5.10
-**Correct: B** â€?AWS Global Accelerator.
+**Correct: B** ï¿½?AWS Global Accelerator.
 
-**Why**: Global Accelerator provides 2 static Anycast IP addresses. Incoming traffic enters the AWS global network at the nearest edge location and is routed through AWS's backbone (not the public internet) to the optimal regional endpoint. The IPs never change â€?ideal for whitelisting.
+**Why**: Global Accelerator provides 2 static Anycast IP addresses. Incoming traffic enters the AWS global network at the nearest edge location and is routed through AWS's backbone (not the public internet) to the optimal regional endpoint. The IPs never change ï¿½?ideal for whitelisting.
 
 **Why not the others**:
 - **A**: CloudFront uses a domain name, not a pair of static IPs. It caches content at the edge.
 - **C**: Route 53 Latency routing returns the DNS record with the lowest latency, but doesn't provide static IPs or AWS backbone routing.
 - **D**: ELB IPs can change; cross-zone LB distributes within a Region, not globally.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Global Accelerator, "Static IPs" and "vs CloudFront"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Global Accelerator, "Static IPs" and "vs CloudFront"
 
 ---
 
-## ðŸŸ¡ Scenario Analysis â€?Answers
+## ðŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A5.11
-**Correct: C** â€?Deploy one NAT Gateway in a public subnet in each AZ and route each AZ's private subnets to the NAT Gateway in the same AZ.
+**Correct: C** ï¿½?Deploy one NAT Gateway in a public subnet in each AZ and route each AZ's private subnets to the NAT Gateway in the same AZ.
 
-**Why**: NAT Gateways are AZ-scoped â€?a NAT Gateway in AZ-a only provides outbound connectivity for resources in AZ-a. If you have a single NAT Gateway in AZ-a and AZ-a fails, instances in AZ-b and AZ-c lose internet access. Deploying one per AZ with AZ-local routing ensures each AZ has an independent internet path â€?full HA.
+**Why**: NAT Gateways are AZ-scoped ï¿½?a NAT Gateway in AZ-a only provides outbound connectivity for resources in AZ-a. If you have a single NAT Gateway in AZ-a and AZ-a fails, instances in AZ-b and AZ-c lose internet access. Deploying one per AZ with AZ-local routing ensures each AZ has an independent internet path ï¿½?full HA.
 
 **Why not the others**:
 - **A**: A single NAT Gateway is a single point of failure for cross-AZ traffic.
 - **B**: NAT Gateways must be in public subnets, not private ones.
 - **D**: Route 53 latency routing is for DNS, not VPC routing. There is no "nearest NAT Gateway" routing mechanism within a VPC.
 
-**ðŸ“– Textbook ref**: Â§5 â€?NAT Gateway, "AZ-scoped (need one per AZ for HA)"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?NAT Gateway, "AZ-scoped (need one per AZ for HA)"
 
 ---
 
 ### A5.12
-**Correct: B** â€?Transit Gateway with separate route tables for Dev/Test and Prod VPCs + one Direct Connect Gateway attachment.
+**Correct: B** ï¿½?Transit Gateway with separate route tables for Dev/Test and Prod VPCs + one Direct Connect Gateway attachment.
 
-**Why**: TGW supports multiple route tables. By associating Dev and Test VPCs with one route table and Prod VPCs with another, and not propagating routes between them, the network segmentation is enforced at the TGW level. A single Direct Connect Gateway attachment connects the TGW to on-prem. Adding new VPCs is a matter of creating a new VPC attachment to the TGW â€?no mesh growth.
+**Why**: TGW supports multiple route tables. By associating Dev and Test VPCs with one route table and Prod VPCs with another, and not propagating routes between them, the network segmentation is enforced at the TGW level. A single Direct Connect Gateway attachment connects the TGW to on-prem. Adding new VPCs is a matter of creating a new VPC attachment to the TGW ï¿½?no mesh growth.
 
 **Why not the others**:
 - **A**: Full mesh of VPC Peering does not scale and separate DX connections are expensive.
 - **C**: PrivateLink is for consumer-provider access, not general inter-VPC routing.
-- **D**: A single route table would allow all VPCs to communicate â€?violating the segmentation requirement. Network ACLs add complexity vs. architectural segmentation via route tables.
+- **D**: A single route table would allow all VPCs to communicate ï¿½?violating the segmentation requirement. Network ACLs add complexity vs. architectural segmentation via route tables.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Transit Gateway, "TGW Route Tables"; Â§5 â€?Direct Connect Gateway
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Transit Gateway, "TGW Route Tables"; Â§5 ï¿½?Direct Connect Gateway
 
 ---
 
 ### A5.13
-**Correct: C** â€?Private API endpoint with a resource policy allowing specific VPC endpoints.
+**Correct: C** ï¿½?Private API endpoint with a resource policy allowing specific VPC endpoints.
 
 **Why**: A Private API Gateway endpoint is only accessible from within a VPC via a VPC Endpoint (powered by PrivateLink). The API's resource policy can specify which VPC Endpoints (by their IDs) or which AWS accounts are allowed to invoke it. This enables controlled cross-account access without any public internet exposure.
 
@@ -538,110 +538,110 @@ What should the solutions architect configure?
 - **B**: Edge-Optimized is public via CloudFront.
 - **D**: WAF IP restrictions on a Regional endpoint still expose the endpoint to the internet.
 
-**ðŸ“– Textbook ref**: Â§5 â€?API Gateway, "Private API" and "Endpoint Types"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?API Gateway, "Private API" and "Endpoint Types"
 
 ---
 
 ### A5.14
-**Correct: B** â€?AWS Global Accelerator with endpoint groups in both Regions.
+**Correct: B** ï¿½?AWS Global Accelerator with endpoint groups in both Regions.
 
 **Why**: Global Accelerator is designed for non-HTTP protocols (TCP/UDP), provides 2 static Anycast IPs that never change, and routes traffic through the AWS backbone for the lowest possible latency. Endpoint groups in each Region let GA route to the closest healthy endpoint. This is the ideal solution for real-time gaming (UDP + latency-sensitive).
 
 **Why not the others**:
-- **A**: CloudFront is HTTP/HTTPS only â€?it does not support UDP.
+- **A**: CloudFront is HTTP/HTTPS only ï¿½?it does not support UDP.
 - **C**: Route 53 Latency routing resolves DNS but does not provide static IPs or backbone routing. DNS caching by clients can also delay failover.
 - **D**: NLB is Regional; cross-region peering is not a native NLB feature.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Global Accelerator, "vs CloudFront" and "Static IPs"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Global Accelerator, "vs CloudFront" and "Static IPs"
 
 ---
 
 ### A5.15
-**Correct: C** â€?Both Inbound and Outbound endpoints, with appropriate forwarding rules.
+**Correct: C** ï¿½?Both Inbound and Outbound endpoints, with appropriate forwarding rules.
 
-**Why**: The requirements are bidirectional: on-premises â†?AWS (resolve `cloud.example.com`) requires an **Inbound** endpoint with on-prem DNS servers forwarding to it. AWS â†?on-premises (resolve `corp.local`) requires an **Outbound** endpoint with forwarding rules to on-prem DNS servers. Both are independent and can coexist in the same VPC.
+**Why**: The requirements are bidirectional: on-premises ï¿½?AWS (resolve `cloud.example.com`) requires an **Inbound** endpoint with on-prem DNS servers forwarding to it. AWS ï¿½?on-premises (resolve `corp.local`) requires an **Outbound** endpoint with forwarding rules to on-prem DNS servers. Both are independent and can coexist in the same VPC.
 
 **Why not the others**:
-- **A**: Inbound only handles on-prem â†?AWS, not the reverse.
-- **B**: Outbound only handles AWS â†?on-prem, not the reverse.
+- **A**: Inbound only handles on-prem ï¿½?AWS, not the reverse.
+- **B**: Outbound only handles AWS ï¿½?on-prem, not the reverse.
 - **D**: Public hosted zones are for internet-routable domains, not internal corporate domains.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Route 53 Resolver, "Inbound Endpoint" and "Outbound Endpoint"; Similar Service Comparison â€?Resolver Inbound vs Outbound
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Route 53 Resolver, "Inbound Endpoint" and "Outbound Endpoint"; Similar Service Comparison ï¿½?Resolver Inbound vs Outbound
 
 ---
 
 ### A5.16
-**Correct: B** â€?Application Load Balancer with AWS WAF.
+**Correct: B** ï¿½?Application Load Balancer with AWS WAF.
 
 **Why**: ALB operates at Layer 7, making it compatible with AWS WAF (also Layer 7). WAF provides managed rules for SQL injection and cross-site scripting (XSS), as well as custom rules. The WAF Web ACL is associated directly with the ALB, and traffic is inspected before reaching the backend.
 
 **Why not the others**:
-- **A**: NLB operates at Layer 4 â€?WAF cannot be associated with it.
+- **A**: NLB operates at Layer 4 ï¿½?WAF cannot be associated with it.
 - **C**: GWLB routes traffic to third-party appliances for inspection; it does not natively integrate with AWS WAF's managed rule groups for SQLi/XSS.
 - **D**: Shield Standard provides basic DDoS protection, not SQL injection or XSS inspection.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Load Balancers, "ALB + WAF"; Â§6 â€?WAF, "WAF + ALB: Layer 7 only"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Load Balancers, "ALB + WAF"; Â§6 ï¿½?WAF, "WAF + ALB: Layer 7 only"
 
 ---
 
 ### A5.17
-**Correct: B** â€?Transit Gateway shared across accounts via AWS Resource Access Manager (RAM).
+**Correct: B** ï¿½?Transit Gateway shared across accounts via AWS Resource Access Manager (RAM).
 
 **Why**: TGW supports hub-and-spoke topology and scales to thousands of VPC attachments. Through RAM, a TGW in one account can be shared with other accounts in the same organization. Each account creates VPC attachments to the shared TGW. All VPCs can communicate (with appropriate route tables), and cost is far lower than 1,225 VPC peering connections (50 Ã— 49 / 2 for a full mesh).
 
 **Why not the others**:
-- **A**: A full mesh of 50 VPCs requires 1,225 peering connections â€?massive operational overhead and cost.
+- **A**: A full mesh of 50 VPCs requires 1,225 peering connections ï¿½?massive operational overhead and cost.
 - **C**: PrivateLink doesn't support full-mesh communication; it's consumer-to-provider, one service at a time.
 - **D**: 50 Ã— 49 Site-to-Site VPNs is not a viable architecture.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Transit Gateway, "Hub-and-spoke" and scale; Â§5 â€?Similar Service Comparison, "VPC Peering vs TGW vs PrivateLink"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Transit Gateway, "Hub-and-spoke" and scale; Â§5 ï¿½?Similar Service Comparison, "VPC Peering vs TGW vs PrivateLink"
 
 ---
 
 ### A5.18
-**Correct: A** â€?Enable sticky sessions on the ALB target group with application-based cookie duration.
+**Correct: A** ï¿½?Enable sticky sessions on the ALB target group with application-based cookie duration.
 
 **Why**: ALB supports sticky sessions (session affinity) using application-based cookies. The ALB generates a cookie (`AWSALBAPP`) that maps the user to a specific target. The duration is configurable. Since the application already uses application-based cookies, ALB's application-based stickiness is the right fit.
 
 **Why not the others**:
-- **B**: NLB does support source IP affinity but the application uses application-based cookies â€?the affinity method must match the application's session tracking mechanism. Also, the scenario says they use an ALB.
+- **B**: NLB does support source IP affinity but the application uses application-based cookies ï¿½?the affinity method must match the application's session tracking mechanism. Also, the scenario says they use an ALB.
 - **C**: Route 53 weighted routing does not provide session-level affinity.
 - **D**: Security groups are firewalls; they have no session persistence capability.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Load Balancers, "Sticky sessions via application-based cookies"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Load Balancers, "Sticky sessions via application-based cookies"
 
 ---
 
 ### A5.19
-**Correct: B** â€?Separate Transit Gateway route tables for Dev and Prod VPC associations, with no routes between them.
+**Correct: B** ï¿½?Separate Transit Gateway route tables for Dev and Prod VPC associations, with no routes between them.
 
-**Why**: TGW route tables provide network segmentation. By associating Dev VPCs with one route table and Prod VPCs with another, and NOT propagating routes between the two tables, traffic cannot flow between Dev and Prod â€?even if an administrator accidentally adds a route in a VPC's route table, the TGW itself blocks the traffic. This is architectural isolation at the TGW level.
+**Why**: TGW route tables provide network segmentation. By associating Dev VPCs with one route table and Prod VPCs with another, and NOT propagating routes between the two tables, traffic cannot flow between Dev and Prod ï¿½?even if an administrator accidentally adds a route in a VPC's route table, the TGW itself blocks the traffic. This is architectural isolation at the TGW level.
 
 **Why not the others**:
-- **A**: Blackhole routes in individual VPCs don't enforce isolation across all VPCs â€?they must be configured per VPC.
+- **A**: Blackhole routes in individual VPCs don't enforce isolation across all VPCs ï¿½?they must be configured per VPC.
 - **C**: NACLs provide a second layer of defense but can be misconfigured; TGW route table isolation is stronger as the only connectivity path.
 - **D**: Security groups are per-instance; there is no way to guarantee all instances are correctly configured.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Transit Gateway, "TGW Route Tables: Segmentation"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Transit Gateway, "TGW Route Tables: Segmentation"
 
 ---
 
 ### A5.20
-**Correct: C** â€?Gateway Load Balancer (GWLB) with the firewall appliance as a target.
+**Correct: C** ï¿½?Gateway Load Balancer (GWLB) with the firewall appliance as a target.
 
-**Why**: GWLB is specifically designed for transparent inline appliance insertion. Traffic is routed to the GWLB endpoint, which sends it to the third-party firewall appliance via GENEVE encapsulation. The original packet (source/destination IP and port) is preserved â€?the firewall inspects it transparently, and the application servers see the original client IP. No changes needed to the application.
+**Why**: GWLB is specifically designed for transparent inline appliance insertion. Traffic is routed to the GWLB endpoint, which sends it to the third-party firewall appliance via GENEVE encapsulation. The original packet (source/destination IP and port) is preserved ï¿½?the firewall inspects it transparently, and the application servers see the original client IP. No changes needed to the application.
 
 **Why not the others**:
-- **A**: ALB + WAF only provides Layer 7 inspection based on HTTP â€?not transparent full-packet inspection.
+- **A**: ALB + WAF only provides Layer 7 inspection based on HTTP ï¿½?not transparent full-packet inspection.
 - **B**: NLB with TLS termination doesn't provide firewall inspection.
 - **D**: AWS Network Firewall is a managed service (different from GWLB), but it doesn't route to third-party appliances.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Load Balancers, GWLB row; "Transparent inline appliance insertion"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Load Balancers, GWLB row; "Transparent inline appliance insertion"
 
 ---
 
 ### A5.21
-**Correct: B** â€?VPC Prefix Lists shared across accounts via Resource Access Manager (RAM).
+**Correct: B** ï¿½?VPC Prefix Lists shared across accounts via Resource Access Manager (RAM).
 
 **Why**: Prefix Lists are managed collections of CIDR blocks. You create a customer-managed prefix list with your corporate IP ranges, reference it in security group rules across all VPCs, and share it via RAM to other accounts. When the IP ranges change, you update the prefix list once, and all security group rules referencing it automatically apply the new ranges.
 
@@ -650,79 +650,79 @@ What should the solutions architect configure?
 - **C**: WAF IP sets apply to WAF Web ACLs (Layer 7), not security group rules (which operate at the instance level).
 - **D**: AWS Config evaluates compliance but does not manage security group rules.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Other Networking Services, "Prefix Lists"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Other Networking Services, "Prefix Lists"
 
 ---
 
-## ðŸ”´ Similar Service Comparison â€?Answers
+## ðŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A5.22
-**Correct: B** â€?Transit Gateway â€?it supports hub-and-spoke topology and scales to thousands of VPCs.
+**Correct: B** ï¿½?Transit Gateway ï¿½?it supports hub-and-spoke topology and scales to thousands of VPCs.
 
-**Why**: TGW is designed for this exact evolution â€?3 VPCs today, thousands tomorrow. A hub-and-spoke model means adding a new VPC requires only one new attachment to the TGW (linear growth), vs VPC Peering which requires NÃ—(Nâˆ?)/2 connections (quadratic growth). Choosing TGW from the start avoids a painful migration later.
+**Why**: TGW is designed for this exact evolution ï¿½?3 VPCs today, thousands tomorrow. A hub-and-spoke model means adding a new VPC requires only one new attachment to the TGW (linear growth), vs VPC Peering which requires NÃ—(Nï¿½?)/2 connections (quadratic growth). Choosing TGW from the start avoids a painful migration later.
 
 **Why not the others**:
 - **A**: VPC Peering supports 125 but the mesh complexity (1,225 connections for 50 VPCs) makes it operationally impractical well before that limit.
 - **C**: PrivateLink is not designed for general inter-VPC routing; it's for sharing specific services.
 - **D**: Migrating from peering to TGW is disruptive; building on TGW from the start is the better strategy.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Similar Service Comparison, "VPC Peering vs TGW vs PrivateLink" â€?Scale row
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Similar Service Comparison, "VPC Peering vs TGW vs PrivateLink" ï¿½?Scale row
 
 ---
 
 ### A5.23
-**Correct: B** â€?Route 53 Inbound Resolver Endpoint.
+**Correct: B** ï¿½?Route 53 Inbound Resolver Endpoint.
 
-**Why**: Inbound = outside â†?into AWS. The on-prem DNS servers forward queries for `cloud.example.com` to the IP addresses of the Inbound Resolver Endpoint's ENIs in the VPC. The Resolver then queries the private hosted zone and returns the result.
+**Why**: Inbound = outside ï¿½?into AWS. The on-prem DNS servers forward queries for `cloud.example.com` to the IP addresses of the Inbound Resolver Endpoint's ENIs in the VPC. The Resolver then queries the private hosted zone and returns the result.
 
 **Why not the others**:
-- **A**: Outbound is the opposite direction â€?AWS â†?on-prem.
+- **A**: Outbound is the opposite direction ï¿½?AWS ï¿½?on-prem.
 - **C**: Running BIND on EC2 is a self-managed alternative (a correct but high-operational-overhead answer in some contexts), but the question asks specifically about the Route 53 Resolver component.
 - **D**: A public VIF is for accessing AWS public services, not private hosted zones.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Similar Service Comparison, "Route 53 Resolver Inbound vs Outbound"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Similar Service Comparison, "Route 53 Resolver Inbound vs Outbound"
 
 ---
 
 ### A5.24
-**Correct: B** â€?Amazon CloudFront.
+**Correct: B** ï¿½?Amazon CloudFront.
 
-**Why**: CloudFront is a Content Delivery Network (CDN) built for caching static content at 450+ edge locations globally. Users download assets from the nearest edge location â€?dramatically reducing latency. CloudFront natively supports HTTPS, integrates with AWS Certificate Manager for free SSL certificates, and is the go-to service for static asset delivery.
+**Why**: CloudFront is a Content Delivery Network (CDN) built for caching static content at 450+ edge locations globally. Users download assets from the nearest edge location ï¿½?dramatically reducing latency. CloudFront natively supports HTTPS, integrates with AWS Certificate Manager for free SSL certificates, and is the go-to service for static asset delivery.
 
 **Why not the others**:
 - **A**: Global Accelerator optimizes network path (TCP/UDP) but does NOT cache content. Every request still reaches the origin.
 - **C**: Route 53 Latency routes DNS to the lowest-latency origin but does not cache content.
 - **D**: ALB distributes traffic within a Region; it provides no global caching.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Similar Service Comparison, "CloudFront vs Global Accelerator vs Route 53 Latency"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Similar Service Comparison, "CloudFront vs Global Accelerator vs Route 53 Latency"
 
 ---
 
 ### A5.25
-**Correct: A** â€?CloudFront for HTTPS + Global Accelerator for UDP.
+**Correct: A** ï¿½?CloudFront for HTTPS + Global Accelerator for UDP.
 
-**Why**: CloudFront is optimized for HTTPS content delivery (caching, edge locations, WAF integration). Global Accelerator is optimized for non-HTTP protocols (UDP) â€?it routes through the AWS backbone for the lowest possible network latency. Most importantly, CloudFront does NOT support UDP at all. So the HTTPS traffic goes through CloudFront (matchmaking, leaderboards, static assets) and the UDP game traffic goes through Global Accelerator (real-time gameplay).
+**Why**: CloudFront is optimized for HTTPS content delivery (caching, edge locations, WAF integration). Global Accelerator is optimized for non-HTTP protocols (UDP) ï¿½?it routes through the AWS backbone for the lowest possible network latency. Most importantly, CloudFront does NOT support UDP at all. So the HTTPS traffic goes through CloudFront (matchmaking, leaderboards, static assets) and the UDP game traffic goes through Global Accelerator (real-time gameplay).
 
 **Why not the others**:
-- **B**: Global Accelerator can carry HTTPS but doesn't cache content â€?CloudFront is better for HTTPS delivery with caching.
+- **B**: Global Accelerator can carry HTTPS but doesn't cache content ï¿½?CloudFront is better for HTTPS delivery with caching.
 - **C**: CloudFront does not support UDP.
 - **D**: Route 53 Latency does not provide the backbone routing or static IPs needed for real-time gaming.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Similar Service Comparison, "CloudFront vs Global Accelerator vs Route 53 Latency"; Â§5 â€?Global Accelerator, "vs CloudFront"
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Similar Service Comparison, "CloudFront vs Global Accelerator vs Route 53 Latency"; Â§5 ï¿½?Global Accelerator, "vs CloudFront"
 
 ---
 
 ### A5.26
-**Correct: C** â€?AWS PrivateLink.
+**Correct: C** ï¿½?AWS PrivateLink.
 
-**Why**: PrivateLink is the only service among the options that supports connectivity between VPCs with overlapping CIDRs. It achieves this by using NAT at the VPC Endpoint â€?the consumer side sees a local IP in the endpoint's subnet, not the provider's actual IP. The service provider exposes their application via an NLB, and the consumer creates an Interface VPC Endpoint.
+**Why**: PrivateLink is the only service among the options that supports connectivity between VPCs with overlapping CIDRs. It achieves this by using NAT at the VPC Endpoint ï¿½?the consumer side sees a local IP in the endpoint's subnet, not the provider's actual IP. The service provider exposes their application via an NLB, and the consumer creates an Interface VPC Endpoint.
 
 **Why not the others**:
 - **A**: VPC Peering explicitly does not support overlapping CIDRs.
 - **B**: Transit Gateway does not support overlapping CIDRs between attached VPCs.
-- **D**: Site-to-Site VPN does not solve overlapping CIDRs natively â€?NAT must be configured on one side, adding complexity.
+- **D**: Site-to-Site VPN does not solve overlapping CIDRs natively ï¿½?NAT must be configured on one side, adding complexity.
 
-**ðŸ“– Textbook ref**: Â§5 â€?Similar Service Comparison, "Overlapping CIDRs" row; Â§5 â€?PrivateLink
+**ðŸ“– Textbook ref**: Â§5 ï¿½?Similar Service Comparison, "Overlapping CIDRs" row; Â§5 ï¿½?PrivateLink
 
 ---
 

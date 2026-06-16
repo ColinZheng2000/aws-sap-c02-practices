@@ -20,11 +20,11 @@ services:
 # Chapter 9 Practice: ðŸšš Migration & Transfer
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 9 (DataSync, Snow Family, MGN, Application Discovery Service, Migration Hub, SCT, VM Import/Export, Migration Evaluator) + Similar Service Comparison: Migration
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 9 (DataSync, Snow Family, MGN, Application Discovery Service, Migration Hub, SCT, VM Import/Export, Migration Evaluator) + Similar Service Comparison: Migration
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ðŸŸ¢ Knowledge Check (5 questions)
 
@@ -55,7 +55,7 @@ Which migration strategy does AWS Application Migration Service (MGN) implement?
 
 - A. Replatform (modify application for cloud)
 - B. Refactor (rewrite application architecture)
-- C. Rehost (lift-and-shift â€?move servers as-is)
+- C. Rehost (lift-and-shift ï¿½?move servers as-is)
 - D. Retire (decommission the application)
 
 ### Q9.4
@@ -145,9 +145,9 @@ A company wants to generate a business case for migrating to AWS. They need TCO 
 > ðŸŸ¡ L2-ç†è§£ | ðŸŽ¤ðŸŽ¤ ä¸­é¢‘é¢è¯•
 A company needs to move data from on-premises to AWS. Compare: DataSync vs Storage Gateway. Which should be used for ongoing file access with local caching?
 
-- A. DataSync â€?it provides a local cache of S3 data
-- B. Storage Gateway File Gateway â€?it caches frequently accessed data locally
-- C. Either â€?they serve the same purpose
+- A. DataSync ï¿½?it provides a local cache of S3 data
+- B. Storage Gateway File Gateway ï¿½?it caches frequently accessed data locally
+- C. Either ï¿½?they serve the same purpose
 - D. DataSync for the initial migration, then Storage Gateway for ongoing access
 
 ### Q9.12
@@ -182,143 +182,143 @@ A company has 200 TB of genomic data to transfer from a remote research facility
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ðŸŸ¢ Knowledge Check â€?Answers
+## ðŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A9.1
-**Correct: B** â€?AWS Snowball Edge (multiple devices).
+**Correct: B** ï¿½?AWS Snowball Edge (multiple devices).
 
-**Why**: At 100 Mbps with business traffic overhead, transferring 500 TB would take ~500+ days â€?completely impractical. Snowball Edge devices (80 TB each) â€?7 devices handle 500 TB. Physical shipping takes about a week per device, and multiple devices can be used in parallel. This is the standard offline transfer solution for large data volumes over slow connections.
+**Why**: At 100 Mbps with business traffic overhead, transferring 500 TB would take ~500+ days ï¿½?completely impractical. Snowball Edge devices (80 TB each) ï¿½?7 devices handle 500 TB. Physical shipping takes about a week per device, and multiple devices can be used in parallel. This is the standard offline transfer solution for large data volumes over slow connections.
 
 **Why not the others**: DataSync at limited bandwidth takes too long. S3 Transfer Acceleration doesn't increase total bandwidth. Temporary Direct Connect for one-time transfer is not cost-effective.
 
-**ðŸ“– Textbook ref**: Â§9 â€?Snow Family; Â§9 â€?Similar Service Comparison
+**ðŸ“– Textbook ref**: Â§9 ï¿½?Snow Family; Â§9 ï¿½?Similar Service Comparison
 
 ---
 
 ### A9.2
-**Correct: B** â€?Only when source and target database engines are different (heterogeneous).
+**Correct: B** ï¿½?Only when source and target database engines are different (heterogeneous).
 
-**Why**: SCT converts database schema objects (tables, views, stored procedures, functions, data types) between different database engines. For homogeneous migration (MySQL â†?RDS MySQL), the schema is compatible and DMS alone suffices. For heterogeneous migration (Oracle â†?Aurora PostgreSQL), SCT must convert the schema first.
+**Why**: SCT converts database schema objects (tables, views, stored procedures, functions, data types) between different database engines. For homogeneous migration (MySQL ï¿½?RDS MySQL), the schema is compatible and DMS alone suffices. For heterogeneous migration (Oracle ï¿½?Aurora PostgreSQL), SCT must convert the schema first.
 
-**ðŸ“– Textbook ref**: Â§9 â€?SCT, "Heterogeneous Only"
+**ðŸ“– Textbook ref**: Â§9 ï¿½?SCT, "Heterogeneous Only"
 
 ---
 
 ### A9.3
-**Correct: C** â€?Rehost (lift-and-shift).
+**Correct: C** ï¿½?Rehost (lift-and-shift).
 
-**Why**: MGN performs block-level continuous replication of entire servers to AWS. The servers are replicated as-is â€?same OS, same apps, same configurations. After cutover, they run as EC2 instances with no changes. This is pure rehosting (the "R" in the 7 Rs of migration).
+**Why**: MGN performs block-level continuous replication of entire servers to AWS. The servers are replicated as-is ï¿½?same OS, same apps, same configurations. After cutover, they run as EC2 instances with no changes. This is pure rehosting (the "R" in the 7 Rs of migration).
 
-**ðŸ“– Textbook ref**: Â§9 â€?MGN, "Server-level lift-and-shift (rehost)"
+**ðŸ“– Textbook ref**: Â§9 ï¿½?MGN, "Server-level lift-and-shift (rehost)"
 
 ---
 
 ### A9.4
-**Correct: B** â€?AWS Application Discovery Service.
+**Correct: B** ï¿½?AWS Application Discovery Service.
 
 **Why**: Application Discovery Service discovers on-premises servers (OS, specs, installed software), maps network dependencies between servers, and collects performance metrics (CPU, memory, disk, network). This data feeds into Migration Hub for planning. It supports agentless (VMware vCenter) and agent-based (any OS, deeper insights) modes.
 
-**ðŸ“– Textbook ref**: Â§9 â€?Application Discovery Service
+**ðŸ“– Textbook ref**: Â§9 ï¿½?Application Discovery Service
 
 ---
 
 ### A9.5
-**Correct: B** â€?10 Gbps.
+**Correct: B** ï¿½?10 Gbps.
 
 **Why**: Each DataSync agent can transfer data at up to 10 Gbps. You can deploy multiple agents for higher aggregate throughput. The agent is a VMware ESXi, Hyper-V, or KVM virtual appliance deployed on-premises.
 
-**ðŸ“– Textbook ref**: Â§9 â€?DataSync, "Up to 10 Gbps per agent"
+**ðŸ“– Textbook ref**: Â§9 ï¿½?DataSync, "Up to 10 Gbps per agent"
 
 ---
 
-## ðŸŸ¡ Scenario Analysis â€?Answers
+## ðŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A9.6
-**Correct: B** â€?Rehost file/app servers using MGN; migrate Oracle databases using DMS with CDC.
+**Correct: B** ï¿½?Rehost file/app servers using MGN; migrate Oracle databases using DMS with CDC.
 
-**Why**: MGN provides block-level replication for servers (file + app) â€?it can be set up in advance and cut over during the maintenance window. DMS with CDC migrates the Oracle databases with ongoing replication â€?the initial full load is done in advance, and CDC catches up ongoing changes, enabling rapid cutover. Since it's Oracle â†?EC2 (not Aurora), SCT isn't needed if staying on Oracle.
+**Why**: MGN provides block-level replication for servers (file + app) ï¿½?it can be set up in advance and cut over during the maintenance window. DMS with CDC migrates the Oracle databases with ongoing replication ï¿½?the initial full load is done in advance, and CDC catches up ongoing changes, enabling rapid cutover. Since it's Oracle ï¿½?EC2 (not Aurora), SCT isn't needed if staying on Oracle.
 
-**ðŸ“– Textbook ref**: Â§9 â€?MGN + DMS
+**ðŸ“– Textbook ref**: Â§9 ï¿½?MGN + DMS
 
 ---
 
 ### A9.7
-**Correct: B** â€?AWS DataSync with incremental sync.
+**Correct: B** ï¿½?AWS DataSync with incremental sync.
 
-**Why**: DataSync can transfer 15 TB well within 48 hours at typical speeds (at 1 Gbps, ~33 hours). Incremental sync handles changes made during the transfer â€?after the initial full sync, DataSync only transfers changed files, keeping source and destination consistent until cutover. DataSync supports FSx for Windows File Server as a destination.
+**Why**: DataSync can transfer 15 TB well within 48 hours at typical speeds (at 1 Gbps, ~33 hours). Incremental sync handles changes made during the transfer ï¿½?after the initial full sync, DataSync only transfers changed files, keeping source and destination consistent until cutover. DataSync supports FSx for Windows File Server as a destination.
 
-**ðŸ“– Textbook ref**: Â§9 â€?DataSync, "Incremental Transfer"
+**ðŸ“– Textbook ref**: Â§9 ï¿½?DataSync, "Incremental Transfer"
 
 ---
 
 ### A9.8
-**Correct: B** â€?Run SCT to assess schema compatibility and convert SQL Server objects to PostgreSQL FIRST.
+**Correct: B** ï¿½?Run SCT to assess schema compatibility and convert SQL Server objects to PostgreSQL FIRST.
 
-**Why**: SCT assessment should always come first for heterogeneous migrations. It analyzes the SQL Server schema, identifies what can be auto-converted, what needs manual intervention (e.g., T-SQL stored procedures â†?PL/pgSQL), and generates a conversion report. Based on the report, you decide whether Babelfish (for T-SQL compatibility) or full SCT conversion is the right path. Data migration with DMS comes after schema conversion.
+**Why**: SCT assessment should always come first for heterogeneous migrations. It analyzes the SQL Server schema, identifies what can be auto-converted, what needs manual intervention (e.g., T-SQL stored procedures ï¿½?PL/pgSQL), and generates a conversion report. Based on the report, you decide whether Babelfish (for T-SQL compatibility) or full SCT conversion is the right path. Data migration with DMS comes after schema conversion.
 
-**ðŸ“– Textbook ref**: Â§9 â€?SCT, "Assessment Report"
+**ðŸ“– Textbook ref**: Â§9 ï¿½?SCT, "Assessment Report"
 
 ---
 
 ### A9.9
-**Correct: B** â€?AWS Migration Hub.
+**Correct: B** ï¿½?AWS Migration Hub.
 
 **Why**: Migration Hub is the central dashboard for migration tracking. It aggregates status from multiple migration tools (MGN, DMS, DataSync, and partner tools) across multiple servers and locations, providing a single pane of glass for migration progress across the entire portfolio.
 
-**ðŸ“– Textbook ref**: Â§9 â€?Migration Hub
+**ðŸ“– Textbook ref**: Â§9 ï¿½?Migration Hub
 
 ---
 
 ### A9.10
-**Correct: B** â€?AWS Migration Evaluator.
+**Correct: B** ï¿½?AWS Migration Evaluator.
 
 **Why**: Migration Evaluator is a free tool that analyzes your on-premises inventory (server specs, utilization data) and generates a detailed business case: TCO comparison (on-prem vs. AWS), projected annual savings, and resource mapping (which AWS services/instance types match your existing servers). This is specifically for pre-migration business case generation.
 
-**ðŸ“– Textbook ref**: Â§9 â€?Migration Evaluator
+**ðŸ“– Textbook ref**: Â§9 ï¿½?Migration Evaluator
 
 ---
 
-## ðŸ”´ Similar Service Comparison â€?Answers
+## ðŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A9.11
-**Correct: B** â€?Storage Gateway File Gateway caches frequently accessed data locally.
+**Correct: B** ï¿½?Storage Gateway File Gateway caches frequently accessed data locally.
 
-**Why**: Storage Gateway File Gateway provides ongoing NFS/SMB file shares backed by S3, with a local cache for hot data. This is for ongoing hybrid access â€?not one-time migration. DataSync is for migration/sync (one-time or recurring), not ongoing access with local caching.
+**Why**: Storage Gateway File Gateway provides ongoing NFS/SMB file shares backed by S3, with a local cache for hot data. This is for ongoing hybrid access ï¿½?not one-time migration. DataSync is for migration/sync (one-time or recurring), not ongoing access with local caching.
 
-**ðŸ“– Textbook ref**: Â§9 â€?Similar Service Comparison; Â§3 â€?Storage Gateway
+**ðŸ“– Textbook ref**: Â§9 ï¿½?Similar Service Comparison; Â§3 ï¿½?Storage Gateway
 
 ---
 
 ### A9.12
-**Correct: C** â€?MGN for application servers; DMS for MySQL databases.
+**Correct: C** ï¿½?MGN for application servers; DMS for MySQL databases.
 
-**Why**: MGN migrates entire servers (OS + apps) â€?perfect for application servers being moved to EC2 as-is. DMS migrates databases with CDC â€?perfect for MySQL â†?RDS with minimal downtime. DMS cannot migrate application servers (it's for databases). MGN can technically migrate servers with databases too, but DMS provides more database-specific features (schema validation, ongoing replication).
+**Why**: MGN migrates entire servers (OS + apps) ï¿½?perfect for application servers being moved to EC2 as-is. DMS migrates databases with CDC ï¿½?perfect for MySQL ï¿½?RDS with minimal downtime. DMS cannot migrate application servers (it's for databases). MGN can technically migrate servers with databases too, but DMS provides more database-specific features (schema validation, ongoing replication).
 
-**ðŸ“– Textbook ref**: Â§9 â€?Similar Service Comparison, "DMS: Database" vs "MGN: Server-level"
+**ðŸ“– Textbook ref**: Â§9 ï¿½?Similar Service Comparison, "DMS: Database" vs "MGN: Server-level"
 
 ---
 
 ### A9.13
-**Correct: D** â€?DMS would migrate the procedures but they wouldn't work on PostgreSQL.
+**Correct: D** ï¿½?DMS would migrate the procedures but they wouldn't work on PostgreSQL.
 
-**Why**: DMS migrates schema objects as-is â€?it doesn't convert them. If you use DMS without SCT for Oracle â†?PostgreSQL, the PL/SQL stored procedures would be created in PostgreSQL, but they would fail because PostgreSQL uses PL/pgSQL, not PL/SQL. SCT is essential for converting stored procedures between different database languages.
+**Why**: DMS migrates schema objects as-is ï¿½?it doesn't convert them. If you use DMS without SCT for Oracle ï¿½?PostgreSQL, the PL/SQL stored procedures would be created in PostgreSQL, but they would fail because PostgreSQL uses PL/pgSQL, not PL/SQL. SCT is essential for converting stored procedures between different database languages.
 
-**ðŸ“– Textbook ref**: Â§9 â€?SCT; Â§4 â€?SCT, "Heterogeneous Only: SCT converts stored procedures"
+**ðŸ“– Textbook ref**: Â§9 ï¿½?SCT; Â§4 ï¿½?SCT, "Heterogeneous Only: SCT converts stored procedures"
 
 ---
 
 ### A9.14
-**Correct: B** â€?Multiple AWS Snowball Edge devices shipped to the facility.
+**Correct: B** ï¿½?Multiple AWS Snowball Edge devices shipped to the facility.
 
-**Why**: At 50 Mbps for 200 TB, online transfer would take ~370 days. Snowball Edge (80 TB each) â€?3 devices handle 200 TB. Physical shipping (round trip: order â†?receive â†?fill â†?ship back â†?AWS loads data) takes ~1â€? weeks per batch. Multiple devices in parallel can transfer all 200 TB in roughly 2â€? weeks total â€?orders of magnitude faster than the satellite link.
+**Why**: At 50 Mbps for 200 TB, online transfer would take ~370 days. Snowball Edge (80 TB each) ï¿½?3 devices handle 200 TB. Physical shipping (round trip: order ï¿½?receive ï¿½?fill ï¿½?ship back ï¿½?AWS loads data) takes ~1ï¿½? weeks per batch. Multiple devices in parallel can transfer all 200 TB in roughly 2ï¿½? weeks total ï¿½?orders of magnitude faster than the satellite link.
 
-**ðŸ“– Textbook ref**: Â§9 â€?Snow Family, "> 10 TB, slow/expensive network â†?Snowball Edge"
+**ðŸ“– Textbook ref**: Â§9 ï¿½?Snow Family, "> 10 TB, slow/expensive network ï¿½?Snowball Edge"
 
 ---
 

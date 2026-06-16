@@ -16,30 +16,30 @@ services:
 # Chapter 2 Practice: ğŸ“¦ Containers
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 2 (ECS, EKS, ECR, Fargate) + Similar Service Comparison: Containers
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 2 (ECS, EKS, ECR, Fargate) + Similar Service Comparison: Containers
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ğŸŸ¢ Knowledge Check (3 questions)
 
 ### Q2.1
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L1-ÖªÊ¶ | ???? ÖĞÆµÃæÊÔ
+> ?? L1-ÖªÊ¶ | ???? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 What is Amazon ECS on Fargate's key value proposition compared to ECS on EC2?
 
 - A. Lower cost per task for steady-state workloads
-- B. No EC2 instances to manage â€?serverless container deployment
+- B. No EC2 instances to manage ï¿½?serverless container deployment
 - C. Support for GPU-based container workloads
 - D. Higher network throughput per task
 
 ### Q2.2
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L1-ÖªÊ¶ | ???? ÖĞÆµÃæÊÔ
+> ?? L1-ÖªÊ¶ | ???? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 A solutions architect needs to store and scan Docker images for Common Vulnerabilities and Exposures (CVEs) before deploying to ECS. Which AWS service provides this?
 
@@ -51,7 +51,7 @@ A solutions architect needs to store and scan Docker images for Common Vulnerabi
 ### Q2.3
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L1-ÖªÊ¶ | ???? ÖĞÆµÃæÊÔ
+> ?? L1-ÖªÊ¶ | ???? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 Which statement about EKS on Fargate is correct?
 
@@ -67,7 +67,7 @@ Which statement about EKS on Fargate is correct?
 ### Q2.4
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L2-Àí½â | ???? ÖĞÆµÃæÊÔ
+> ?? L2-ï¿½ï¿½ï¿½ | ???? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 A company runs a containerized microservice that must install a host-level security agent for compliance. The agent requires kernel module access and root privileges on the host OS. The service itself runs 24/7 with steady traffic.
 
@@ -81,7 +81,7 @@ Which ECS launch type should be used?
 ### Q2.5
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L2-Àí½â | ???? ÖĞÆµÃæÊÔ
+> ?? L2-ï¿½ï¿½ï¿½ | ???? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 A development team wants to deploy containerized applications without managing any servers. The workload has variable traffic patterns, with each request taking 2-10 minutes to process. The team wants the simplest possible configuration.
 
@@ -95,7 +95,7 @@ Which compute option should be used?
 ### Q2.6
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L2-Àí½â | ???? ÖĞÆµÃæÊÔ
+> ?? L2-ï¿½ï¿½ï¿½ | ???? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 A company has existing Kubernetes manifests, Helm charts, and CI/CD pipelines built around kubectl. They want to migrate to AWS but keep using their Kubernetes toolchain. Which service minimizes changes to their existing workflows?
 
@@ -107,12 +107,12 @@ A company has existing Kubernetes manifests, Helm charts, and CI/CD pipelines bu
 ### Q2.7
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L1-ÖªÊ¶ | ???? ÖĞÆµÃæÊÔ
+> ?? L1-ÖªÊ¶ | ???? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 A solutions architect deploys a Lambda function using a 3 GB Docker image. The image is stored in ECR. The function processes S3 upload events and each invocation runs for about 8 seconds. Which statement about this architecture is correct?
 
-- A. This architecture is invalid â€?Lambda cannot use container images
-- B. This architecture is valid â€?Lambda supports container images up to 10 GB from ECR
+- A. This architecture is invalid ï¿½?Lambda cannot use container images
+- B. This architecture is valid ï¿½?Lambda supports container images up to 10 GB from ECR
 - C. This architecture is valid only if the Lambda function runs in a VPC
 - D. This architecture requires ECS to orchestrate the Lambda invocations
 
@@ -123,31 +123,31 @@ A solutions architect deploys a Lambda function using a 3 GB Docker image. The i
 ### Q2.8
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L3-Ó¦ÓÃ | ?????? ¸ßÆµÃæÊÔ
+> ?? L3-Ó¦ï¿½ï¿½ | ?????? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 A company must choose between ECS and EKS for a new microservices platform. The team has no Kubernetes experience and values operational simplicity above portability. Which should they choose?
 
-- A. ECS â€?AWS-native, lower complexity, no Kubernetes knowledge needed
-- B. EKS â€?more portable across clouds, standard Kubernetes API
-- C. EKS on Fargate â€?serverless Kubernetes, best of both worlds
-- D. Self-managed Kubernetes on EC2 â€?maximum control
+- A. ECS ï¿½?AWS-native, lower complexity, no Kubernetes knowledge needed
+- B. EKS ï¿½?more portable across clouds, standard Kubernetes API
+- C. EKS on Fargate ï¿½?serverless Kubernetes, best of both worlds
+- D. Self-managed Kubernetes on EC2 ï¿½?maximum control
 
 ### Q2.9
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L3-Ó¦ÓÃ | ?????? ¸ßÆµÃæÊÔ
+> ?? L3-Ó¦ï¿½ï¿½ | ?????? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 A solutions architect is choosing between Lambda (with container images) and ECS on Fargate for a workload that processes video uploads. Processing takes 30 minutes per video. Which is the correct choice and why?
 
-- A. Lambda â€?serverless, no infrastructure management, handles 30-minute tasks
-- B. ECS on Fargate â€?Lambda has a 15-minute timeout; 30-minute tasks require ECS/Fargate
-- C. Lambda with container images â€?container support removes the timeout limit
-- D. ECS on EC2 â€?Fargate also has a 15-minute timeout
+- A. Lambda ï¿½?serverless, no infrastructure management, handles 30-minute tasks
+- B. ECS on Fargate ï¿½?Lambda has a 15-minute timeout; 30-minute tasks require ECS/Fargate
+- C. Lambda with container images ï¿½?container support removes the timeout limit
+- D. ECS on EC2 ï¿½?Fargate also has a 15-minute timeout
 
 ### Q2.10
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-> ?? L3-Ó¦ÓÃ | ?????? ¸ßÆµÃæÊÔ
+> ?? L3-Ó¦ï¿½ï¿½ | ?????? ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½
 
 A company deploys a critical production API on ECS behind an ALB. The API must survive an Availability Zone failure without manual intervention. The cluster runs on EC2.
 
@@ -160,30 +160,30 @@ Which configuration ensures high availability?
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ğŸŸ¢ Knowledge Check â€?Answers
+## ğŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A2.1
-**Correct: B** â€?No EC2 instances to manage â€?serverless container deployment.
+**Correct: B** ï¿½?No EC2 instances to manage ï¿½?serverless container deployment.
 
-**Why**: Fargate is the serverless compute engine for containers. You define the task (CPU, memory, container image) and Fargate runs it â€?no EC2 instances to provision, patch, or scale. This is the core value proposition: operational simplicity. You pay per task and per vCPU/GB used.
+**Why**: Fargate is the serverless compute engine for containers. You define the task (CPU, memory, container image) and Fargate runs it ï¿½?no EC2 instances to provision, patch, or scale. This is the core value proposition: operational simplicity. You pay per task and per vCPU/GB used.
 
 **Why not the others**:
 - **A**: Fargate is typically more expensive per task than running on well-utilized EC2 instances (you pay a premium for serverless).
 - **C**: GPU support is available on EC2 launch type, not a Fargate differentiator.
 - **D**: Network throughput is similar; it's not a differentiating factor.
 
-**ğŸ“– Textbook ref**: Â§2 â€?ECS, "ECS + Fargate: No EC2 management needed"
+**ğŸ“– Textbook ref**: Â§2 ï¿½?ECS, "ECS + Fargate: No EC2 management needed"
 
 ---
 
 ### A2.2
-**Correct: B** â€?Amazon ECR with Enhanced Scanning.
+**Correct: B** ï¿½?Amazon ECR with Enhanced Scanning.
 
 **Why**: ECR provides two scanning options: Basic scanning (on-push, free) and Enhanced scanning (continuous, powered by Amazon Inspector). Enhanced scanning continuously monitors images for CVEs and provides detailed findings with severity ratings and remediation guidance. This is the native AWS solution for container image vulnerability scanning.
 
@@ -192,123 +192,123 @@ Which configuration ensures high availability?
 - **C**: AWS Artifact provides compliance reports (SOC, PCI), not container vulnerability scanning.
 - **D**: Security Hub aggregates security findings from other services but doesn't scan container images itself.
 
-**ğŸ“– Textbook ref**: Â§2 â€?ECR, "Image Scanning: Enhanced scanning with Amazon Inspector"
+**ğŸ“– Textbook ref**: Â§2 ï¿½?ECR, "Image Scanning: Enhanced scanning with Amazon Inspector"
 
 ---
 
 ### A2.3
-**Correct: B** â€?EKS on Fargate runs Kubernetes pods on serverless compute, with no node management.
+**Correct: B** ï¿½?EKS on Fargate runs Kubernetes pods on serverless compute, with no node management.
 
-**Why**: When you use EKS with Fargate, each Kubernetes pod runs on its own Fargate compute â€?there are no EC2 worker nodes to manage. You still use the standard EKS control plane (managed by AWS), but the data plane is fully serverless. You interact with your cluster using standard Kubernetes tools (kubectl, Helm).
+**Why**: When you use EKS with Fargate, each Kubernetes pod runs on its own Fargate compute ï¿½?there are no EC2 worker nodes to manage. You still use the standard EKS control plane (managed by AWS), but the data plane is fully serverless. You interact with your cluster using standard Kubernetes tools (kubectl, Helm).
 
 **Why not the others**:
 - **A**: This describes EKS on EC2, not Fargate.
 - **C**: Fargate supports both stateless and stateful applications (with EFS for persistent storage).
 - **D**: EKS on Fargate fully integrates with AWS Load Balancers via the AWS Load Balancer Controller.
 
-**ğŸ“– Textbook ref**: Â§2 â€?EKS, "EKS on Fargate: Serverless pods â€?no node management"
+**ğŸ“– Textbook ref**: Â§2 ï¿½?EKS, "EKS on Fargate: Serverless pods ï¿½?no node management"
 
 ---
 
-## ğŸŸ¡ Scenario Analysis â€?Answers
+## ğŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A2.4
-**Correct: B** â€?ECS on EC2.
+**Correct: B** ï¿½?ECS on EC2.
 
-**Why**: The security agent requires kernel module access and root on the host OS. Fargate is serverless â€?you have NO access to the underlying host. Only ECS on EC2 gives you control over the EC2 host operating system, allowing you to install kernel modules, security agents, and other host-level software while still using ECS for container orchestration.
+**Why**: The security agent requires kernel module access and root on the host OS. Fargate is serverless ï¿½?you have NO access to the underlying host. Only ECS on EC2 gives you control over the EC2 host operating system, allowing you to install kernel modules, security agents, and other host-level software while still using ECS for container orchestration.
 
 **Why not the others**:
-- **A**: Fargate provides no host access â€?you cannot install kernel modules.
+- **A**: Fargate provides no host access ï¿½?you cannot install kernel modules.
 - **C**: ECS Anywhere extends ECS to on-prem servers but doesn't change the host access model.
 - **D**: Outposts provides on-prem AWS infrastructure but still uses Fargate or EC2 launch types.
 
-**ğŸ“– Textbook ref**: Â§2 â€?ECS + EC2, "You manage the cluster, more control"; Â§1 â€?Similar Service Comparison, "OS/kernel control" row
+**ğŸ“– Textbook ref**: Â§2 ï¿½?ECS + EC2, "You manage the cluster, more control"; Â§1 ï¿½?Similar Service Comparison, "OS/kernel control" row
 
 ---
 
 ### A2.5
-**Correct: B** â€?ECS on Fargate with Service Auto Scaling.
+**Correct: B** ï¿½?ECS on Fargate with Service Auto Scaling.
 
-**Why**: The scenarios fit Fargate: no server management, variable traffic, and task durations of 2â€?0 minutes. Fargate with Service Auto Scaling handles the scaling automatically (scale out when traffic increases, scale in when it drops). Tasks can run for any duration on Fargate (no 15-minute limit like Lambda). This is simpler than ECS on EC2 (no EC2 management) and simpler than EKS (no Kubernetes complexity).
+**Why**: The scenarios fit Fargate: no server management, variable traffic, and task durations of 2ï¿½?0 minutes. Fargate with Service Auto Scaling handles the scaling automatically (scale out when traffic increases, scale in when it drops). Tasks can run for any duration on Fargate (no 15-minute limit like Lambda). This is simpler than ECS on EC2 (no EC2 management) and simpler than EKS (no Kubernetes complexity).
 
 **Why not the others**:
-- **A**: ECS on EC2 requires managing EC2 instances â€?"simplest possible configuration" points to Fargate.
-- **C**: Lambda has a 15-minute max timeout â€?10-minute tasks are within limit, but Fargate is better for consistently long-running services (2-10 min each).
+- **A**: ECS on EC2 requires managing EC2 instances ï¿½?"simplest possible configuration" points to Fargate.
+- **C**: Lambda has a 15-minute max timeout ï¿½?10-minute tasks are within limit, but Fargate is better for consistently long-running services (2-10 min each).
 - **D**: EKS on Fargate introduces Kubernetes complexity that's unnecessary.
 
-**ğŸ“– Textbook ref**: Â§1 â€?Similar Service Comparison, "Lambda vs ECS vs Fargate vs EC2"
+**ğŸ“– Textbook ref**: Â§1 ï¿½?Similar Service Comparison, "Lambda vs ECS vs Fargate vs EC2"
 
 ---
 
 ### A2.6
-**Correct: B** â€?Amazon EKS.
+**Correct: B** ï¿½?Amazon EKS.
 
-**Why**: EKS is a managed Kubernetes control plane that is compatible with standard Kubernetes tooling â€?kubectl, Helm, existing manifests, and CI/CD pipelines that use kubectl commands work with EKS with minimal changes (primarily updating the kubeconfig to point to the EKS cluster endpoint). This is the primary reason organizations choose EKS over ECS: they already have Kubernetes investments.
+**Why**: EKS is a managed Kubernetes control plane that is compatible with standard Kubernetes tooling ï¿½?kubectl, Helm, existing manifests, and CI/CD pipelines that use kubectl commands work with EKS with minimal changes (primarily updating the kubeconfig to point to the EKS cluster endpoint). This is the primary reason organizations choose EKS over ECS: they already have Kubernetes investments.
 
 **Why not the others**:
-- **A**: ECS uses its own API and orchestration model â€?manifests and kubectl workflows don't transfer.
+- **A**: ECS uses its own API and orchestration model ï¿½?manifests and kubectl workflows don't transfer.
 - **C**: Elastic Beanstalk doesn't use standard Kubernetes tooling.
 - **D**: ECR is just the registry; CodeDeploy for ECS doesn't use kubectl.
 
-**ğŸ“– Textbook ref**: Â§2 â€?EKS, "Azure Bridge: existing K8s investment"; Similar Service Comparison, "Existing investment" row
+**ğŸ“– Textbook ref**: Â§2 ï¿½?EKS, "Azure Bridge: existing K8s investment"; Similar Service Comparison, "Existing investment" row
 
 ---
 
 ### A2.7
-**Correct: B** â€?This architecture is valid â€?Lambda supports container images up to 10 GB from ECR.
+**Correct: B** ï¿½?This architecture is valid ï¿½?Lambda supports container images up to 10 GB from ECR.
 
 **Why**: AWS Lambda supports container images up to 10 GB stored in ECR. The function processes S3 events (trigger valid), runs for 8 seconds (within 15-min timeout), and uses a 3 GB image (under 10 GB limit). This is a fully valid, supported architecture. Container image support in Lambda is specifically designed for this use case.
 
 **Why not the others**:
 - **A**: Lambda has supported container images since December 2020.
-- **C**: Lambda can use container images with or without VPC â€?VPC is not required.
+- **C**: Lambda can use container images with or without VPC ï¿½?VPC is not required.
 - **D**: Lambda invocations are managed by Lambda, not ECS.
 
-**ğŸ“– Textbook ref**: Â§1 â€?Lambda, "Docker/Lambda: Container images up to 10 GB in ECR"
+**ğŸ“– Textbook ref**: Â§1 ï¿½?Lambda, "Docker/Lambda: Container images up to 10 GB in ECR"
 
 ---
 
-## ğŸ”´ Similar Service Comparison â€?Answers
+## ğŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A2.8
-**Correct: A** â€?ECS â€?AWS-native, lower complexity, no Kubernetes knowledge needed.
+**Correct: A** ï¿½?ECS ï¿½?AWS-native, lower complexity, no Kubernetes knowledge needed.
 
 **Why**: ECS is simpler: no Kubernetes concepts to learn (pods, deployments, services, ingress controllers), no cluster API to manage (just task definitions and services), and deep AWS integration. For a team with no Kubernetes experience who doesn't need multi-cloud portability, ECS provides the fastest time-to-value with the lowest operational burden.
 
 **Why not the others**:
 - **B**: EKS adds Kubernetes complexity that this team doesn't need and hasn't asked for.
-- **C**: EKS on Fargate doesn't eliminate Kubernetes complexity â€?you still need to understand and manage Kubernetes constructs.
-- **D**: Self-managed Kubernetes maximizes complexity â€?opposite of the team's goals.
+- **C**: EKS on Fargate doesn't eliminate Kubernetes complexity ï¿½?you still need to understand and manage Kubernetes constructs.
+- **D**: Self-managed Kubernetes maximizes complexity ï¿½?opposite of the team's goals.
 
-**ğŸ“– Textbook ref**: Â§2 â€?Similar Service Comparison, "ECS vs EKS"
+**ğŸ“– Textbook ref**: Â§2 ï¿½?Similar Service Comparison, "ECS vs EKS"
 
 ---
 
 ### A2.9
-**Correct: B** â€?ECS on Fargate â€?Lambda has a 15-minute timeout; 30-minute tasks require ECS/Fargate.
+**Correct: B** ï¿½?ECS on Fargate ï¿½?Lambda has a 15-minute timeout; 30-minute tasks require ECS/Fargate.
 
-**Why**: This is a straightforward timeout comparison. Lambda max timeout = 15 minutes. Video processing = 30 minutes per task. Lambda is categorically not an option. ECS on Fargate has no task duration limit â€?tasks can run indefinitely. This is the correct choice for long-running workloads.
+**Why**: This is a straightforward timeout comparison. Lambda max timeout = 15 minutes. Video processing = 30 minutes per task. Lambda is categorically not an option. ECS on Fargate has no task duration limit ï¿½?tasks can run indefinitely. This is the correct choice for long-running workloads.
 
 **Why not the others**:
-- **A**: Lambda cannot run 30 minutes â€?this is factually wrong.
+- **A**: Lambda cannot run 30 minutes ï¿½?this is factually wrong.
 - **C**: Container image support does not change the 15-minute timeout limit.
-- **D**: Fargate has no timeout limit for tasks â€?this statement is false.
+- **D**: Fargate has no timeout limit for tasks ï¿½?this statement is false.
 
-**ğŸ“– Textbook ref**: Â§1 â€?Similar Service Comparison, "Max runtime" row
+**ğŸ“– Textbook ref**: Â§1 ï¿½?Similar Service Comparison, "Max runtime" row
 
 ---
 
 ### A2.10
-**Correct: B** â€?Distribute ECS tasks across multiple AZs with distinctInstance placement and a multi-AZ ASG.
+**Correct: B** ï¿½?Distribute ECS tasks across multiple AZs with distinctInstance placement and a multi-AZ ASG.
 
 **Why**: For ECS on EC2 with multi-AZ HA: (1) the ASG must span multiple AZs to provide EC2 capacity in each AZ. (2) The ECS service should use a task placement strategy like `distinctInstance` or spread across AZs to ensure tasks are distributed. (3) The ALB distributes traffic across tasks in all AZs automatically.
 
 **Why not the others**:
 - **A**: Single AZ = no AZ failure resilience.
-- **C**: Fargate also requires configuring multi-AZ (subnets in multiple AZs) â€?it's not automatically multi-AZ.
+- **C**: Fargate also requires configuring multi-AZ (subnets in multiple AZs) ï¿½?it's not automatically multi-AZ.
 - **D**: Service Auto Scaling handles load-based scaling, not AZ failure resilience.
 
-**ğŸ“– Textbook ref**: Â§2 â€?ECS, "ECS + EC2: placement constraints/strategies"; Â§5 â€?ALB
+**ğŸ“– Textbook ref**: Â§2 ï¿½?ECS, "ECS + EC2: placement constraints/strategies"; Â§5 ï¿½?ALB
 
 ---
 

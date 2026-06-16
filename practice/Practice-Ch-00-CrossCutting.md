@@ -5,7 +5,7 @@ tiers:
   knowledge: 5
   scenario: 10
   comparison: 5
-basedOn: "AWS-SAP-C02-Learning-Material.md â€?Cross-Cutting Concepts"
+basedOn: "AWS-SAP-C02-Learning-Material.md ï¿½?Cross-Cutting Concepts"
 concepts:
   - High Availability
   - Disaster Recovery
@@ -20,11 +20,11 @@ concepts:
 # Chapter 0 Practice: ğŸŒ Cross-Cutting Concepts
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Cross-Cutting Concepts (HA, DR, Cost Optimization, Security, Decoupling, Serverless, Multi-Account Governance, Deployment Strategies)
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Cross-Cutting Concepts (HA, DR, Cost Optimization, Security, Decoupling, Serverless, Multi-Account Governance, Deployment Strategies)
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ğŸŸ¢ Knowledge Check (5 questions)
 
@@ -97,7 +97,7 @@ What change would have minimized the downtime to near-zero?
 ### Q0.7
 
 > ğŸ”´ L3-åº”ç”¨ | ğŸ¤ğŸ¤ğŸ¤ é«˜é¢‘é¢è¯•
-A company's DR plan requires that the production database be replicated to a DR Region with less than 1 second of data loss (RPO â‰?1 second) and recovery completed within 5 minutes (RTO < 5 minutes). The database must be able to serve read traffic in the DR Region during normal operations.
+A company's DR plan requires that the production database be replicated to a DR Region with less than 1 second of data loss (RPO ï¿½?1 second) and recovery completed within 5 minutes (RTO < 5 minutes). The database must be able to serve read traffic in the DR Region during normal operations.
 
 Which database feature meets these requirements?
 
@@ -119,7 +119,7 @@ A solutions architect is designing a multi-account strategy for a company with 3
 ### Q0.9
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-A video processing startup has highly variable workloads â€?sometimes zero processing for hours, then thousands of 2-minute processing jobs submitted simultaneously. The startup has no dedicated operations team. Jobs can occasionally fail and be retried without business impact.
+A video processing startup has highly variable workloads ï¿½?sometimes zero processing for hours, then thousands of 2-minute processing jobs submitted simultaneously. The startup has no dedicated operations team. Jobs can occasionally fail and be retried without business impact.
 
 Which combination of cost optimization and compute strategies is optimal?
 
@@ -135,10 +135,10 @@ A company's monolithic application experiences cascading failures: a slowdown in
 
 Which architectural pattern would prevent this cascading failure?
 
-- A. Vertical scaling â€?increase the instance size for all modules
-- B. Decoupling â€?introduce SQS between modules so each can process at its own pace
-- C. Multi-AZ deployment â€?deploy each module across multiple AZs
-- D. Auto Scaling â€?set aggressive scale-out policies for all modules
+- A. Vertical scaling ï¿½?increase the instance size for all modules
+- B. Decoupling ï¿½?introduce SQS between modules so each can process at its own pace
+- C. Multi-AZ deployment ï¿½?deploy each module across multiple AZs
+- D. Auto Scaling ï¿½?set aggressive scale-out policies for all modules
 
 ### Q0.11
 
@@ -173,20 +173,20 @@ Which AWS service provides native support for this deployment pattern?
 > ğŸ”´ L3-åº”ç”¨ | ğŸ¤ğŸ¤ğŸ¤ é«˜é¢‘é¢è¯•
 Compare Pilot Light, Warm Standby, and Multi-Site Active/Active DR strategies. A company has an RPO of < 1 second and RTO of < 1 minute. The DR Region must handle production traffic during normal operations. Which strategy must be used?
 
-- A. Pilot Light â€?core infrastructure running, minimal services
-- B. Warm Standby â€?scaled-down but functional environment ready to scale up
-- C. Multi-Site Active/Active â€?fully running in both Regions simultaneously
-- D. Backup and Restore â€?periodic snapshots copied to DR Region
+- A. Pilot Light ï¿½?core infrastructure running, minimal services
+- B. Warm Standby ï¿½?scaled-down but functional environment ready to scale up
+- C. Multi-Site Active/Active ï¿½?fully running in both Regions simultaneously
+- D. Backup and Restore ï¿½?periodic snapshots copied to DR Region
 
 ### Q0.14
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
 A solutions architect must choose between a serverless and server-based architecture. The application needs to run continuously 24/7 with steady, predictable traffic. It requires custom OS-level monitoring agents and kernel tuning. Which architecture should be chosen and why?
 
-- A. Serverless (Lambda + API Gateway + DynamoDB) â€?lower operational overhead
-- B. Server-based (EC2 + ALB + RDS) â€?serverless cannot meet kernel and OS-level requirements
-- C. Hybrid â€?Lambda for compute, EC2 for monitoring agents only
-- D. Serverless (Fargate + Aurora Serverless) â€?managed services meet all requirements
+- A. Serverless (Lambda + API Gateway + DynamoDB) ï¿½?lower operational overhead
+- B. Server-based (EC2 + ALB + RDS) ï¿½?serverless cannot meet kernel and OS-level requirements
+- C. Hybrid ï¿½?Lambda for compute, EC2 for monitoring agents only
+- D. Serverless (Fargate + Aurora Serverless) ï¿½?managed services meet all requirements
 
 ### Q0.15
 
@@ -195,8 +195,8 @@ A company must choose between Active-Passive and Active-Active high availability
 
 Which HA model and AWS service combination is appropriate?
 
-- A. Active-Active with DynamoDB Global Tables â€?both Regions serve traffic simultaneously
-- B. Active-Passive with RDS Multi-AZ â€?synchronous replication with automatic failover within a Region
+- A. Active-Active with DynamoDB Global Tables ï¿½?both Regions serve traffic simultaneously
+- B. Active-Passive with RDS Multi-AZ ï¿½?synchronous replication with automatic failover within a Region
 - C. Active-Active with EC2 Auto Scaling across multiple AZs behind an ALB
 - D. Active-Passive with Route 53 Failover routing between two Regions
 
@@ -262,291 +262,291 @@ Which architecture meets these requirements?
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ğŸŸ¢ Knowledge Check â€?Answers
+## ğŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A0.1
-**Correct: A** â€?RPO = maximum acceptable data loss (time); RTO = maximum acceptable time to restore service.
+**Correct: A** ï¿½?RPO = maximum acceptable data loss (time); RTO = maximum acceptable time to restore service.
 
 **Why**: RPO answers "how much data can we afford to lose?" measured in time (e.g., 1 hour of data loss = RPO of 1 hour). RTO answers "how fast must we recover?" measured in time (e.g., recover within 4 hours = RTO of 4 hours). Lower RPO/RTO = more expensive DR solution.
 
 **Why not the others**:
-- **B**: Reversed â€?RPO is data loss, RTO is downtime.
+- **B**: Reversed ï¿½?RPO is data loss, RTO is downtime.
 - **C**: Both measure time, not compute vs storage.
 - **D**: They are distinct metrics measuring different aspects of recovery.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Disaster Recovery, "RPO: max acceptable data loss; RTO: max acceptable time"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Disaster Recovery, "RPO: max acceptable data loss; RTO: max acceptable time"
 
 ---
 
 ### A0.2
-**Correct: C** â€?Blue/Green deployment.
+**Correct: C** ï¿½?Blue/Green deployment.
 
-**Why**: Blue/Green creates a completely new (green) environment alongside the existing (blue) one. After validation, traffic is switched via DNS or load balancer. If any issue occurs, switch traffic back to blue â€?instant rollback. Trade-off: requires double capacity during deployment.
+**Why**: Blue/Green creates a completely new (green) environment alongside the existing (blue) one. After validation, traffic is switched via DNS or load balancer. If any issue occurs, switch traffic back to blue ï¿½?instant rollback. Trade-off: requires double capacity during deployment.
 
 **Why not the others**:
-- **A**: Rolling updates batches progressively â€?rollback requires re-deploying the old version to each instance.
-- **B**: Canary shifts a small % first, then ramps up â€?good for testing but not fastest rollback for the entire fleet.
-- **D**: All-at-Once updates all instances simultaneously â€?fastest deployment but slowest rollback (all instances already updated).
+- **A**: Rolling updates batches progressively ï¿½?rollback requires re-deploying the old version to each instance.
+- **B**: Canary shifts a small % first, then ramps up ï¿½?good for testing but not fastest rollback for the entire fleet.
+- **D**: All-at-Once updates all instances simultaneously ï¿½?fastest deployment but slowest rollback (all instances already updated).
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Deployment Strategies, "Blue/Green: Fastest rollback"; Â§1 â€?Elastic Beanstalk
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Deployment Strategies, "Blue/Green: Fastest rollback"; Â§1 ï¿½?Elastic Beanstalk
 
 ---
 
 ### A0.3
-**Correct: B** â€?Reducing dependencies between components so they can operate, scale, and fail independently.
+**Correct: B** ï¿½?Reducing dependencies between components so they can operate, scale, and fail independently.
 
 **Why**: Decoupling means components interact through asynchronous, buffered channels (queues, events) rather than direct synchronous calls. This prevents cascading failures and allows each component to scale independently based on its own load and failure characteristics.
 
 **Why not the others**:
-- **A**: The opposite â€?co-location creates tight coupling.
-- **C**: Shared database creates tight coupling at the data layer â€?anti-pattern for microservices.
+- **A**: The opposite ï¿½?co-location creates tight coupling.
+- **C**: Shared database creates tight coupling at the data layer ï¿½?anti-pattern for microservices.
 - **D**: Single AZ is about availability, not coupling.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Decoupling, "Reducing dependencies so components can operate, scale, and fail independently"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Decoupling, "Reducing dependencies so components can operate, scale, and fail independently"
 
 ---
 
 ### A0.4
-**Correct: B** â€?Explicit DENY overrides explicit ALLOW, and explicit ALLOW overrides implicit DENY.
+**Correct: B** ï¿½?Explicit DENY overrides explicit ALLOW, and explicit ALLOW overrides implicit DENY.
 
-**Why**: IAM evaluation starts with implicit DENY (no access by default). An explicit ALLOW in any policy overrides this. However, if ANY policy (IAM, SCP, permissions boundary, session policy) contains an explicit DENY, the request is denied â€?DENY always wins. This is the foundation of least-privilege security in AWS.
+**Why**: IAM evaluation starts with implicit DENY (no access by default). An explicit ALLOW in any policy overrides this. However, if ANY policy (IAM, SCP, permissions boundary, session policy) contains an explicit DENY, the request is denied ï¿½?DENY always wins. This is the foundation of least-privilege security in AWS.
 
 **Why not the others**:
 - **A**: Explicit DENY always wins, not "most permissive."
 - **C**: All policies are evaluated together; there is no "first match" logic.
-- **D**: Reversed â€?DENY overrides ALLOW.
+- **D**: Reversed ï¿½?DENY overrides ALLOW.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Security, "IAM Evaluation Logic: Explicit DENY > Explicit ALLOW > Implicit DENY"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Security, "IAM Evaluation Logic: Explicit DENY > Explicit ALLOW > Implicit DENY"
 
 ---
 
 ### A0.5
-**Correct: B** â€?To set the maximum available permissions for every IAM entity in the accounts it applies to.
+**Correct: B** ï¿½?To set the maximum available permissions for every IAM entity in the accounts it applies to.
 
-**Why**: SCPs are guardrails that define the maximum permissions ceiling. They don't grant permissions themselves â€?they only limit what can be granted through IAM policies. Even if an account administrator attaches AdministratorAccess to a user, an SCP can block specific actions. This is the preventive governance mechanism for multi-account organizations.
+**Why**: SCPs are guardrails that define the maximum permissions ceiling. They don't grant permissions themselves ï¿½?they only limit what can be granted through IAM policies. Even if an account administrator attaches AdministratorAccess to a user, an SCP can block specific actions. This is the preventive governance mechanism for multi-account organizations.
 
 **Why not the others**:
-- **A**: SCPs don't grant permissions â€?they only limit. IAM policies are needed to grant.
-- **C**: AWS Config monitors compliance â€?SCPs enforce it preventively.
-- **D**: SCPs can restrict services/Regions but their purpose is broader â€?maximum permission boundaries.
+- **A**: SCPs don't grant permissions ï¿½?they only limit. IAM policies are needed to grant.
+- **C**: AWS Config monitors compliance ï¿½?SCPs enforce it preventively.
+- **D**: SCPs can restrict services/Regions but their purpose is broader ï¿½?maximum permission boundaries.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Multi-Account Governance, "SCP: Maximum permission ceiling at OU/account level"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Multi-Account Governance, "SCP: Maximum permission ceiling at OU/account level"
 
 ---
 
-## ğŸŸ¡ Scenario Analysis â€?Answers
+## ğŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A0.6
-**Correct: B** â€?Deploy EC2 instances across multiple AZs with the ALB distributing across them.
+**Correct: B** ï¿½?Deploy EC2 instances across multiple AZs with the ALB distributing across them.
 
-**Why**: Single-AZ deployment is the root cause. When the single AZ fails, all instances are unavailable. ALB health checks detect failures in seconds and route traffic to healthy instances â€?but there are none. Auto Scaling then launches new instances in another AZ (minutes). With instances already running in multiple AZs, ALB immediately stops routing to the failed AZ â€?downtime â‰?health check detection time (seconds), not launch time (minutes).
+**Why**: Single-AZ deployment is the root cause. When the single AZ fails, all instances are unavailable. ALB health checks detect failures in seconds and route traffic to healthy instances ï¿½?but there are none. Auto Scaling then launches new instances in another AZ (minutes). With instances already running in multiple AZs, ALB immediately stops routing to the failed AZ ï¿½?downtime ï¿½?health check detection time (seconds), not launch time (minutes).
 
 **Why not the others**:
 - **A**: Read Replicas help with read scaling, not instance-level HA.
-- **C**: NLB also requires multi-AZ targets for HA â€?the issue is single-AZ, not the LB type.
-- **D**: Larger instances launch the same speed â€?the problem is there are no running instances in other AZs during failure.
+- **C**: NLB also requires multi-AZ targets for HA ï¿½?the issue is single-AZ, not the LB type.
+- **D**: Larger instances launch the same speed ï¿½?the problem is there are no running instances in other AZs during failure.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?High Availability, "Multi-AZ EC2 + ALB cross-zone balancing"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?High Availability, "Multi-AZ EC2 + ALB cross-zone balancing"
 
 ---
 
 ### A0.7
-**Correct: C** â€?Aurora Global Database.
+**Correct: C** ï¿½?Aurora Global Database.
 
-**Why**: Aurora Global Database provides cross-Region physical replication with < 1 second typical lag (RPO â‰?1 sec). Secondary Region can be promoted to primary in < 1 minute (RTO < 1 min). Secondary Regions are readable during normal operations â€?satisfying all three requirements simultaneously.
+**Why**: Aurora Global Database provides cross-Region physical replication with < 1 second typical lag (RPO ï¿½?1 sec). Secondary Region can be promoted to primary in < 1 minute (RTO < 1 min). Secondary Regions are readable during normal operations ï¿½?satisfying all three requirements simultaneously.
 
 **Why not the others**:
-- **A**: RDS Multi-AZ is within a single Region â€?no cross-Region DR.
+- **A**: RDS Multi-AZ is within a single Region ï¿½?no cross-Region DR.
 - **B**: Cross-Region Read Replica is asynchronous with much higher lag (minutes); manual promotion takes longer.
 - **D**: DAX is an in-Region cache, not a cross-Region DR solution.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Disaster Recovery, "Aurora Global Database: < 1 sec lag, RTO < 1 min"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Disaster Recovery, "Aurora Global Database: < 1 sec lag, RTO < 1 min"
 
 ---
 
 ### A0.8
-**Correct: B** â€?Attach an SCP to the root OU denying resource creation in unapproved Regions.
+**Correct: B** ï¿½?Attach an SCP to the root OU denying resource creation in unapproved Regions.
 
 **Why**: A single SCP at the root OU cascades to all accounts via OU inheritance. The SCP denies all actions (`*`) with a condition on `aws:RequestedRegion` not being in the approved list. This is centrally managed, cannot be overridden by account administrators (SCP > IAM), and requires zero per-account configuration. The most scalable governance pattern.
 
 **Why not the others**:
-- **A**: IAM policies in 30 accounts require ongoing per-account management â€?not scalable.
-- **C**: AWS Config detects non-compliance reactively â€?it doesn't prevent resource creation.
+- **A**: IAM policies in 30 accounts require ongoing per-account management ï¿½?not scalable.
+- **C**: AWS Config detects non-compliance reactively ï¿½?it doesn't prevent resource creation.
 - **D**: CloudFormation per account has similar scaling issues to IAM policies.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Multi-Account Governance, "SCP Inheritance: Parent OU SCPs apply to child OUs"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Multi-Account Governance, "SCP Inheritance: Parent OU SCPs apply to child OUs"
 
 ---
 
 ### A0.9
-**Correct: B** â€?Spot EC2 instances with SQS for job queuing and Auto Scaling.
+**Correct: B** ï¿½?Spot EC2 instances with SQS for job queuing and Auto Scaling.
 
-**Why**: Multiple factors align: (1) variable workload â†?don't provision for peak. (2) Fault-tolerant (can retry) â†?Spot's interruption risk is acceptable. (3) No ops team â†?full automation needed. SQS decouples job submission from processing and buffers during spikes. ASG scales Spot instances based on queue depth. Spot saves up to 90% vs On-Demand.
+**Why**: Multiple factors align: (1) variable workload ï¿½?don't provision for peak. (2) Fault-tolerant (can retry) ï¿½?Spot's interruption risk is acceptable. (3) No ops team ï¿½?full automation needed. SQS decouples job submission from processing and buffers during spikes. ASG scales Spot instances based on queue depth. Spot saves up to 90% vs On-Demand.
 
 **Why not the others**:
 - **A**: Reserved for average load means paying for idle capacity during quiet periods and being under-provisioned during spikes.
-- **C**: Scheduled scaling requires predictable patterns â€?this workload is "sometimes zero for hours, then thousands simultaneously" (unpredictable timing).
-- **D**: Savings Plans still commit spend â€?Spot with SQS maximizes flexibility.
+- **C**: Scheduled scaling requires predictable patterns ï¿½?this workload is "sometimes zero for hours, then thousands simultaneously" (unpredictable timing).
+- **D**: Savings Plans still commit spend ï¿½?Spot with SQS maximizes flexibility.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Cost Optimization + Decoupling; Â§1 â€?Spot Instances; Â§7 â€?SQS + Auto Scaling
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Cost Optimization + Decoupling; Â§1 ï¿½?Spot Instances; Â§7 ï¿½?SQS + Auto Scaling
 
 ---
 
 ### A0.10
-**Correct: B** â€?Decoupling â€?introduce SQS between modules.
+**Correct: B** ï¿½?Decoupling ï¿½?introduce SQS between modules.
 
-**Why**: Synchronous HTTP calls create tight coupling â€?one slow module blocks all callers upstream. Introducing SQS between modules converts synchronous calls to asynchronous: payment processing reads from its queue at its own pace. If it slows, the queue grows but order placement keeps accepting orders. This is the textbook cascading failure prevention pattern.
+**Why**: Synchronous HTTP calls create tight coupling ï¿½?one slow module blocks all callers upstream. Introducing SQS between modules converts synchronous calls to asynchronous: payment processing reads from its queue at its own pace. If it slows, the queue grows but order placement keeps accepting orders. This is the textbook cascading failure prevention pattern.
 
 **Why not the others**:
-- **A**: Vertical scaling makes individual modules faster but doesn't remove the synchronous dependency â€?a slow module still blocks callers.
+- **A**: Vertical scaling makes individual modules faster but doesn't remove the synchronous dependency ï¿½?a slow module still blocks callers.
 - **C**: Multi-AZ improves availability of individual modules but doesn't decouple them.
 - **D**: Auto Scaling helps individual modules scale but doesn't break the synchronous dependency chain.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Decoupling, "Cascading Failure Prevention: SQS between tiers"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Decoupling, "Cascading Failure Prevention: SQS between tiers"
 
 ---
 
 ### A0.11
-**Correct: C** â€?Amazon EC2 instances with Auto Scaling.
+**Correct: C** ï¿½?Amazon EC2 instances with Auto Scaling.
 
-**Why**: Three requirements eliminate serverless options: (1) host-level monitoring agent with kernel access â€?Fargate and Lambda provide no host OS access. (2) Custom TCP tuning â€?requires OS-level network stack configuration. (3) 24/7 steady traffic â€?EC2 Reserved/Savings Plans are cost-effective for continuous workloads. EC2 provides full OS/kernel control.
+**Why**: Three requirements eliminate serverless options: (1) host-level monitoring agent with kernel access ï¿½?Fargate and Lambda provide no host OS access. (2) Custom TCP tuning ï¿½?requires OS-level network stack configuration. (3) 24/7 steady traffic ï¿½?EC2 Reserved/Savings Plans are cost-effective for continuous workloads. EC2 provides full OS/kernel control.
 
 **Why not the others**:
-- **A**: Lambda provides no OS access â€?cannot install kernel agents or tune TCP.
-- **B**: Fargate is serverless â€?no host OS access for kernel-level monitoring or TCP tuning.
-- **D**: Elastic Beanstalk can use EC2 but abstracts OS configuration â€?kernel tuning is limited.
+- **A**: Lambda provides no OS access ï¿½?cannot install kernel agents or tune TCP.
+- **B**: Fargate is serverless ï¿½?no host OS access for kernel-level monitoring or TCP tuning.
+- **D**: Elastic Beanstalk can use EC2 but abstracts OS configuration ï¿½?kernel tuning is limited.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Serverless, "When NOT to use serverless: OS/kernel control needed"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Serverless, "When NOT to use serverless: OS/kernel control needed"
 
 ---
 
 ### A0.12
-**Correct: B** â€?AWS CodeDeploy with canary traffic shifting and CloudWatch alarm integration.
+**Correct: B** ï¿½?AWS CodeDeploy with canary traffic shifting and CloudWatch alarm integration.
 
-**Why**: CodeDeploy's canary deployment supports: (1) linear traffic shifting in increments (e.g., 10% â†?100%), (2) configurable bake time between increments (15 minutes), (3) automatic rollback triggered by CloudWatch alarms (error rate > 1%). This matches all three requirements exactly â€?percentage-based, time-based monitoring, alarm-based rollback.
+**Why**: CodeDeploy's canary deployment supports: (1) linear traffic shifting in increments (e.g., 10% ï¿½?100%), (2) configurable bake time between increments (15 minutes), (3) automatic rollback triggered by CloudWatch alarms (error rate > 1%). This matches all three requirements exactly ï¿½?percentage-based, time-based monitoring, alarm-based rollback.
 
 **Why not the others**:
-- **A**: Elastic Beanstalk Rolling is all-or-nothing per batch â€?not percentage-based canary.
-- **C**: API Gateway canary deployments shift traffic but are tied to a single API stage â€?CodeDeploy works across EC2, Lambda, and ECS.
+- **A**: Elastic Beanstalk Rolling is all-or-nothing per batch ï¿½?not percentage-based canary.
+- **C**: API Gateway canary deployments shift traffic but are tied to a single API stage ï¿½?CodeDeploy works across EC2, Lambda, and ECS.
 - **D**: CloudFormation rolling updates don't support fine-grained traffic shifting with alarm-based rollback.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Deployment Strategies, "Canary: CodeDeploy linear traffic shifting with auto rollback"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Deployment Strategies, "Canary: CodeDeploy linear traffic shifting with auto rollback"
 
 ---
 
-## ğŸ”´ Similar Service Comparison â€?Answers
+## ğŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A0.13
-**Correct: C** â€?Multi-Site Active/Active.
+**Correct: C** ï¿½?Multi-Site Active/Active.
 
 **Why**: RPO < 1 second requires near-synchronous replication (Aurora Global Database or DynamoDB Global Tables). RTO < 1 minute requires the DR Region to already be running (no "spin-up" time). "Handle production traffic during normal operations" = both Regions are live. Only Active/Active meets all three. Pilot Light (must launch instances) and Warm Standby (must scale up) have RTOs measured in minutes to hours, not < 1 minute.
 
 **Why not the others**:
-- **A**: Pilot Light â€?core services running but application servers must be launched during DR (RTO > 1 min).
-- **B**: Warm Standby â€?scaled-down but requires scaling up (RTO could be 5-10 minutes).
-- **D**: Backup & Restore â€?highest RPO (hours of data loss) and RTO (hours to restore).
+- **A**: Pilot Light ï¿½?core services running but application servers must be launched during DR (RTO > 1 min).
+- **B**: Warm Standby ï¿½?scaled-down but requires scaling up (RTO could be 5-10 minutes).
+- **D**: Backup & Restore ï¿½?highest RPO (hours of data loss) and RTO (hours to restore).
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Disaster Recovery, "DR Strategies (cold â†?hot)"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Disaster Recovery, "DR Strategies (cold ï¿½?hot)"
 
 ---
 
 ### A0.14
-**Correct: B** â€?Server-based (EC2 + ALB + RDS).
+**Correct: B** ï¿½?Server-based (EC2 + ALB + RDS).
 
-**Why**: Two hard requirements eliminate serverless: (1) Custom OS-level monitoring agents require host access â€?Lambda and Fargate abstract the OS completely. (2) Kernel tuning requires root access to the host kernel. Additionally, steady 24/7 traffic favors reserved pricing over serverless per-request pricing â€?EC2 with Savings Plans is significantly cheaper for continuous workloads.
+**Why**: Two hard requirements eliminate serverless: (1) Custom OS-level monitoring agents require host access ï¿½?Lambda and Fargate abstract the OS completely. (2) Kernel tuning requires root access to the host kernel. Additionally, steady 24/7 traffic favors reserved pricing over serverless per-request pricing ï¿½?EC2 with Savings Plans is significantly cheaper for continuous workloads.
 
 **Why not the others**:
-- **A**: Serverless cannot meet the kernel/OS requirements â€?this is a hard blocker, not a preference.
-- **C**: A hybrid adds complexity without benefit â€?if you need EC2 for agents anyway, run the full workload there.
+- **A**: Serverless cannot meet the kernel/OS requirements ï¿½?this is a hard blocker, not a preference.
+- **C**: A hybrid adds complexity without benefit ï¿½?if you need EC2 for agents anyway, run the full workload there.
 - **D**: Fargate and Aurora Serverless have no host OS access for monitoring agents or kernel tuning.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Serverless, "When NOT to use serverless"; Â§1 â€?Comparison table, "OS/kernel control" row
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Serverless, "When NOT to use serverless"; Â§1 ï¿½?Comparison table, "OS/kernel control" row
 
 ---
 
 ### A0.15
-**Correct: B** â€?Active-Passive with RDS Multi-AZ.
+**Correct: B** ï¿½?Active-Passive with RDS Multi-AZ.
 
-**Why**: The application is stateful (session persistence needed) and runs within a single Region. RDS Multi-AZ provides synchronous replication to a standby in a different AZ â€?automatic failover with zero data loss (the standby is an exact synchronous copy). The application connects via the RDS endpoint which automatically resolves to the active instance. This is the within-Region, stateful HA pattern.
+**Why**: The application is stateful (session persistence needed) and runs within a single Region. RDS Multi-AZ provides synchronous replication to a standby in a different AZ ï¿½?automatic failover with zero data loss (the standby is an exact synchronous copy). The application connects via the RDS endpoint which automatically resolves to the active instance. This is the within-Region, stateful HA pattern.
 
 **Why not the others**:
-- **A**: Active-Active with DynamoDB Global Tables is multi-Region and DynamoDB â€?may not fit a stateful relational workload.
+- **A**: Active-Active with DynamoDB Global Tables is multi-Region and DynamoDB ï¿½?may not fit a stateful relational workload.
 - **C**: Active-Active EC2 behind ALB works for stateless web/app tiers but the question focuses on the stateful database component.
-- **D**: Route 53 Failover is multi-Region â€?the question is about within-Region HA with the lowest data loss risk.
+- **D**: Route 53 Failover is multi-Region ï¿½?the question is about within-Region HA with the lowest data loss risk.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?High Availability, "Active-Passive: RDS Multi-AZ synchronous standby"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?High Availability, "Active-Passive: RDS Multi-AZ synchronous standby"
 
 ---
 
 ### A0.16
-**Correct: B** â€?X=Standard Reserved Instances, Y=Compute Savings Plans.
+**Correct: B** ï¿½?X=Standard Reserved Instances, Y=Compute Savings Plans.
 
 **Why**: Strategy X describes Standard RIs: specific instance family, specific AZ, 1-3 year commitment, up to 72% discount. Strategy Y describes Compute Savings Plans: $/hour commitment (not instance-specific), applies to any instance family in any Region, also covers Lambda and Fargate, up to 66% discount (slightly less than RIs since it's more flexible). The key trade-off: RIs = higher discount but locked in; Compute Savings Plans = slightly lower discount but maximum flexibility.
 
 **Why not the others**:
-- **A**: Spot Instances are not a commitment â€?they can be terminated at any time.
+- **A**: Spot Instances are not a commitment ï¿½?they can be terminated at any time.
 - **C**: Convertible RIs allow instance family changes but are still Region-specific and don't cover Lambda/Fargate.
-- **D**: On-Demand Capacity Reservations guarantee capacity with no discount â€?not a savings strategy.
+- **D**: On-Demand Capacity Reservations guarantee capacity with no discount ï¿½?not a savings strategy.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Cost Optimization, "Purchase Options ranked"; Â§1 â€?Comparison, "Spot vs Reserved vs Savings Plans"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Cost Optimization, "Purchase Options ranked"; Â§1 ï¿½?Comparison, "Spot vs Reserved vs Savings Plans"
 
 ---
 
 ### A0.17
-**Correct: C** â€?AWS Backup with cross-Region copy for both Aurora and DynamoDB + Route 53 failover.
+**Correct: C** ï¿½?AWS Backup with cross-Region copy for both Aurora and DynamoDB + Route 53 failover.
 
-**Why**: RPO of 2 hours and RTO of 4 hours are moderate values measured in hours, not seconds. AWS Backup with cross-Region copy satisfies both objectives at the lowest cost: pay only for backup storage and periodic data transfer. Aurora Global Database + DynamoDB Global Tables (Options A, D) provide sub-second RPO â€?massive overkill and overpriced for 2-hour RPO. A custom DMS+Lambda pipeline (B) requires a 24Ã—7 DMS replication instance (significant fixed cost). The exam consistently pairs moderate RPO/RTO with backup-based solutions and tight RPO/RTO with continuous replication.
+**Why**: RPO of 2 hours and RTO of 4 hours are moderate values measured in hours, not seconds. AWS Backup with cross-Region copy satisfies both objectives at the lowest cost: pay only for backup storage and periodic data transfer. Aurora Global Database + DynamoDB Global Tables (Options A, D) provide sub-second RPO ï¿½?massive overkill and overpriced for 2-hour RPO. A custom DMS+Lambda pipeline (B) requires a 24Ã—7 DMS replication instance (significant fixed cost). The exam consistently pairs moderate RPO/RTO with backup-based solutions and tight RPO/RTO with continuous replication.
 
 **Why not the others**:
-- **A/D**: Aurora Global Database + DynamoDB Global Tables are designed for RPO < 1 second â€?disproportionately expensive for 2-hour RPO. You pay for a full secondary Aurora cluster and every replicated DynamoDB write.
-- **B**: DMS replication instance runs 24Ã—7 ($0.30â€?2.00+/hour) + Lambda orchestration complexity â€?higher cost and more failure modes than managed AWS Backup.
+- **A/D**: Aurora Global Database + DynamoDB Global Tables are designed for RPO < 1 second ï¿½?disproportionately expensive for 2-hour RPO. You pay for a full secondary Aurora cluster and every replicated DynamoDB write.
+- **B**: DMS replication instance runs 24Ã—7 ($0.30ï¿½?2.00+/hour) + Lambda orchestration complexity ï¿½?higher cost and more failure modes than managed AWS Backup.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Disaster Recovery, "RPO/RTO â†?Solution Mapping"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Disaster Recovery, "RPO/RTO ï¿½?Solution Mapping"
 
 ---
 
 ### A0.18
-**Correct: C** â€?Create an AWS Global Accelerator with the ALB as endpoint and provide the accelerator's static IPs.
+**Correct: C** ï¿½?Create an AWS Global Accelerator with the ALB as endpoint and provide the accelerator's static IPs.
 
 **Why**: ALB does NOT support Elastic IP addresses (DNS name only, IPs change over time). NLB supports EIPs but does NOT integrate with WAF (Layer 4 only). Global Accelerator provides 2 static anycast IPs that don't change, routes traffic through AWS global backbone to the ALB, and preserves the ALB's WAF integration. This is the purpose-built solution for providing static IPs while retaining Layer 7 protections.
 
 **Why not the others**:
-- **A**: NLB does not integrate with AWS WAF â€?you lose WAF protection for the application. Also adds architectural complexity layering NLBâ†’ALB.
-- **B**: ALB does not support Elastic IP addresses â€?this is technically impossible.
+- **A**: NLB does not integrate with AWS WAF ï¿½?you lose WAF protection for the application. Also adds architectural complexity layering NLBâ†’ALB.
+- **B**: ALB does not support Elastic IP addresses ï¿½?this is technically impossible.
 - **D**: CloudFront IPs are dynamic and change over time; AWS explicitly states you must not rely on static CloudFront IPs.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Security, "Global Accelerator for Static IP + WAF"; Â§5 â€?Global Accelerator
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Security, "Global Accelerator for Static IP + WAF"; Â§5 ï¿½?Global Accelerator
 
 ---
 
 ### A0.19
-**Correct: A** â€?EC2 Instance Savings Plan for EC2 + Compute Savings Plan for Lambda + Reserved Nodes for MemoryDB.
+**Correct: A** ï¿½?EC2 Instance Savings Plan for EC2 + Compute Savings Plan for Lambda + Reserved Nodes for MemoryDB.
 
-**Why**: Each discount instrument is matched to the workload pattern: (1) EC2 Instance Savings Plan gives the deepest discount (up to 72%) for stable, predictable EC2 loads â€?ideal since EC2 is "continuous and stable." (2) Compute Savings Plan provides maximum flexibility (any family, any Region, + Lambda) for variable/unpredictable Lambda usage â€?prevents over-commitment waste. (3) Reserved Nodes are the correct mechanism for MemoryDB â€?neither Savings Plan type covers database/caching services.
+**Why**: Each discount instrument is matched to the workload pattern: (1) EC2 Instance Savings Plan gives the deepest discount (up to 72%) for stable, predictable EC2 loads ï¿½?ideal since EC2 is "continuous and stable." (2) Compute Savings Plan provides maximum flexibility (any family, any Region, + Lambda) for variable/unpredictable Lambda usage ï¿½?prevents over-commitment waste. (3) Reserved Nodes are the correct mechanism for MemoryDB ï¿½?neither Savings Plan type covers database/caching services.
 
 **Why not the others**:
-- **B**: Compute Savings Plan does NOT cover MemoryDB (database service) â€?only EC2, Lambda, Fargate.
+- **B**: Compute Savings Plan does NOT cover MemoryDB (database service) ï¿½?only EC2, Lambda, Fargate.
 - **C**: Lambda Reserved Concurrency is a capacity reservation/throttling mechanism, NOT a cost-saving discount.
 - **D**: Compute Savings Plan doesn't cover MemoryDB + Lambda Reserved Concurrency doesn't save money.
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?Cost Optimization, "Savings Plans Decision Matrix"; "Reserved Concurrency â‰?cost savings"
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?Cost Optimization, "Savings Plans Decision Matrix"; "Reserved Concurrency ï¿½?cost savings"
 
 ---
 
 ### A0.20
-**Correct: C** â€?Deploy a single NAT Gateway with Elastic IP + CloudWatch alarm + Lambda to recreate NAT GW in another AZ and reassign the EIP on failure.
+**Correct: C** ï¿½?Deploy a single NAT Gateway with Elastic IP + CloudWatch alarm + Lambda to recreate NAT GW in another AZ and reassign the EIP on failure.
 
-**Why**: A single Elastic IP can only be assigned to one NAT Gateway at a time â€?three NAT Gateways sharing one EIP (Option A) is impossible. When the on-prem firewall restricts to a single source IP, the standard multi-AZ NAT GW pattern (one per AZ, each with own EIP) won't work. Solution: one NAT GW in one AZ â†?CloudWatch monitors â†?Lambda recreates NAT GW in a different AZ and reassigns the EIP on failure. This preserves the single whitelisted IP while achieving cross-AZ failover.
+**Why**: A single Elastic IP can only be assigned to one NAT Gateway at a time ï¿½?three NAT Gateways sharing one EIP (Option A) is impossible. When the on-prem firewall restricts to a single source IP, the standard multi-AZ NAT GW pattern (one per AZ, each with own EIP) won't work. Solution: one NAT GW in one AZ ï¿½?CloudWatch monitors ï¿½?Lambda recreates NAT GW in a different AZ and reassigns the EIP on failure. This preserves the single whitelisted IP while achieving cross-AZ failover.
 
 **Why not the others**:
-- **A**: An EIP can only associate with one resource at a time â€?cannot assign the same EIP to three NAT Gateways.
-- **B**: NLB handles inbound traffic â€?not outbound NAT for private instances reaching on-premises.
+- **A**: An EIP can only associate with one resource at a time ï¿½?cannot assign the same EIP to three NAT Gateways.
+- **B**: NLB handles inbound traffic ï¿½?not outbound NAT for private instances reaching on-premises.
 - **D**: ALB does not support EIPs + ALB handles inbound (clientâ†’app), not outbound (appâ†’on-prem).
 
-**ğŸ“– Textbook ref**: Cross-Cutting Concepts â€?High Availability, "NAT Gateway HA with Single EIP"; Â§5 â€?NAT Gateway, VPC
+**ğŸ“– Textbook ref**: Cross-Cutting Concepts ï¿½?High Availability, "NAT Gateway HA with Single EIP"; Â§5 ï¿½?NAT Gateway, VPC

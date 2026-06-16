@@ -17,11 +17,11 @@ services:
 # Chapter 7 Practice: ğŸ”— Application Integration
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers and explanations.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 7 (SQS, SNS, EventBridge, Step Functions, AppSync) + Similar Service Comparison: Messaging & Events
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 7 (SQS, SNS, EventBridge, Step Functions, AppSync) + Similar Service Comparison: Messaging & Events
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ğŸŸ¢ Knowledge Check (4 questions)
 
@@ -38,7 +38,7 @@ What happens to an SQS message that is received by a consumer but not deleted be
 ### Q7.2
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-A solutions architect needs to send a single message to multiple SQS queues simultaneously â€?each queue should receive a copy of the message. Which service enables this fan-out pattern?
+A solutions architect needs to send a single message to multiple SQS queues simultaneously ï¿½?each queue should receive a copy of the message. Which service enables this fan-out pattern?
 
 - A. Amazon SQS with message duplication
 - B. Amazon SNS with SQS subscriptions
@@ -141,10 +141,10 @@ Which SQS features should be configured?
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
 A company needs to decouple a producer from a consumer. Messages must be buffered and processed in order, and the consumer pulls messages at its own pace. The order of processing matters. Which messaging pattern and service should be used?
 
-- A. Pub/Sub (push) â€?Amazon SNS with a FIFO topic
-- B. Queue (pull) â€?Amazon SQS FIFO queue
-- C. Event bus (push) â€?Amazon EventBridge
-- D. Stream (pull) â€?Amazon Kinesis Data Streams
+- A. Pub/Sub (push) ï¿½?Amazon SNS with a FIFO topic
+- B. Queue (pull) ï¿½?Amazon SQS FIFO queue
+- C. Event bus (push) ï¿½?Amazon EventBridge
+- D. Stream (pull) ï¿½?Amazon Kinesis Data Streams
 
 ### Q7.11
 
@@ -173,74 +173,74 @@ A gaming company collects real-time player event data (clicks, moves, scores) at
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ğŸŸ¢ Knowledge Check â€?Answers
+## ğŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A7.1
-**Correct: B** â€?The message becomes visible again and can be processed by another consumer.
+**Correct: B** ï¿½?The message becomes visible again and can be processed by another consumer.
 
 **Why**: The visibility timeout is the period during which SQS prevents other consumers from receiving and processing the same message. If the consumer fails to delete the message before the timeout expires (because of a crash, bug, or timeout), the message becomes visible again in the queue and another consumer can receive it. This is SQS's built-in fault tolerance mechanism.
 
 **Why not the others**:
 - **A**: Messages are only permanently deleted when the consumer explicitly calls `DeleteMessage`.
-- **C**: Messages go to the DLQ only after exceeding `maxReceiveCount` â€?not after a single visibility timeout expiry.
-- **D**: The invisibility is temporary â€?it expires after the visibility timeout period.
+- **C**: Messages go to the DLQ only after exceeding `maxReceiveCount` ï¿½?not after a single visibility timeout expiry.
+- **D**: The invisibility is temporary ï¿½?it expires after the visibility timeout period.
 
-**ğŸ“– Textbook ref**: Â§7 â€?SQS, "Visibility Timeout"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?SQS, "Visibility Timeout"
 
 ---
 
 ### A7.2
-**Correct: B** â€?Amazon SNS with SQS subscriptions.
+**Correct: B** ï¿½?Amazon SNS with SQS subscriptions.
 
-**Why**: SNS is a pub/sub service. An SNS topic can have multiple subscriptions, including SQS queues. When a message is published to the topic, SNS delivers a copy to each subscription. This is the canonical "fan-out" pattern: one message â†?multiple SQS queues, each independently processed by different consumers.
+**Why**: SNS is a pub/sub service. An SNS topic can have multiple subscriptions, including SQS queues. When a message is published to the topic, SNS delivers a copy to each subscription. This is the canonical "fan-out" pattern: one message ï¿½?multiple SQS queues, each independently processed by different consumers.
 
 **Why not the others**:
-- **A**: SQS does not duplicate messages across queues â€?one message goes to one queue.
-- **C**: EventBridge can route to multiple targets but is pattern-based â€?it doesn't inherently fan out to multiple identical consumers.
+- **A**: SQS does not duplicate messages across queues ï¿½?one message goes to one queue.
+- **C**: EventBridge can route to multiple targets but is pattern-based ï¿½?it doesn't inherently fan out to multiple identical consumers.
 - **D**: Step Functions orchestrates workflows, not message fan-out.
 
-**ğŸ“– Textbook ref**: Â§7 â€?SNS, "Fan-out Pattern: SNS â†?multiple SQS queues"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?SNS, "Fan-out Pattern: SNS ï¿½?multiple SQS queues"
 
 ---
 
 ### A7.3
-**Correct: A** â€?To store messages that failed processing after exceeding the maximum receive count.
+**Correct: A** ï¿½?To store messages that failed processing after exceeding the maximum receive count.
 
 **Why**: A Dead Letter Queue (DLQ) is a separate SQS queue that receives messages that have been received and not deleted `maxReceiveCount` times. Instead of the message cycling endlessly in the source queue (consuming resources and potentially blocking other messages), it's moved to the DLQ for analysis. You can then diagnose why processing failed, fix the issue, and redrive the messages back to the source queue.
 
 **Why not the others**:
 - **B**: DLQ is for failed messages, not temporary traffic buffering.
-- **C**: DLQ doesn't duplicate â€?it moves messages from the source queue.
+- **C**: DLQ doesn't duplicate ï¿½?it moves messages from the source queue.
 - **D**: DLQ stores failed messages, not successfully processed ones.
 
-**ğŸ“– Textbook ref**: Â§7 â€?SQS, "Dead Letter Queue (DLQ)"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?SQS, "Dead Letter Queue (DLQ)"
 
 ---
 
 ### A7.4
-**Correct: C** â€?AWS Step Functions.
+**Correct: C** ï¿½?AWS Step Functions.
 
 **Why**: Step Functions is purpose-built for multi-step workflow orchestration. It coordinates sequential steps, handles errors with built-in exponential backoff retry (configurable), manages state between steps, and can integrate with Lambda (for short steps 1 and 3) and AWS Batch or ECS (for the 2-hour step 2 that exceeds Lambda's 15-minute timeout). The declarative state machine definition handles all the coordination logic.
 
 **Why not the others**:
 - **A**: SQS chains require custom code to coordinate stages, manage retries, and track state.
-- **B**: SNS is fire-and-forget â€?it doesn't coordinate sequential steps or manage state.
-- **D**: EventBridge routes events based on patterns â€?it doesn't orchestrate sequential workflows.
+- **B**: SNS is fire-and-forget ï¿½?it doesn't coordinate sequential steps or manage state.
+- **D**: EventBridge routes events based on patterns ï¿½?it doesn't orchestrate sequential workflows.
 
-**ğŸ“– Textbook ref**: Â§7 â€?Step Functions, "Orchestration" and "Error Handling"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?Step Functions, "Orchestration" and "Error Handling"
 
 ---
 
-## ğŸŸ¡ Scenario Analysis â€?Answers
+## ğŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A7.5
-**Correct: A and C** â€?Scale-in protection + lifecycle hooks.
+**Correct: A and C** ï¿½?Scale-in protection + lifecycle hooks.
 
 **Why**:
 - **A (Scale-in protection)**: When an instance picks up an order from SQS, it can enable scale-in protection on itself. While processing, it's protected from termination. When it finishes the batch and is ready to be terminated, it removes the protection.
@@ -249,109 +249,109 @@ A gaming company collects real-time player event data (clicks, moves, scores) at
 **Why not the others**:
 - **B**: Retention period affects how long messages stay in the queue before being deleted, not how instances process them.
 - **D**: FIFO guarantees ordering but doesn't solve the termination-during-processing problem.
-- **E**: EventBridge doesn't buffer messages for EC2 processing â€?it's for event routing.
+- **E**: EventBridge doesn't buffer messages for EC2 processing ï¿½?it's for event routing.
 
-**ğŸ“– Textbook ref**: Â§1 â€?EC2 Auto Scaling, "Scale-In Protection" and "Lifecycle Hooks"; Â§7 â€?SQS, "SQS + Auto Scaling"
+**ğŸ“– Textbook ref**: Â§1 ï¿½?EC2 Auto Scaling, "Scale-In Protection" and "Lifecycle Hooks"; Â§7 ï¿½?SQS, "SQS + Auto Scaling"
 
 ---
 
 ### A7.6
-**Correct: B** â€?Amazon EventBridge.
+**Correct: B** ï¿½?Amazon EventBridge.
 
-**Why**: EventBridge has native integrations with SaaS applications (Zendesk, Datadog, PagerDuty) â€?events from these partners flow directly into the event bus. EventBridge uses pattern-based routing: you define rules that match specific event attributes (source, event type, severity), and each rule routes matching events to specific targets (Lambda functions). New integrations simply need new rules â€?no architectural changes.
+**Why**: EventBridge has native integrations with SaaS applications (Zendesk, Datadog, PagerDuty) ï¿½?events from these partners flow directly into the event bus. EventBridge uses pattern-based routing: you define rules that match specific event attributes (source, event type, severity), and each rule routes matching events to specific targets (Lambda functions). New integrations simply need new rules ï¿½?no architectural changes.
 
 **Why not the others**:
 - **A**: SNS filtering works but SNS doesn't have native SaaS integrations.
-- **C**: SQS with multiple queues requires the SaaS applications to push to different queues â€?not a unified event bus.
+- **C**: SQS with multiple queues requires the SaaS applications to push to different queues ï¿½?not a unified event bus.
 - **D**: Step Functions orchestrates workflows, not event routing.
 
-**ğŸ“– Textbook ref**: Â§7 â€?EventBridge, "SaaS integration" and "Pattern-based routing"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?EventBridge, "SaaS integration" and "Pattern-based routing"
 
 ---
 
 ### A7.7
-**Correct: B** â€?SNS topic publishes to SQS queues for each downstream service, with Lambda, S3 event, and HTTP subscriptions.
+**Correct: B** ï¿½?SNS topic publishes to SQS queues for each downstream service, with Lambda, S3 event, and HTTP subscriptions.
 
-**Why**: This is the decoupled fan-out architecture. The API Gateway publishes to an SNS topic. SNS delivers to: (a) Lambda for anomaly detection (direct Lambda subscription), (b) SQS â†?Lambda â†?S3 for long-term storage (durable), (c) HTTP endpoint for third-party monitoring. Each downstream service operates independently â€?if one fails, others are unaffected. Adding a new consumer just means adding a new subscription.
+**Why**: This is the decoupled fan-out architecture. The API Gateway publishes to an SNS topic. SNS delivers to: (a) Lambda for anomaly detection (direct Lambda subscription), (b) SQS ï¿½?Lambda ï¿½?S3 for long-term storage (durable), (c) HTTP endpoint for third-party monitoring. Each downstream service operates independently ï¿½?if one fails, others are unaffected. Adding a new consumer just means adding a new subscription.
 
 **Why not the others**:
 - **A**: A Lambda writing to SQS is a custom fan-out with more custom code to maintain.
 - **C**: Step Functions is for sequential/parallel orchestration of a single workflow, not independent fan-out.
-- **D**: API Gateway directly invoking each service creates tight coupling â€?if one service is slow, the entire API call is slow.
+- **D**: API Gateway directly invoking each service creates tight coupling ï¿½?if one service is slow, the entire API call is slow.
 
-**ğŸ“– Textbook ref**: Â§7 â€?SNS, "Fan-out Pattern" and "SNS + SQS"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?SNS, "Fan-out Pattern" and "SNS + SQS"
 
 ---
 
 ### A7.8
-**Correct: B** â€?AWS AppSync with GraphQL subscriptions + DynamoDB.
+**Correct: B** ï¿½?AWS AppSync with GraphQL subscriptions + DynamoDB.
 
 **Why**: AppSync provides managed GraphQL with real-time subscriptions via WebSocket. Clients subscribe to specific data channels (e.g., `onUpdateOrder`), and when data changes in DynamoDB, AppSync pushes updates to all subscribed clients in real time. This is the native, serverless solution for real-time bidirectional communication with a DynamoDB backend.
 
 **Why not the others**:
-- **A**: REST API with SQS long polling is pull-based â€?clients poll for updates, not receive them instantly.
+- **A**: REST API with SQS long polling is pull-based ï¿½?clients poll for updates, not receive them instantly.
 - **C**: SNS push notifications are for mobile notifications (APNs, FCM), not real-time data subscription channels.
-- **D**: WebSocket API with DynamoDB Streams also works but requires more custom code for subscription management â€?AppSync handles this natively.
+- **D**: WebSocket API with DynamoDB Streams also works but requires more custom code for subscription management ï¿½?AppSync handles this natively.
 
-**ğŸ“– Textbook ref**: Â§7 â€?AppSync, "Real-time subscriptions via WebSocket"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?AppSync, "Real-time subscriptions via WebSocket"
 
 ---
 
 ### A7.9
-**Correct: A** â€?Configure DLQ with `maxReceiveCount`; after messages move to DLQ, analyze and redrive.
+**Correct: A** ï¿½?Configure DLQ with `maxReceiveCount`; after messages move to DLQ, analyze and redrive.
 
-**Why**: This is the standard SQS error handling pattern. Set `maxReceiveCount` to a value like 3â€?. If a Lambda invocation fails (throws an error), SQS receives the message again until the receive count exceeds the threshold, at which point the message is moved to the DLQ. From the DLQ, you can inspect failed messages, fix the root cause (e.g., downstream service is back up), and redrive them to the source queue for reprocessing.
+**Why**: This is the standard SQS error handling pattern. Set `maxReceiveCount` to a value like 3ï¿½?. If a Lambda invocation fails (throws an error), SQS receives the message again until the receive count exceeds the threshold, at which point the message is moved to the DLQ. From the DLQ, you can inspect failed messages, fix the root cause (e.g., downstream service is back up), and redrive them to the source queue for reprocessing.
 
 **Why not the others**:
-- **B**: A 12-hour visibility timeout means failed messages are invisible for 12 hours each time â€?too long for a temporary outage.
+- **B**: A 12-hour visibility timeout means failed messages are invisible for 12 hours each time ï¿½?too long for a temporary outage.
 - **C**: FIFO addresses ordering, not failure handling.
-- **D**: Duplicating messages adds unnecessary complexity â€?SQS DLQ is the native solution.
+- **D**: Duplicating messages adds unnecessary complexity ï¿½?SQS DLQ is the native solution.
 
-**ğŸ“– Textbook ref**: Â§7 â€?SQS, "DLQ: Analyze, then redrive to source queue"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?SQS, "DLQ: Analyze, then redrive to source queue"
 
 ---
 
-## ğŸ”´ Similar Service Comparison â€?Answers
+## ğŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A7.10
-**Correct: B** â€?Queue (pull) â€?Amazon SQS FIFO queue.
+**Correct: B** ï¿½?Queue (pull) ï¿½?Amazon SQS FIFO queue.
 
-**Why**: Three requirements drive this choice: (1) Decouple producer from consumer â€?both queue and pub/sub achieve this. (2) Messages must be processed in order â€?SQS FIFO guarantees first-in-first-out ordering within a message group. (3) Consumer pulls at its own pace â€?SQS is a pull-based model where the consumer controls the consumption rate. The "pull" model is SQS's defining characteristic.
+**Why**: Three requirements drive this choice: (1) Decouple producer from consumer ï¿½?both queue and pub/sub achieve this. (2) Messages must be processed in order ï¿½?SQS FIFO guarantees first-in-first-out ordering within a message group. (3) Consumer pulls at its own pace ï¿½?SQS is a pull-based model where the consumer controls the consumption rate. The "pull" model is SQS's defining characteristic.
 
 **Why not the others**:
-- **A**: SNS is push-based â€?the consumer must be available when SNS delivers; it doesn't buffer messages for the consumer's pace.
+- **A**: SNS is push-based ï¿½?the consumer must be available when SNS delivers; it doesn't buffer messages for the consumer's pace.
 - **C**: EventBridge is push-based and doesn't guarantee ordering.
 - **D**: Kinesis is pull-based and ordered, but "message" semantics (vs. stream) and the specific need for independent message processing point to SQS.
 
-**ğŸ“– Textbook ref**: Â§7 â€?Similar Service Comparison, "SQS vs SNS vs EventBridge vs Kinesis"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?Similar Service Comparison, "SQS vs SNS vs EventBridge vs Kinesis"
 
 ---
 
 ### A7.11
-**Correct: B** â€?Amazon EventBridge.
+**Correct: B** ï¿½?Amazon EventBridge.
 
-**Why**: EventBridge's core value proposition is pattern-based event routing. You define rules with event patterns (matching `source`, `detail-type`, or specific JSON fields like `detail.severity`). Consumer C's rule matches any event where `$.detail.severity == "CRITICAL"` â€?this level of content-based routing is exactly what EventBridge is designed for. SNS can filter on message attributes (metadata) but can't filter on the actual event body/JSON structure.
+**Why**: EventBridge's core value proposition is pattern-based event routing. You define rules with event patterns (matching `source`, `detail-type`, or specific JSON fields like `detail.severity`). Consumer C's rule matches any event where `$.detail.severity == "CRITICAL"` ï¿½?this level of content-based routing is exactly what EventBridge is designed for. SNS can filter on message attributes (metadata) but can't filter on the actual event body/JSON structure.
 
 **Why not the others**:
 - **A**: SNS subscription filter policies can filter on message attributes, not on the event body/JSON content like "severity within the event payload."
-- **C**: SQS would require all messages to go to one queue and consumers to filter themselves â€?wasteful.
+- **C**: SQS would require all messages to go to one queue and consumers to filter themselves ï¿½?wasteful.
 - **D**: A custom Lambda router adds management overhead (not truly serverless in the managed sense).
 
-**ğŸ“– Textbook ref**: Â§7 â€?EventBridge, "Pattern-based routing (rules match event attributes)"; Similar Service Comparison
+**ğŸ“– Textbook ref**: Â§7 ï¿½?EventBridge, "Pattern-based routing (rules match event attributes)"; Similar Service Comparison
 
 ---
 
 ### A7.12
-**Correct: C** â€?Amazon Kinesis Data Streams.
+**Correct: C** ï¿½?Amazon Kinesis Data Streams.
 
-**Why**: Three requirements point to Kinesis: (1) High throughput â€?50,000 events/sec is well within Kinesis capacity (each shard = 1,000 records/sec writes; 50 shards handle this). (2) Multiple independent consumers â€?Kinesis supports multiple consumer applications reading from the same stream, each at its own pace, without affecting others. (3) Replay capability â€?Kinesis retains data for up to 365 days (configurable); consumers can replay events from any point within the retention window.
+**Why**: Three requirements point to Kinesis: (1) High throughput ï¿½?50,000 events/sec is well within Kinesis capacity (each shard = 1,000 records/sec writes; 50 shards handle this). (2) Multiple independent consumers ï¿½?Kinesis supports multiple consumer applications reading from the same stream, each at its own pace, without affecting others. (3) Replay capability ï¿½?Kinesis retains data for up to 365 days (configurable); consumers can replay events from any point within the retention window.
 
 **Why not the others**:
 - **A**: SQS messages max at 14 days retention; once consumed and deleted, they cannot be replayed.
-- **B**: SNS is fire-and-forget â€?no replay capability.
+- **B**: SNS is fire-and-forget ï¿½?no replay capability.
 - **D**: EventBridge archive supports replay but is not designed for 50K events/sec sustained throughput and per-consumer pacing.
 
-**ğŸ“– Textbook ref**: Â§7 â€?Similar Service Comparison, "Kinesis: Real-time streaming, replay, multi-consumer"
+**ğŸ“– Textbook ref**: Â§7 ï¿½?Similar Service Comparison, "Kinesis: Real-time streaming, replay, multi-consumer"
 
 ---
 

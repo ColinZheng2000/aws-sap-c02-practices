@@ -13,21 +13,21 @@ services:
   - Snowball Edge
 ---
 
-# Chapter 13 Practice: ğŸ–¥ï¸?End User Computing & Hybrid
+# Chapter 13 Practice: ğŸ–¥ï¿½?End User Computing & Hybrid
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 13 (WorkSpaces, AppStream 2.0, Outposts, Snowball Edge Compute)
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 13 (WorkSpaces, AppStream 2.0, Outposts, Snowball Edge Compute)
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ğŸŸ¢ Knowledge Check (2 questions)
 
 ### Q13.1
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-A company wants to stream individual Windows applications (not full desktops) to contractors via a web browser. The contractors should not have access to a full desktop â€?only specific apps. Which service should be used?
+A company wants to stream individual Windows applications (not full desktops) to contractors via a web browser. The contractors should not have access to a full desktop ï¿½?only specific apps. Which service should be used?
 
 - A. Amazon WorkSpaces
 - B. Amazon AppStream 2.0
@@ -91,101 +91,101 @@ Which device should be used?
 ### Q13.6
 
 > ğŸ”´ L3-åº”ç”¨ | ğŸ¤ğŸ¤ğŸ¤ é«˜é¢‘é¢è¯•
-Compare AppStream 2.0 and WorkSpaces: An organization needs to provide temporary training lab access â€?each user needs a full Windows desktop for 3 hours, and the desktops should be clean (no persistent data) between sessions. Which service is the better fit?
+Compare AppStream 2.0 and WorkSpaces: An organization needs to provide temporary training lab access ï¿½?each user needs a full Windows desktop for 3 hours, and the desktops should be clean (no persistent data) between sessions. Which service is the better fit?
 
-- A. WorkSpaces â€?it provides persistent desktops
-- B. AppStream 2.0 â€?it streams individual apps, not full desktops
-- C. WorkSpaces â€?it can be configured as non-persistent
-- D. AppStream 2.0 â€?it is designed for streaming individual applications
+- A. WorkSpaces ï¿½?it provides persistent desktops
+- B. AppStream 2.0 ï¿½?it streams individual apps, not full desktops
+- C. WorkSpaces ï¿½?it can be configured as non-persistent
+- D. AppStream 2.0 ï¿½?it is designed for streaming individual applications
 
 ### Q13.7
 
 > ğŸ”´ L3-åº”ç”¨ | ğŸ¤ğŸ¤ğŸ¤ é«˜é¢‘é¢è¯•
 Compare Outposts and Snowball Edge: A manufacturing company needs a permanent on-premises infrastructure solution that supports the same AWS services (EC2, EBS, RDS, ECS) as their cloud environment. They have a standard data center with power and cooling. Which should they choose and why?
 
-- A. Snowball Edge â€?it's portable and supports EC2 and Lambda
-- B. Outposts â€?it provides a permanent 42U rack with a broad set of AWS services identical to the cloud
-- C. Snowball Edge â€?it's more cost-effective for permanent installations
-- D. Outposts â€?it's portable and can be moved between locations
+- A. Snowball Edge ï¿½?it's portable and supports EC2 and Lambda
+- B. Outposts ï¿½?it provides a permanent 42U rack with a broad set of AWS services identical to the cloud
+- C. Snowball Edge ï¿½?it's more cost-effective for permanent installations
+- D. Outposts ï¿½?it's portable and can be moved between locations
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ğŸŸ¢ Knowledge Check â€?Answers
+## ğŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A13.1
-**Correct: B** â€?Amazon AppStream 2.0.
+**Correct: B** ï¿½?Amazon AppStream 2.0.
 
 **Why**: AppStream 2.0 is designed for streaming individual Windows applications to users via a web browser. Apps run on AWS but appear as if they're running locally in the user's browser. Unlike WorkSpaces (which provides full desktops), AppStream streams only the specified applications.
 
-**ğŸ“– Textbook ref**: Â§13 â€?AppStream 2.0, "Application streaming â€?stream Windows applications to any device via browser"
+**ğŸ“– Textbook ref**: Â§13 ï¿½?AppStream 2.0, "Application streaming ï¿½?stream Windows applications to any device via browser"
 
 ---
 
 ### A13.2
-**Correct: B** â€?A fully managed AWS infrastructure rack installed in your on-premises data center.
+**Correct: B** ï¿½?A fully managed AWS infrastructure rack installed in your on-premises data center.
 
 **Why**: Outposts is a 42U rack of AWS-managed hardware delivered and installed in your data center. It runs the same AWS services (EC2, EBS, ECS, EKS, RDS, S3) with the same APIs and management tools. AWS maintains the hardware, and you get consistent cloud-to-on-premises experience.
 
-**ğŸ“– Textbook ref**: Â§13 â€?Outposts, "AWS-managed infrastructure running on-premises"
+**ğŸ“– Textbook ref**: Â§13 ï¿½?Outposts, "AWS-managed infrastructure running on-premises"
 
 ---
 
-## ğŸŸ¡ Scenario Analysis â€?Answers
+## ğŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A13.3
-**Correct: B** â€?AWS Outposts.
+**Correct: B** ï¿½?AWS Outposts.
 
 **Why**: Outposts meets all requirements: (1) on-premises data residency (data stays in the hospital's data center), (2) low latency (local compute), (3) same AWS services (EC2, EBS, RDS) with identical APIs and console experience. The hospital can run the same medical imaging application with no architecture changes.
 
-**ğŸ“– Textbook ref**: Â§13 â€?Outposts, "Data Residency" and "Consistent Experience"
+**ğŸ“– Textbook ref**: Â§13 ï¿½?Outposts, "Data Residency" and "Consistent Experience"
 
 ---
 
 ### A13.4
-**Correct: C** â€?Amazon FSx for Windows File Server with FSLogix profile containers.
+**Correct: C** ï¿½?Amazon FSx for Windows File Server with FSLogix profile containers.
 
-**Why**: FSx for Windows is a managed Windows file server (SMB protocol) that integrates with Active Directory. FSLogix profile containers store user profiles (documents, settings, app data) as VHD/VHDX files on the file share. When a user logs into any WorkSpace, their profile is mounted from FSx â€?enabling profile roaming. This is the native, recommended AWS architecture for WorkSpaces profile management.
+**Why**: FSx for Windows is a managed Windows file server (SMB protocol) that integrates with Active Directory. FSLogix profile containers store user profiles (documents, settings, app data) as VHD/VHDX files on the file share. When a user logs into any WorkSpace, their profile is mounted from FSx ï¿½?enabling profile roaming. This is the native, recommended AWS architecture for WorkSpaces profile management.
 
-**ğŸ“– Textbook ref**: Â§13 â€?WorkSpaces, "FSx for User Profiles"; Â§3 â€?FSx for Windows
+**ğŸ“– Textbook ref**: Â§13 ï¿½?WorkSpaces, "FSx for User Profiles"; Â§3 ï¿½?FSx for Windows
 
 ---
 
 ### A13.5
-**Correct: B** â€?AWS Snowball Edge (Compute Optimized).
+**Correct: B** ï¿½?AWS Snowball Edge (Compute Optimized).
 
 **Why**: Snowball Edge provides portable local compute (EC2 instances + Lambda functions) with 80 TB storage, and operates fully disconnected from the internet. The mining company processes data locally, and when the device is shipped back to AWS, data is ingested into S3. This is the disconnected-edge pattern that Snowball Edge is designed for.
 
-**ğŸ“– Textbook ref**: Â§13 â€?Snowball Edge, "Disconnected Operation"
+**ğŸ“– Textbook ref**: Â§13 ï¿½?Snowball Edge, "Disconnected Operation"
 
 ---
 
-## ğŸ”´ Similar Service Comparison â€?Answers
+## ğŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A13.6
-**Correct: WorkSpaces is the better fit** â€?but the reasoning requires nuance.
+**Correct: WorkSpaces is the better fit** ï¿½?but the reasoning requires nuance.
 
 Both AppStream 2.0 and WorkSpaces can serve training labs. However: WorkSpaces is designed for full desktop experiences and is the standard choice when users need a complete Windows desktop. While WorkSpaces is persistent by default, you can configure it for training lab scenarios by using AutoStop mode (stops after idle timeout) and rebuilding/reprovisioning workspaces between training sessions. WorkSpaces supports both persistent and non-persistent configurations.
 
 AppStream 2.0 can also stream full desktops, but its primary use case is individual application streaming. For a clear "full Windows desktop for 3 hours" requirement, WorkSpaces aligns more naturally. However, a strong argument can be made for AppStream 2.0 On-Demand fleets which are non-persistent by default, bill per hour, and support both app and desktop streaming modes.
 
-**Key distinction for the exam**: WorkSpaces = full persistent VDI (monthly billing). AppStream 2.0 = app streaming or desktop streaming (hourly billing, non-persistent by default). For temporary, non-persistent desktop sessions billed per hour â†?AppStream 2.0 On-Demand fleets are technically more cost-effective.
+**Key distinction for the exam**: WorkSpaces = full persistent VDI (monthly billing). AppStream 2.0 = app streaming or desktop streaming (hourly billing, non-persistent by default). For temporary, non-persistent desktop sessions billed per hour ï¿½?AppStream 2.0 On-Demand fleets are technically more cost-effective.
 
-**ğŸ“– Textbook ref**: Â§13 â€?WorkSpaces vs AppStream comparison
+**ğŸ“– Textbook ref**: Â§13 ï¿½?WorkSpaces vs AppStream comparison
 
 ---
 
 ### A13.7
-**Correct: B** â€?Outposts provides a permanent 42U rack with a broad set of AWS services identical to the cloud.
+**Correct: B** ï¿½?Outposts provides a permanent 42U rack with a broad set of AWS services identical to the cloud.
 
-**Why**: Outposts is a permanent installation â€?AWS delivers, installs, and maintains a 42U rack in your data center. It supports the broadest set of AWS services (EC2, EBS, ECS, EKS, RDS, S3). Snowball Edge is portable, smaller (80 TB), and has limited compute â€?it's designed for portable/remote/temporary use, not permanent data center installation.
+**Why**: Outposts is a permanent installation ï¿½?AWS delivers, installs, and maintains a 42U rack in your data center. It supports the broadest set of AWS services (EC2, EBS, ECS, EKS, RDS, S3). Snowball Edge is portable, smaller (80 TB), and has limited compute ï¿½?it's designed for portable/remote/temporary use, not permanent data center installation.
 
-**ğŸ“– Textbook ref**: Â§13 â€?Outposts vs Snowball Edge: "Outposts = permanent, Snowball Edge = portable"
+**ğŸ“– Textbook ref**: Â§13 ï¿½?Outposts vs Snowball Edge: "Outposts = permanent, Snowball Edge = portable"
 
 ---
 

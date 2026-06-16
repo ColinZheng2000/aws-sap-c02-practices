@@ -15,11 +15,11 @@ services:
 # Chapter 11 Practice: ğŸ¤– Machine Learning
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 11 (SageMaker, IoT Greengrass, Monitron)
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 11 (SageMaker, IoT Greengrass, Monitron)
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ğŸŸ¢ Knowledge Check (2 questions)
 
@@ -91,60 +91,60 @@ Which AWS services should be used for each use case respectively?
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ğŸŸ¢ Knowledge Check â€?Answers
+## ğŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A11.1
-**Correct: A** â€?SageMaker + IoT Greengrass.
+**Correct: A** ï¿½?SageMaker + IoT Greengrass.
 
-**Why**: SageMaker trains the model in the cloud. SageMaker Neo can optimize the model for edge hardware. IoT Greengrass deploys the model to edge devices and runs inference locally â€?no cloud round-trip needed. Greengrass devices continue operating even when offline, syncing results when connectivity returns.
+**Why**: SageMaker trains the model in the cloud. SageMaker Neo can optimize the model for edge hardware. IoT Greengrass deploys the model to edge devices and runs inference locally ï¿½?no cloud round-trip needed. Greengrass devices continue operating even when offline, syncing results when connectivity returns.
 
-**ğŸ“– Textbook ref**: Â§11 â€?SageMaker, "Deploy trained models to IoT Greengrass devices for edge inference"
+**ğŸ“– Textbook ref**: Â§11 ï¿½?SageMaker, "Deploy trained models to IoT Greengrass devices for edge inference"
 
 ---
 
 ### A11.2
-**Correct: B** â€?Amazon Monitron.
+**Correct: B** ï¿½?Amazon Monitron.
 
-**Why**: Monitron is a purpose-built, end-to-end predictive maintenance system. It includes pre-calibrated sensors (vibration + temperature), a gateway device, and cloud service with pre-trained ML models for rotating equipment. No ML expertise required â€?install sensors, connect gateway, receive alerts. It ships with models specifically trained for motors, pumps, and fans.
+**Why**: Monitron is a purpose-built, end-to-end predictive maintenance system. It includes pre-calibrated sensors (vibration + temperature), a gateway device, and cloud service with pre-trained ML models for rotating equipment. No ML expertise required ï¿½?install sensors, connect gateway, receive alerts. It ships with models specifically trained for motors, pumps, and fans.
 
-**ğŸ“– Textbook ref**: Â§11 â€?Monitron, "Purpose-Built: Ships with pre-trained models for rotating equipment"
+**ğŸ“– Textbook ref**: Â§11 ï¿½?Monitron, "Purpose-Built: Ships with pre-trained models for rotating equipment"
 
 ---
 
-## ğŸŸ¡ Scenario Analysis â€?Answers
+## ğŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A11.3
-**Correct: A** â€?SageMaker training + IoT Greengrass local inference on Snowball Edge.
+**Correct: A** ï¿½?SageMaker training + IoT Greengrass local inference on Snowball Edge.
 
-**Why**: SageMaker trains the object detection model. Snowball Edge provides local compute (EC2 + Lambda) in the disconnected remote environment. IoT Greengrass runs on Snowball Edge and manages the ML model deployment and inference. Video is processed locally â€?only alert metadata is transmitted when satellite is available. This is the edge ML pattern for disconnected environments.
+**Why**: SageMaker trains the object detection model. Snowball Edge provides local compute (EC2 + Lambda) in the disconnected remote environment. IoT Greengrass runs on Snowball Edge and manages the ML model deployment and inference. Video is processed locally ï¿½?only alert metadata is transmitted when satellite is available. This is the edge ML pattern for disconnected environments.
 
-**ğŸ“– Textbook ref**: Â§11 â€?SageMaker, "Offline Inference: Snowball Edge for ML"; Â§13 â€?Snowball Edge, "Disconnected Operation"
+**ğŸ“– Textbook ref**: Â§11 ï¿½?SageMaker, "Offline Inference: Snowball Edge for ML"; Â§13 ï¿½?Snowball Edge, "Disconnected Operation"
 
 ---
 
 ### A11.4
-**Correct: B** â€?Amazon SageMaker (Training Jobs + Model Hosting).
+**Correct: B** ï¿½?Amazon SageMaker (Training Jobs + Model Hosting).
 
-**Why**: SageMaker provides the complete ML platform: (1) Training Jobs with managed GPU instances (choose instance type, distributed training across multiple instances), (2) automatic hyperparameter tuning, (3) Model Registry for versioning, (4) Real-time endpoints with auto-scaling for inference. Everything is managed â€?no infrastructure to set up beyond choosing instance types.
+**Why**: SageMaker provides the complete ML platform: (1) Training Jobs with managed GPU instances (choose instance type, distributed training across multiple instances), (2) automatic hyperparameter tuning, (3) Model Registry for versioning, (4) Real-time endpoints with auto-scaling for inference. Everything is managed ï¿½?no infrastructure to set up beyond choosing instance types.
 
-**ğŸ“– Textbook ref**: Â§11 â€?SageMaker, "Fully managed ML platform"
+**ğŸ“– Textbook ref**: Â§11 ï¿½?SageMaker, "Fully managed ML platform"
 
 ---
 
-## ğŸ”´ Similar Service Comparison â€?Answers
+## ğŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A11.5
-**Correct: A** â€?Monitron for A; SageMaker for B.
+**Correct: A** ï¿½?Monitron for A; SageMaker for B.
 
-**Why**: Monitron is turnkey â€?pre-trained models, purpose-built sensors, no ML team needed. Perfect for generic rotating equipment monitoring. SageMaker is a flexible ML platform for custom models â€?the data science team can build, train, and deploy their custom computer vision model. The key distinction: turnkey (Monitron) vs. custom (SageMaker).
+**Why**: Monitron is turnkey ï¿½?pre-trained models, purpose-built sensors, no ML team needed. Perfect for generic rotating equipment monitoring. SageMaker is a flexible ML platform for custom models ï¿½?the data science team can build, train, and deploy their custom computer vision model. The key distinction: turnkey (Monitron) vs. custom (SageMaker).
 
-**ğŸ“– Textbook ref**: Â§11 â€?Monitron vs SageMaker: "No ML Expertise Required" vs "ML knowledge needed"
+**ğŸ“– Textbook ref**: Â§11 ï¿½?Monitron vs SageMaker: "No ML Expertise Required" vs "ML knowledge needed"
 
 ---
 

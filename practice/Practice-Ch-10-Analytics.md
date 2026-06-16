@@ -19,11 +19,11 @@ services:
 # Chapter 10 Practice: ğŸ“ˆ Analytics
 
 > **Instructions**: Complete Part A first. Do not scroll past the divider. Once finished, check Part B for answers.
-> **Textbook**: `AWS-SAP-C02-Learning-Material.md` â€?Section 10 (Athena, EMR, Glue, QuickSight, Kinesis)
+> **Textbook**: `AWS-SAP-C02-Learning-Material.md` ï¿½?Section 10 (Athena, EMR, Glue, QuickSight, Kinesis)
 
 ---
 
-# Part A â€?Questions
+# Part A ï¿½?Questions
 
 ## ğŸŸ¢ Knowledge Check (3 questions)
 
@@ -68,10 +68,10 @@ A company's finance team wants to create interactive dashboards showing AWS spen
 
 Which combination should be used?
 
-- A. CUR â†?S3 â†?Athena â†?QuickSight
-- B. CUR â†?CloudWatch â†?Cost Explorer
-- C. CUR â†?Redshift â†?EMR
-- D. CUR â†?Glue â†?Kinesis â†?QuickSight
+- A. CUR ï¿½?S3 ï¿½?Athena ï¿½?QuickSight
+- B. CUR ï¿½?CloudWatch ï¿½?Cost Explorer
+- C. CUR ï¿½?Redshift ï¿½?EMR
+- D. CUR ï¿½?Glue ï¿½?Kinesis ï¿½?QuickSight
 
 ### Q10.5
 
@@ -81,7 +81,7 @@ A company runs a nightly ETL job that extracts data from S3, transforms it (join
 How can the solutions architect reduce costs?
 
 - A. Switch the EMR cluster to Spot Instances while keeping it always-on
-- B. Use a transient EMR cluster â€?launch it before the job, process data with EMRFS (data in S3), terminate after completion
+- B. Use a transient EMR cluster ï¿½?launch it before the job, process data with EMRFS (data in S3), terminate after completion
 - C. Migrate the ETL to Amazon Athena which is always serverless
 - D. Convert the EMR cluster to use Reserved Instances for cost savings
 
@@ -117,7 +117,7 @@ Which AWS Glue features address these requirements? (Choose two.)
 ### Q10.8
 
 > ğŸŸ¡ L2-ç†è§£ | ğŸ¤ğŸ¤ ä¸­é¢‘é¢è¯•
-A data analyst needs to run ad-hoc SQL queries on a 2 TB dataset stored in S3. The queries are exploratory and unpredictable â€?sometimes none for days, sometimes dozens in an hour. Cost must be minimized for idle periods. Which service should be used?
+A data analyst needs to run ad-hoc SQL queries on a 2 TB dataset stored in S3. The queries are exploratory and unpredictable ï¿½?sometimes none for days, sometimes dozens in an hour. Cost must be minimized for idle periods. Which service should be used?
 
 - A. Amazon Redshift provisioned cluster
 - B. Amazon EMR with Hive
@@ -136,98 +136,98 @@ A company receives IoT sensor data at 10,000 records/second. Two consumers need 
 
 ---
 
-# Part B â€?Answers & Explanations
+# Part B ï¿½?Answers & Explanations
 
 > âš ï¸ **STOP HERE.** Complete all questions in Part A before reading below.
 
 ---
 
-## ğŸŸ¢ Knowledge Check â€?Answers
+## ğŸŸ¢ Knowledge Check ï¿½?Answers
 
 ### A10.1
-**Correct: B** â€?Amazon Athena.
+**Correct: B** ï¿½?Amazon Athena.
 
 **Why**: Athena is a serverless interactive query service that runs standard SQL directly on S3 data. No infrastructure to manage, no data loading required. You define a table schema (using CREATE EXTERNAL TABLE) and query CSV, JSON, Parquet, ORC, and Avro files in place. Pay-per-query ($5/TB scanned).
 
 **Why not the others**: Redshift Spectrum also queries S3 but requires a Redshift cluster. EMR with Hive requires cluster management. Glue is for ETL, not ad-hoc querying.
 
-**ğŸ“– Textbook ref**: Â§10 â€?Athena, "Serverless SQL queries on S3 data"
+**ğŸ“– Textbook ref**: Â§10 ï¿½?Athena, "Serverless SQL queries on S3 data"
 
 ---
 
 ### A10.2
-**Correct: C** â€?AWS Glue.
+**Correct: C** ï¿½?AWS Glue.
 
-**Why**: Glue provides: (1) Crawlers that scan S3 and automatically discover schemas, populating the Glue Data Catalog. (2) The Data Catalog serves as a central metadata repository. (3) Glue Jobs run on Apache Spark (serverless) for ETL transformations. All serverless â€?no cluster management.
+**Why**: Glue provides: (1) Crawlers that scan S3 and automatically discover schemas, populating the Glue Data Catalog. (2) The Data Catalog serves as a central metadata repository. (3) Glue Jobs run on Apache Spark (serverless) for ETL transformations. All serverless ï¿½?no cluster management.
 
-**ğŸ“– Textbook ref**: Â§10 â€?Glue
+**ğŸ“– Textbook ref**: Â§10 ï¿½?Glue
 
 ---
 
 ### A10.3
-**Correct: A** â€?EMRFS allows direct S3 access, enabling transient clusters.
+**Correct: A** ï¿½?EMRFS allows direct S3 access, enabling transient clusters.
 
-**Why**: EMRFS (EMR File System) lets EMR read/write directly from S3 as if it were HDFS. This decouples compute from storage â€?you can terminate the EMR cluster after processing, and the data remains in S3. Transient clusters (create â†?process â†?terminate) dramatically reduce costs for periodic batch jobs vs. always-on clusters.
+**Why**: EMRFS (EMR File System) lets EMR read/write directly from S3 as if it were HDFS. This decouples compute from storage ï¿½?you can terminate the EMR cluster after processing, and the data remains in S3. Transient clusters (create ï¿½?process ï¿½?terminate) dramatically reduce costs for periodic batch jobs vs. always-on clusters.
 
-**ğŸ“– Textbook ref**: Â§10 â€?EMR, "EMRFS" and "Transient Clusters"
+**ğŸ“– Textbook ref**: Â§10 ï¿½?EMR, "EMRFS" and "Transient Clusters"
 
 ---
 
-## ğŸŸ¡ Scenario Analysis â€?Answers
+## ğŸŸ¡ Scenario Analysis ï¿½?Answers
 
 ### A10.4
-**Correct: A** â€?CUR â†?S3 â†?Athena â†?QuickSight.
+**Correct: A** ï¿½?CUR ï¿½?S3 ï¿½?Athena ï¿½?QuickSight.
 
-**Why**: This is the standard cost analytics pipeline: CUR delivers cost data to S3 as CSV/Parquet files. Athena queries this data directly in S3 using SQL. QuickSight connects to Athena as a data source, importing data into SPICE for fast interactive dashboards. All serverless â€?pay per query + QuickSight per-session pricing.
+**Why**: This is the standard cost analytics pipeline: CUR delivers cost data to S3 as CSV/Parquet files. Athena queries this data directly in S3 using SQL. QuickSight connects to Athena as a data source, importing data into SPICE for fast interactive dashboards. All serverless ï¿½?pay per query + QuickSight per-session pricing.
 
-**ğŸ“– Textbook ref**: Â§10 â€?Athena + QuickSight; Â§8 â€?CUR
+**ğŸ“– Textbook ref**: Â§10 ï¿½?Athena + QuickSight; Â§8 ï¿½?CUR
 
 ---
 
 ### A10.5
-**Correct: B** â€?Use transient EMR cluster with EMRFS.
+**Correct: B** ï¿½?Use transient EMR cluster with EMRFS.
 
-**Why**: An always-on cluster running 2 hours/night wastes ~91% of its cost. With EMRFS, data stays in S3. A transient cluster starts fresh, processes for 2 hours, and terminates â€?you only pay for 2 hours of compute per day. This is massive cost savings for periodic batch jobs without changing the ETL logic.
+**Why**: An always-on cluster running 2 hours/night wastes ~91% of its cost. With EMRFS, data stays in S3. A transient cluster starts fresh, processes for 2 hours, and terminates ï¿½?you only pay for 2 hours of compute per day. This is massive cost savings for periodic batch jobs without changing the ETL logic.
 
-**ğŸ“– Textbook ref**: Â§10 â€?EMR, "Transient Clusters: Huge cost savings"
+**ğŸ“– Textbook ref**: Â§10 ï¿½?EMR, "Transient Clusters: Huge cost savings"
 
 ---
 
 ### A10.6
-**Correct: B** â€?Amazon Kinesis Data Streams.
+**Correct: B** ï¿½?Amazon Kinesis Data Streams.
 
-**Why**: Kinesis is purpose-built for this: (1) Ingest 50K events/sec (scale shards accordingly). (2) Multiple independent consumers â€?marketing reads for dashboards, data science replays from 24h ago (Kinesis supports up to 365-day retention), operations uses Kinesis Data Firehose to archive to S3. Each consumer reads at its own pace from its own position in the stream.
+**Why**: Kinesis is purpose-built for this: (1) Ingest 50K events/sec (scale shards accordingly). (2) Multiple independent consumers ï¿½?marketing reads for dashboards, data science replays from 24h ago (Kinesis supports up to 365-day retention), operations uses Kinesis Data Firehose to archive to S3. Each consumer reads at its own pace from its own position in the stream.
 
-**ğŸ“– Textbook ref**: Â§10 â€?Kinesis; Â§7 â€?Similar Service Comparison
+**ğŸ“– Textbook ref**: Â§10 ï¿½?Kinesis; Â§7 ï¿½?Similar Service Comparison
 
 ---
 
 ### A10.7
-**Correct: A and D** â€?Glue Crawlers + Glue ML transforms.
+**Correct: A and D** ï¿½?Glue Crawlers + Glue ML transforms.
 
 **Why**: Crawlers automatically detect new tables, columns, and schema changes when S3 data evolves. Glue ML transforms include `DetectPII` (identify columns containing PII like names, SSNs, emails) and `FindMatches` (deduplicate records). These are built-in, no custom ML model needed. Together, they handle automatic schema adaptation and sensitive data detection.
 
-**ğŸ“– Textbook ref**: Â§10 â€?Glue, "Crawlers" and "Sensitive Data: DetectPII"
+**ğŸ“– Textbook ref**: Â§10 ï¿½?Glue, "Crawlers" and "Sensitive Data: DetectPII"
 
 ---
 
-## ğŸ”´ Similar Service Comparison â€?Answers
+## ğŸ”´ Similar Service Comparison ï¿½?Answers
 
 ### A10.8
-**Correct: C** â€?Amazon Athena.
+**Correct: C** ï¿½?Amazon Athena.
 
-**Why**: Athena is ideal for ad-hoc, unpredictable SQL queries. You pay only for data scanned â€?zero cost when not querying. Redshift (provisioned) charges hourly whether you query or not. EMR requires cluster startup time and charges for running instances. For exploratory analysis with idle periods, Athena's serverless model is the most cost-effective.
+**Why**: Athena is ideal for ad-hoc, unpredictable SQL queries. You pay only for data scanned ï¿½?zero cost when not querying. Redshift (provisioned) charges hourly whether you query or not. EMR requires cluster startup time and charges for running instances. For exploratory analysis with idle periods, Athena's serverless model is the most cost-effective.
 
-**ğŸ“– Textbook ref**: Â§10 â€?Athena, "vs Glue: Athena = query (ad-hoc, interactive)"
+**ğŸ“– Textbook ref**: Â§10 ï¿½?Athena, "vs Glue: Athena = query (ad-hoc, interactive)"
 
 ---
 
 ### A10.9
-**Correct: B** â€?Kinesis Data Streams for both consumers.
+**Correct: B** ï¿½?Kinesis Data Streams for both consumers.
 
-**Why**: Kinesis supports multiple independent consumers reading from the same stream. The real-time anomaly detection consumer reads from the LATEST position (sub-second processing). The batch consumer reads from the TRIM_HORIZON once per day, processing 24 hours of accumulated data. Both consume the same stream independently â€?no duplication needed.
+**Why**: Kinesis supports multiple independent consumers reading from the same stream. The real-time anomaly detection consumer reads from the LATEST position (sub-second processing). The batch consumer reads from the TRIM_HORIZON once per day, processing 24 hours of accumulated data. Both consume the same stream independently ï¿½?no duplication needed.
 
-**ğŸ“– Textbook ref**: Â§10 â€?Kinesis, "Multi-consumer, per-consumer pacing"; Â§7 â€?Similar Service Comparison
+**ğŸ“– Textbook ref**: Â§10 ï¿½?Kinesis, "Multi-consumer, per-consumer pacing"; Â§7 ï¿½?Similar Service Comparison
 
 ---
 
