@@ -45,6 +45,9 @@ aws-sap-c02-practices/
 │   └── Mock-Exam-C.md                           ← 🧪 50 Qs (Hard: cross-domain traps)
 ├── Interview-Quick-Reference.md                 ← 🎤 100+ interview topics by frequency
 ├── Exam-Tactics.md                              ← 🎯 Keyword→service, exclusion rules, traps
+├── Architecture-Decision-Trees.md               ← 🔀 Mermaid decision flowcharts (8 trees)
+├── Task-Statement-Mapping.md                    ← 🗺️ Official exam guide → chapter mapping
+├── New-AWS-Services-2025-2026.md                ← 🆕 New services with SAP-C02 relevance
 ├── scripts/
 │   ├── scan-new-questions.ps1                   ← Scan wrong-answer .md files
 │   ├── sync-yaml-counts.ps1                     ← Auto-sync YAML question counts
@@ -63,6 +66,9 @@ aws-sap-c02-practices/
 | `practice/Mock-Exam-A/B/C.md` | **Full mock exams** — 50 questions each, 120 min. Mock C is the hardest (cross-domain integration, Choose Two/Three, anti-pattern traps). |
 | `Interview-Quick-Reference.md` | **Interview prep** — 100+ topics organized by frequency (🎤🎤🎤 high / 🎤🎤 medium / 🎤 low). One-sentence answers + common confusion columns. |
 | `Exam-Tactics.md` | **Exam strategy guide** — Keyword→service mapping, exclusion rules, Choose Two patterns, decision trees, number quick-reference. |
+| `Architecture-Decision-Trees.md` | **Mermaid决策树** — 8 visual decision flowcharts for common SAP-C02 architecture choices (Compute, Messaging, DB, Storage, Networking, DR, Auth, Migration). |
+| `Task-Statement-Mapping.md` | **考纲映射表** — Official SAP-C02 Task Statements mapped to textbook chapters + practice questions + key services. Includes study priority matrix. |
+| `New-AWS-Services-2025-2026.md` | **新服务速查** — 2025-2026 new AWS services ranked by SAP-C02 exam relevance (🔴 likely / 🟡 possible / 🟢 unlikely). Includes "old vs new answer" comparison. |
 | `.github/agents/` | **VS Code Copilot agent** — "AWS SAP-C02 Tutor" with 📚教材维护模式 for updating textbook from wrong-answer analyses. |
 | `scripts/` | **Automation scripts** — 4 PowerShell scripts for scanning, labeling, and validating the repository. See `scripts/README.md`. |
 | `1.md ~ 300.md` | **Personal wrong-answer collection** — Detailed analyses: Problem → Services → Correct/Incorrect Options → Knowledge. (~266 files) |
