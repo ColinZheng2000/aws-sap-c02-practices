@@ -69,6 +69,7 @@ aws-sap-c02-practices/
 | `Architecture-Decision-Trees.md` | **Mermaid决策树** — 8 visual decision flowcharts for common SAP-C02 architecture choices (Compute, Messaging, DB, Storage, Networking, DR, Auth, Migration). |
 | `Task-Statement-Mapping.md` | **考纲映射表** — Official SAP-C02 Task Statements mapped to textbook chapters + practice questions + key services. Includes study priority matrix. |
 | `New-AWS-Services-2025-2026.md` | **新服务速查** — 2025-2026 new AWS services ranked by SAP-C02 exam relevance (🔴 likely / 🟡 possible / 🟢 unlikely). Includes "old vs new answer" comparison. |
+| `Lessons-Learned.md` | **踩坑记录** — PowerShell 5.1 编码陷阱、字节操作风险、Obsidian 配置等工程经验。避免重复踩坑。 |
 | `.github/agents/` | **VS Code Copilot agent** — "AWS SAP-C02 Tutor" with 📚教材维护模式 for updating textbook from wrong-answer analyses. |
 | `scripts/` | **Automation scripts** — 4 PowerShell scripts for scanning, labeling, and validating the repository. See `scripts/README.md`. |
 | `1.md ~ 300.md` | **Personal wrong-answer collection** — Detailed analyses: Problem → Services → Correct/Incorrect Options → Knowledge. (~266 files) |
