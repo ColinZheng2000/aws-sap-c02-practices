@@ -1,4 +1,4 @@
----
+﻿---
 tags:
   - #AWS-SAP-C02
   - #Learning-Material
@@ -53,9 +53,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **NAT Gateway HA with Single EIP**: Standard multi-AZ NAT GW pattern requires one EIP per AZ. When on-prem firewall restricts to a single IP, deploy one NAT GW + CloudWatch alarm + Lambda to recreate NAT GW in another AZ and reassign the EIP on failure. *(Q#206)*
   - **ASG Migration with Zero Downtime**: To transition static EC2 → Auto Scaling, create ASG with launch template, attach to existing ALB target group, then attach existing EC2 instances to ASG. Do NOT delete the existing ALB → it causes DNS changes and downtime. *(Q#209)*
 - **Common Pitfalls**:
-  - ? Assuming Multi-AZ RDS standby can serve read traffic → the standby is passive, not accessible
-  - ? Deploying EC2 in a single AZ behind an ALB → if that AZ fails, the entire service goes down
-  - ? Using a single NAT Gateway → AZ failure takes down outbound internet for all AZs
+  - ✗ Assuming Multi-AZ RDS standby can serve read traffic → the standby is passive, not accessible
+  - ✗ Deploying EC2 in a single AZ behind an ALB → if that AZ fails, the entire service goes down
+  - ✗ Using a single NAT Gateway → AZ failure takes down outbound internet for all AZs
 - **📝 Q Refs**: #12, #19, #25, #29, #61, #108, #206, #209
 <!-- UPDATE_MARKER: High-Availability -->
 
@@ -72,9 +72,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **DynamoDB Global Tables**: Multi-active → read/write to any Region. RPO ~1 second (eventual consistency). RTO near-zero (already active). *(Q#2, Q#105, Q#121)*
   - **S3 Cross-Region Replication (CRR)**: Asynchronous replication for DR compliance. Requires versioning on both buckets. *(Q#28, Q#134)*
 - **Common Pitfalls**:
-  - ? Confusing RPO (data loss) with RTO (downtime)
-  - ? Assuming Pilot Light is fast → you still need to launch instances and scale up
-  - ? Using Aurora Global Database for RPO > 1 hour → it's overkill and overpriced; AWS Backup is far more cost-effective
+  - ✗ Confusing RPO (data loss) with RTO (downtime)
+  - ✗ Assuming Pilot Light is fast → you still need to launch instances and scale up
+  - ✗ Using Aurora Global Database for RPO > 1 hour → it's overkill and overpriced; AWS Backup is far more cost-effective
   - ✗ Not testing DR plans regularly → untested DR = no DR
 - **📝 Q Refs**: #2, #28, #105, #114, #116, #121, #133, #134, #213, #227, #234, #236
 <!-- UPDATE_MARKER: Disaster-Recovery -->
@@ -91,9 +91,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **S3 Lifecycle**: Automatically transition objects to cheaper tiers based on age. Intelligent-Tiering for unpredictable access patterns. Glacier Deep Archive for long-term retention. *(Q#34, Q#65, Q#246)*
   - **Compute Optimizer**: ML-based rightsizing recommendations with risk classification (low/medium/high). *(Q#102, Q#233)*
 - **Common Pitfalls**:
-  - ? Confusing Capacity Reservations (guarantee capacity, no discount) with Reserved Instances (billing discount)
-  - ? Using Spot for stateful or non-fault-tolerant workloads
-  - ? Standard RIs lock you into a specific instance family → use Convertible RIs or Savings Plans for flexibility
+  - ✗ Confusing Capacity Reservations (guarantee capacity, no discount) with Reserved Instances (billing discount)
+  - ✗ Using Spot for stateful or non-fault-tolerant workloads
+  - ✗ Standard RIs lock you into a specific instance family → use Convertible RIs or Savings Plans for flexibility
 - **📝 Q Refs**: #20, #32, #34, #65, #66, #102, #119, #129, #205, #222, #233, #246, #247
 <!-- UPDATE_MARKER: Cost-Optimization -->
 
@@ -109,9 +109,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **Global Accelerator for Static IP + WAF**: ALB does NOT support Elastic IP addresses (DNS-only). To provide static IPs while preserving WAF protection, use Global Accelerator → it provides 2 static anycast IPs and forwards to the ALB. Customers whitelist the GA IPs; WAF remains on the ALB. Do NOT replace ALB with NLB (NLB doesn't integrate with WAF). *(Q#132)*
   - **CloudTrail + Config + CloudWatch**: The governance triad → CloudTrail = API audit (who did what), Config = configuration compliance (what changed), CloudWatch = operational monitoring (how is performance). *(Q#35, Q#101, Q#172)*
 - **Common Pitfalls**:
-  - ? Using NACLs for instance-level rules → they're subnet-level and stateless; use Security Groups
-  - ? Assuming SCPs grant permissions → they only LIMIT permissions; you still need IAM policies to allow
-  - ? Enabling only CloudTrail management events → data events (S3 object-level, Lambda) are not logged by default
+  - ✗ Using NACLs for instance-level rules → they're subnet-level and stateless; use Security Groups
+  - ✗ Assuming SCPs grant permissions → they only LIMIT permissions; you still need IAM policies to allow
+  - ✗ Enabling only CloudTrail management events → data events (S3 object-level, Lambda) are not logged by default
 - **📝 Q Refs**: #3, #23, #24, #35, #39, #59, #78, #79, #101, #103, #125, #127, #132, #146, #148, #160, #172, #196, #210, #224, #253
 <!-- UPDATE_MARKER: Security-CrossService -->
 
@@ -125,9 +125,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **EventBridge for Pattern-Based Routing**: Events matched to rules based on event attributes. Different from SNS (topic-based, all subscribers get everything). *(Q#131)*
   - **Cascading Failure Prevention**: With synchronous coupling (direct API calls), a slow downstream service blocks upstream. With decoupling (SQS between tiers), each tier operates independently → backpressure is handled by the queue. *(Q#33)*
 - **Common Pitfalls**:
-  - ? Using synchronous calls between microservices → creates cascading failure risk
-  - ? Confusing SNS (push, fire-and-forget) with SQS (pull, buffered) → they serve different patterns
-  - ? Forgetting DLQs → without them, failed messages cycle forever
+  - ✗ Using synchronous calls between microservices → creates cascading failure risk
+  - ✗ Confusing SNS (push, fire-and-forget) with SQS (pull, buffered) → they serve different patterns
+  - ✗ Forgetting DLQs → without them, failed messages cycle forever
 - **📝 Q Refs**: #33, #82, #110, #131, #142, #143, #212
 <!-- UPDATE_MARKER: Decoupling -->
 
@@ -141,9 +141,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **Serverless → No Ops**: You still manage monitoring (CloudWatch), logging, error handling (DLQs), deployment (SAM/CloudFormation), and security (IAM roles). You just don't manage servers.
   - **Lambda in VPC**: Creates ENIs in your subnets → can access VPC resources. Requires NAT Gateway for internet access. Adds cold start latency. *(Q#36, Q#206)*
 - **Common Pitfalls**:
-  - ? Using Lambda for everything → it's not always the best choice (see "When NOT to use" above)
-  - ? Ignoring cold starts → Provisioned Concurrency costs money but eliminates them
-  - ? Forgetting Lambda@Edge limits → 5 sec timeout, 128 MB for viewer events
+  - ✗ Using Lambda for everything → it's not always the best choice (see "When NOT to use" above)
+  - ✗ Ignoring cold starts → Provisioned Concurrency costs money but eliminates them
+  - ✗ Forgetting Lambda@Edge limits → 5 sec timeout, 128 MB for viewer events
 - **📝 Q Refs**: #5, #14, #17, #36, #48, #100, #104, #120, #122, #131, #204, #206, #212
 <!-- UPDATE_MARKER: Serverless -->
 
@@ -157,8 +157,8 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **Cross-Account Access**: IAM role assumption (trusting account creates role, trusted account assumes it) OR resource-based policy (grant access directly on the resource). Use RAM for sharing TGW, Prefix Lists, VPC subnets. *(Q#103, Q#117, Q#118)*
   - **StackSets**: Deploy CloudFormation to multiple accounts/Regions from a central admin. Service-managed (automatic, via Organizations) or self-managed (requires manual role creation). *(Q#30, Q#67, Q#210)*
 - **Common Pitfalls**:
-  - ? Attaching SCPs to individual accounts instead of OUs → doesn't scale
-  - ? Using Allow List SCPs without careful planning → you'll constantly update them as new services are adopted
+  - ✗ Attaching SCPs to individual accounts instead of OUs → doesn't scale
+  - ✗ Using Allow List SCPs without careful planning → you'll constantly update them as new services are adopted
   - ✗ Not using Control Tower for new multi-account setups → it automates OU creation, guardrails, and account provisioning
 - **📝 Q Refs**: #3, #23, #24, #26, #30, #56, #67, #103, #117, #118, #210, #224, #232, #245
 <!-- UPDATE_MARKER: Multi-Account-Governance -->
@@ -175,9 +175,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **Blue/Green (CodeDeploy)**: Replace entire fleet. Traffic shift via ALB target group or Route 53 weighted routing. Fast rollback. *(Q#48, Q#152, Q#208, Q#225)*
   - **Canary**: Send small % of traffic to new version → monitor → increase incrementally → rollback on alarm. CodeDeploy supports linear traffic shifting. *(Q#48)*
 - **Common Pitfalls**:
-  - ? Choosing All-at-Once for production → the downtime and blast radius are too large
+  - ✗ Choosing All-at-Once for production → the downtime and blast radius are too large
   - ✗ Not implementing health check monitoring during canary deployments → without alarms, can't auto-rollback
-  - ? Blue/Green with stateful applications → sessions may be lost on the old environment
+  - ✗ Blue/Green with stateful applications → sessions may be lost on the old environment
 - **📝 Q Refs**: #48, #69, #152, #208, #225
 <!-- UPDATE_MARKER: Deployment-Strategies -->
 
@@ -199,9 +199,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **VM Import/Export**: Migrate on-prem VMs to EC2 by exporting OVF, uploading to S3, running `ec2 import-image` CLI command. Preserves software and config. *(Q#50)*
   - **EC2 Instance Connect**: Uses temporary SSH keys pushed via AWS API → auditable via CloudTrail, no long-lived SSH keys needed. *(Q#254)*
 - **Common Pitfalls**:
-  - ? Confusing Capacity Reservations (guarantee capacity) with Reserved Instances (billing discount)
-  - ? Thinking Spot is reliable → always design for interruption
-  - ? Using Spread placement group for HPC (use Cluster, not Spread)
+  - ✗ Confusing Capacity Reservations (guarantee capacity) with Reserved Instances (billing discount)
+  - ✗ Thinking Spot is reliable → always design for interruption
+  - ✗ Using Spread placement group for HPC (use Cluster, not Spread)
 - **📝 Q Refs**: #20, #35, #39, #49, #50, #90, #96, #108, #109, #110, #129, #152, #161, #164, #195, #205, #206, #208, #209, #233, #250, #252, #254, #273, #275
 <!-- UPDATE_MARKER: EC2 -->
 
@@ -218,8 +218,8 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **Zero-Downtime Migration to ASG**: Attach existing EC2 instances to a new ASG (do NOT delete the ALB). ASG automatically replaces failed instances; existing instances continue serving traffic during transition. *(Q#209)*
   - **Batch Processing Decision (Lambda vs ECS)**: For event-driven batch jobs under 15 min → Lambda (no infrastructure). For long-running batch or containerized dependencies → ECS on Fargate (serverless containers) or AWS Batch. *(Q#204)*
 - **Common Pitfalls**:
-  - ? Using a single instance type in Spot Fleets → diversify for availability
-  - ? Forgetting to attach Launch Templates to ASGs (required for new features)
+  - ✗ Using a single instance type in Spot Fleets → diversify for availability
+  - ✗ Forgetting to attach Launch Templates to ASGs (required for new features)
 - **📝 Q Refs**: #4, #10, #25, #29, #32, #33, #90, #108, #110, #129, #152, #204, #208, #209, #222, #233, #251, #273
 <!-- UPDATE_MARKER: EC2-AutoScaling -->
 
@@ -236,9 +236,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **Concurrency**: Reserved concurrency = guaranteed capacity; Provisioned concurrency = no cold starts. Burst limits apply per account per Region. *(Q#17)*
   - **Integration**: Tightly coupled with API Gateway, S3 events, DynamoDB Streams, SQS, SNS, EventBridge, Kinesis. *(Q#131, Q#142, Q#143)*
 - **Common Pitfalls**:
-  - ? Using Lambda for long-running tasks (> 15 min) → use Step Functions or EC2
-  - ? Lambda@Edge has different limits (5-sec timeout, 128 MB max for viewer events)
-  - ? Forgetting Lambda in VPC needs NAT Gateway for internet → cost impact
+  - ✗ Using Lambda for long-running tasks (> 15 min) → use Step Functions or EC2
+  - ✗ Lambda@Edge has different limits (5-sec timeout, 128 MB max for viewer events)
+  - ✗ Forgetting Lambda in VPC needs NAT Gateway for internet → cost impact
 - **📝 Q Refs**: #5, #10, #14, #17, #33, #35, #36, #40, #48, #82, #88, #92, #96, #98, #109, #111, #112, #113, #115, #120, #122, #131, #142, #143, #160, #164, #204, #206, #212, #223, #247
 <!-- UPDATE_MARKER: Lambda -->
 
@@ -252,8 +252,8 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **Deployment Policies**: All at Once (fastest, downtime), Rolling (batch by batch), Rolling with Additional Batch (no capacity loss, higher cost), Immutable (new ASG, safest), Traffic Splitting (canary testing). *(Q#69)*
   - **Fast Rollback**: Immutable deployments enable the fastest rollback → old ASG is still running. *(Q#69)*
 - **Common Pitfalls**:
-  - ? RDS created within Beanstalk environment is tied to it → for production, create RDS separately
-  - ? .NET on Linux is supported (since 2021) → don't assume Windows only for .NET
+  - ✗ RDS created within Beanstalk environment is tied to it → for production, create RDS separately
+  - ✗ .NET on Linux is supported (since 2021) → don't assume Windows only for .NET
 - **📝 Q Refs**: #29, #69, #85, #225
 <!-- UPDATE_MARKER: ElasticBeanstalk -->
 
@@ -383,9 +383,9 @@ These architectural patterns span multiple services → they underpin the Well-A
   - **S3 + CloudFront**: Origin Access Control (OAC) replaces Origin Access Identity (OAI). Restricts S3 bucket access to CloudFront only. *(Q#5, Q#28, Q#235)*
   - **S3 + Transfer Family**: Managed SFTP/FTPS/FTP interface to S3. *(Q#49, Q#113, Q#230)*
 - **Common Pitfalls**:
-  - ? CRR vs S3 Sync: CRR is automatic and ongoing; S3 sync is one-time batch
-  - ? S3 Object Lock requires versioning → can't enable without it
-  - ? Intelligent-Tiering has a per-object monitoring fee (~$0.0025/1000 objects) → not ideal for very small objects
+  - ✗ CRR vs S3 Sync: CRR is automatic and ongoing; S3 sync is one-time batch
+  - ✗ S3 Object Lock requires versioning → can't enable without it
+  - ✗ Intelligent-Tiering has a per-object monitoring fee (~$0.0025/1000 objects) → not ideal for very small objects
 - **📝 Q Refs**: #10, #15, #18, #28, #31, #34, #49, #60, #65, #66, #78, #83, #92, #105, #107, #109, #113, #115, #120, #122, #130, #134, #136, #158, #224, #236, #246, #279, #296
 <!-- UPDATE_MARKER: S3 -->
 
@@ -1290,7 +1290,7 @@ These architectural patterns span multiple services → they underpin the Well-A
 
 ---
 
-## 13. ?🖥️ End User Computing & Hybrid
+## 13. 🖥️ End User Computing & Hybrid
 
 ### WorkSpaces
 
@@ -1423,18 +1423,18 @@ This table maps all tag variants found in your Wrong Answer Collection to canoni
 
 | Domain | Services Covered | Q Count | Confidence (Self-Rate) |
 |---|---|---|---|
-| → Cross-Cutting | HA, DR, Cost, Security, Decoupling, Serverless, Governance, Deployments | ~44 | /10 |
+| 🔀 Cross-Cutting | HA, DR, Cost, Security, Decoupling, Serverless, Governance, Deployments | ~44 | /10 |
 | 💻 Compute | EC2, Lambda, EB, Batch | ~48 | /10 |
 | 📦 Containers | ECS, EKS, ECR, Fargate | ~14 | /10 |
 | 💾 Storage | S3, EBS, EFS, FSx, Storage Gateway, Transfer Family | ~38 | /10 |
 | 🗄️ Database | RDS, Aurora, DynamoDB, ElastiCache, DocumentDB, Redshift, DMS | ~45 | /10 |
 | 🌐 Networking | VPC, Route 53, API Gateway, CloudFront, Direct Connect, Transit Gateway, ALB/NLB, Global Accelerator | ~60 | /10 |
 | 🔐 Security | IAM, Organizations/SCP, KMS, Secrets Manager, WAF/Shield, CloudTrail, Config | ~40 | /10 |
-| → Integration | SQS, SNS, EventBridge, Step Functions, AppSync | ~22 | /10 |
+| 🔗 Integration | SQS, SNS, EventBridge, Step Functions, AppSync | ~22 | /10 |
 | 📊 Management | CloudFormation, Systems Manager, CloudWatch, Service Catalog, AWS Backup, Cost Management | ~32 | /10 |
 | 🚚 Migration | DMS, DataSync, Snow Family, MGN, Migration Hub, Transfer Family | ~24 | /10 |
 | 📈 Analytics | Athena, EMR, Glue, QuickSight, Redshift, OpenSearch | ~12 | /10 |
-| → ML | SageMaker, IoT Greengrass | ~3 | /10 |
+| 🤖 ML | SageMaker, IoT Greengrass | ~3 | /10 |
 | 🛠️ Developer Tools | CodeDeploy, CodePipeline, CodeBuild, CodeCommit | ~8 | /10 |
 | 🖥️ EUC | WorkSpaces, AppStream, Outposts, Directory Service | ~7 | /10 |
 
