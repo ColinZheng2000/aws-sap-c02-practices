@@ -25,7 +25,7 @@ total_files: 266
 3. **Check "🔄 Azure Bridge"** → maps each AWS service to what you already know from Azure
 4. **Every fact traces back to your missed question** → see `📝 Q Refs` for source question numbers
 
-### ? Appending New missed question (Future Updates)
+### 📝 Appending New missed question (Future Updates)
 
 1. Add your new `.md` file to this folder
 2. Identify the AWS services in the question's tags
@@ -715,7 +715,7 @@ These architectural patterns span multiple services → they underpin the Well-A
 | **Topology** | Mesh (1:1 per connection) | Hub-and-spoke | Consumer-provider |
 | **Scale** | Up to 125 peers per VPC | Thousands of VPCs | One service → many consumers |
 | **Transitive routing** | ✗ No | ✓ Yes (via route tables) | N/A (consumer→provider only) |
-| **Overlapping CIDRs** | ✗ Not supported | ✗ Not supported | ? Supported (NAT at endpoint) |
+| **Overlapping CIDRs** | ✗ Not supported | ✗ Not supported | ✓ Supported (NAT at endpoint) |
 | **Cross-Region** | ✓ Yes | ✓ Yes (TGW Peering) | ✗ No (Regional only) |
 | **Bandwidth** | No aggregate limit (per-flow) | Up to 50 Gbps per VPC attachment | Up to 10 Gbps per endpoint |
 | **Cost** | Data transfer (per GB) | Data transfer + hourly per attachment | Hourly per endpoint + data |
@@ -739,8 +739,8 @@ These architectural patterns span multiple services → they underpin the Well-A
 
 | Service | Layer | Optimizes | Static IP | Caching |
 |---|---|---|---|---|
-| **CloudFront** | L7 (HTTP/S) | Content delivery (cache) | ? (uses domain name) | ✓ Yes |
-| **Global Accelerator** | L4 (TCP/UDP) | Network path (AWS backbone) | ? (2 anycast IPs) | ✗ No |
+| **CloudFront** | L7 (HTTP/S) | Content delivery (cache) | ✗ (uses domain name) | ✓ Yes |
+| **Global Accelerator** | L4 (TCP/UDP) | Network path (AWS backbone) | ✓ (2 anycast IPs) | ✗ No |
 | **Route 53 Latency** | DNS | DNS resolution to lowest-latency endpoint | N/A | ✗ No |
 
 **Exam signal**: "Cache content globally" → CloudFront. "Gaming/VoIP/IoT, low-latency TCP/UDP" → Global Accelerator. "DNS-level latency-based routing" → Route 53 Latency.
@@ -849,10 +849,10 @@ These architectural patterns span multiple services → they underpin the Well-A
 | Feature | Secrets Manager | SSM Parameter Store |
 |---|---|---|
 | **Purpose** | Application secrets | Configuration data + secrets |
-| **Rotation** | ? Automated (Lambda) | ? Manual |
-| **Cross-Account** | ? Via resource policy | ✗ Not natively |
+| **Rotation** | ✓ Automated (Lambda) | ✗ Manual |
+| **Cross-Account** | ✓ Via resource policy | ✗ Not natively |
 | **Cost** | $0.40/secret/month + API calls | Free (Standard), $0.05/advanced |
-| **RDS Integration** | ? Built-in | ? Manual |
+| **RDS Integration** | ✓ Built-in | ✗ Manual |
 | **Exam trigger** | "Automatic rotation of RDS credentials" | "Hierarchical configuration storage" |
 
 > → **Related Qs**: #21, #160, #164
@@ -1015,9 +1015,9 @@ These architectural patterns span multiple services → they underpin the Well-A
 
 | Method | Scope | Automation | Cross-Region | Cross-Account |
 |---|---|---|---|---|
-| **AWS Backup** | Multi-service | ? Scheduled + retention rules | ? Built-in | ? Built-in |
-| **DLM** | EBS snapshots, AMIs | ? Scheduled policies | ? | ? (since 2023) |
-| **Manual Snapshots** | Per-resource | ? | ? Manual | ? Manual |
+| **AWS Backup** | Multi-service | ✓ Scheduled + retention rules | ✓ Built-in | ✓ Built-in |
+| **DLM** | EBS snapshots, AMIs | ✓ Scheduled policies | ✓ | ✓ (since 2023) |
+| **Manual Snapshots** | Per-resource | ✗ | ✗ Manual | ✗ Manual |
 
 > → **Related Qs**: #114, #134, #153, #234, #245
 
